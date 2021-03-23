@@ -1,0 +1,58 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/vue3-essential",
+    "eslint:recommended",
+    "@vue/typescript"
+  ],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  },
+  "rules": {
+    "no-debugger": "warn",
+    "vue/no-multiple-template-root": "off",
+    "vue/mustache-interpolation-spacing": "warn",
+    "vue/no-boolean-default": "error",
+    "vue/no-confusing-v-for-v-if": "warn",
+    "vue/no-deprecated-data-object-declaration": "warn",
+    "vue/no-deprecated-destroyed-lifecycle": "error",
+    "vue/no-deprecated-dollar-listeners-api": "error",
+    "vue/no-deprecated-dollar-scopedslots-api": "error",
+    "vue/no-deprecated-events-api": "error",
+    "vue/no-deprecated-filter": "error",
+    "vue/no-deprecated-functional-template": "error",
+    "vue/no-deprecated-html-element-is": "error",
+    "vue/no-deprecated-inline-template": "error",
+    "vue/no-deprecated-props-default-this": "error",
+    "vue/no-deprecated-v-bind-sync": "error",
+    "vue/no-deprecated-v-on-native-modifier": "warn",
+    "vue/no-dupe-keys": "error",
+    "vue/no-duplicate-attributes": "warn",
+    "vue/no-lone-template": "warn",
+    "vue/require-prop-types": "warn",
+    "vue/this-in-template": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      "env": {
+        "mocha": true
+      }
+    },
+    {
+      "files": [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      "env": {
+        "mocha": true
+      }
+    }
+  ]
+}
