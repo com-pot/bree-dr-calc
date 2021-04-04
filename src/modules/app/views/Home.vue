@@ -14,13 +14,30 @@
     </template>
 
     <template v-else>
-      <p>
-        Vítejte zpět v aplikaci {{ appName }}.
-      </p>
+      <h1>Vítejte zpět</h1>
       <p>
         Právě máte uloženo <router-link :to="{name: 'bestiary.MyBeasts'}">{{ bestiarySummary.beastCount }} šelem</router-link>
         v <router-link :to="{name: 'bestiary.BreedingStationsIndex'}">{{ bestiarySummary.stationCount }} stanicích</router-link>.
       </p>
+
+      <hr/>
+
+      <p>
+        Aplikaci nyní můžete začít používat jako rejstřík šelem a chovatelských stanic skrze sekce navigační lišty
+        na vrchu stránky.
+        <br/>
+        Většina údajů je nepoviná avšak je doporučeno vyplnit jméno šelmy a přiřadit ji k předem uložené
+        chovatelské stanici. Díky tomu bude jednodušší šelmy volit jako předchůdce anebo kandidáty pro připouštění.
+      </p>
+
+      <p>
+        V aplikaci se dále nachází <router-link :to="{name: 'bestiary.Pairing'}">plánovač připouštění</router-link>,
+        který za pomoci uložených šelem propočte Wrightův Koeficient a případně další údaje.
+        <br/>
+        Pro přesné výsledky je nutné pro šelmy nastavit jejich předky a koeficient genetického zatížení, které
+        do výpočtu vstupují.
+      </p>
+
     </template>
   </div>
 </template>

@@ -1,17 +1,16 @@
 <template>
   <div class="auth-page">
     <h1>{{ $t('auth.view.AuthInfo') }}</h1>
-    <p>
-      Veškeré údaje jsou uloženy na vašem počítači, viz
-      <router-link :to="{name: 'app.About'}">{{ $t('app.view.About') }}</router-link>
-      .
-      Jedná se o tyto údaje:
-    </p>
-    <ul>
-      <li>Uživatel: {{ userName }}</li>
-      <li>Celkem šelem: {{ resetSummary.beastCount }}</li>
-      <li>Celkem chovatelských stanic: {{ resetSummary.breedingStations }}</li>
-    </ul>
+
+    <p>Právě zde máte uloženy tyto údaje:</p>
+    <dl class="definitions">
+      <dt>Uživatel</dt>
+      <dd style="grid-column: span 3">{{ userName }}</dd>
+      <dt>Celkem šelem</dt>
+      <dd>{{ resetSummary.beastCount }}</dd>
+      <dt>Celkem chovatelských stanic</dt>
+      <dd>{{ resetSummary.breedingStations }}</dd>
+    </dl>
 
     <div class="card">
       <div class="card-body">
@@ -27,6 +26,13 @@
         </div>
       </div>
     </div>
+
+    <h2 class="mt-4">Upozornění o datech</h2>
+    <p>
+      Právě pracujete v <b class="text-warning">Lokálním</b> režimu. Všechny údaje jsou uloženy pouze na vašem disku a
+      neukládají se nikde na internetu.<br/>
+      Jelikož jsou data ukládána lokálně, máte k nim přístup přístup pouze v tomto zařízení a pouze v tomto prohlížeči.
+    </p>
   </div>
 </template>
 
