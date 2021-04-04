@@ -1,0 +1,78 @@
+.layout-simple {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+  #navbar {
+    $activeLinkColor: mix(#AED581, black, 75%);
+    height: 4em;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    line-height: 1;
+
+    .brand {
+      font-size: 24pt;
+      color: $activeLinkColor;
+    }
+
+
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+
+      &.router-link-exact-active {
+        color: $activeLinkColor;
+      }
+    }
+  }
+
+  > main {
+    margin-top: 2em;
+    margin-bottom: 15vh;
+  }
+
+  .app-footer {
+    $width: 66.6vw;
+
+    position: fixed;
+    margin-left: (100vw - $width) / 2;
+    bottom: 2em;
+
+    min-height: 2em;
+    width: $width;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .app-connection-notice {
+    padding: 0.25em 0.5em;
+  }
+
+  #navbar, .app-footer {
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      a {
+        padding: 0.25em;
+      }
+    }
+
+    .spacer {
+      display: inline-block;
+      width: 0.25em;
+      height: 0.25em;
+      border-radius: 50%;
+      background: black;
+
+      margin: 0 0.5em;
+    }
+  }
+
+}

@@ -1,0 +1,9 @@
+[
+  {"id": "awoo", "name": "von Bahnhof", "country": "CZ"},
+  {"id": "schn", "name": "von Schneckelwitz", "country": "CZ"},
+  {"id": "lich", "name": "of Lichtenstein", "country": "DE"},
+  {"id": "gtnt", "name": "von Gutentag", "country": "DE"},
+  {"id": "plzl", "name": "von Postleichzahl", "country": "CZ"},
+  {"id": "rhlz", "name": "z Řáholce", "country": "CZ"},
+  {"id": "doya", "name": "of Dockus Yardus", "country": "GB"}
+]

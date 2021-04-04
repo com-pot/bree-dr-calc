@@ -1,0 +1,17 @@
+{
+  "dachshund.field.coatType": "Typ srsti",
+  "dachshund.field.coatPaint": "Zbarvení srsti",
+  "dachshund.field.geneticGrades": "Genetické známky",
+  "dachshund.field.behaviorGrades": "Známky z chování",
+  "dachshund.field.healthGrades": "Zdravotní známky",
+  "dachshund.field.bonity": "Bonitační kód",
+  "dachshund.coatType.long": "Dlouhosrstý",
+  "dachshund.coatType.coarse": "Drsnosrstý",
+  "dachshund.coatType.short": "Krátkosrstý",
+  "dachshund.coatType.dls": "DLS",
+  "dachshund.coatType.drs": "DRS",
+  "dachshund.coatPaint.blackBurned": "Černá s pálením",
+  "dachshund.coatPaint.brown": "Hnědá",
+  "dachshund.coatPaint.mahagony": "Mahagonová",
+  "dachshund.coatPaint.red": "Červená"
+}

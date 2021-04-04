@@ -1,0 +1,43 @@
+{
+  "general": {
+    "type": "structure",
+    "schema": {
+      "name": {
+        "type": "text",
+        "required": true
+      },
+      "breedingStation": {
+        "type": "relation:breedingStation",
+        "required": true
+      },
+      "gender": {
+        "type": "bestiary:gender",
+        "required": false
+      },
+      "evidenceCode": {
+        "type": "text"
+      },
+      "birthDay": {
+        "type": "date"
+      }
+    }
+  },
+  "lineage": {
+    "type": "structure",
+    "schema": {
+      "father": {
+        "type": "relation:beast",
+        "domain": "gender=m"
+      },
+      "mother": {
+        "type": "relation:beast",
+        "domain": "gender=f"
+      },
+      "wright": {
+        "type": "number",
+        "format": "percent",
+        "precision": 8
+      }
+    }
+  }
+}

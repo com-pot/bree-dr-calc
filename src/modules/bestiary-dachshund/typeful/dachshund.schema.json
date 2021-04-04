@@ -1,0 +1,25 @@
+{
+  "coatType": {
+    "type": "bestiary:coatType.dachshund",
+    "createValueLabel": "dachshund.coatType."
+  },
+  "coatPaint": {
+    "type": "bestiary:coatPaint.dachshund",
+    "createValueLabel": "dachshund.coatPaint."
+  },
+  "geneticGrades": {
+    "type": "bestiary:geneticGrade.dachshund",
+    "multiple": true
+  },
+  "behaviorGrades": {
+    "type": "bestiary:behaviorGrade.dachshund",
+    "multiple": true
+  },
+  "healthGrades": {
+    "type": "bestiary:healthGrade.dachshund",
+    "multiple": true
+  },
+  "bonity": {
+    "type": "text"
+  }
+}
