@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
     name: 'auth.SignIn',
     component: () => import('./views/SignIn.vue'),
     meta: {
-      title: 'auth.view.SignIn'
+      title: 'auth.view.SignIn',
     },
     beforeEnter: ((_to, _from, next) => {
       if (authStore.getters.isLoggedIn()) {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
     name: 'auth.AuthInfo',
     component: () => import('./views/AuthInfo.vue'),
     meta: {
-      title: 'auth.view.AuthInfo'
+      title: 'auth.view.AuthInfo',
     },
     beforeEnter: (((_to, _from, next) => {
       if (!authStore.getters.isLoggedIn()) {
