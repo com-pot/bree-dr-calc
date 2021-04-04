@@ -1,5 +1,5 @@
 {
   "auth.view.SignIn": "Přihlášení",
-  "auth.view.AuthInfo": "Informace o přihlášeném uživateli",
+  "auth.view.AuthInfo": "Informace o uložených údajích",
   "auth.signIn.userName": "Jméno"
 }
