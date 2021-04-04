@@ -1,6 +1,9 @@
 <template>
   <DecFieldset class="form-row" legend="Detaily jezevčíka" model-section="dachshund">
     <div class="col-md-3">
+      <DecFormInput v-bind="dachshundFields.sizeVariant"></DecFormInput>
+    </div>
+    <div class="col-md-3">
       <DecFormInput v-bind="dachshundFields.coatType"></DecFormInput>
     </div>
     <div class="col-md-3">

@@ -1,4 +1,7 @@
 {
+  "sizeVariant": {
+    "type": "dachshund:sizeVariant"
+  },
   "coatType": {
     "type": "bestiary:coatType.dachshund",
     "createValueLabel": "dachshund.coatType."
