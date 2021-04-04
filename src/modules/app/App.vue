@@ -9,10 +9,6 @@
     <Footer class="card">
       <template #links>
         <router-link :to="{name: 'app.About'}">{{ $t('app.view.About') }}</router-link>
-        <template v-if="userAuthenticated">
-          <div class="spacer"/>
-          <router-link :to="{name: 'auth.AuthInfo'}">{{ $t('auth.view.AuthInfo') }}</router-link>
-        </template>
       </template>
     </Footer>
   </div>
