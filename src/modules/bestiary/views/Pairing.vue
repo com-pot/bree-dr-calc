@@ -1,6 +1,12 @@
 <template>
   <div class="beast-pairing">
     <h1>{{ $t('bestiary.view.Pairing') }}</h1>
+
+    <p>
+      Párování se počítá pro zvolené šelmy pro jejich předky až do {{ maxCalculationLevel }}. generace. Po zvolení
+      šelem se vypočte Wrightův Koeficient a ve spodní části stránky bude možné procházet podrobnosti párování.
+    </p>
+
     <div class="row row-pairing">
       <div class="col-md beast-selection">
         <DecFormInput v-model="pairing.mother" v-bind="pairingFields.mother"/>
@@ -25,32 +31,48 @@
       </div>
     </div>
 
-    <MultiOccurrence :max-calculation-level="maxCalculationLevel" :occurrences="beastMultiPresence"/>
+    <div class="card mt-4">
+      <div class="card-header">
+        <h2>Detaily párování</h2>
+        <p>
+          Všechny zohledněné šelmy náleží do jednoho z rodokmentů. Každý z těchto rodokmenů se skládá z jedinečných pozic
+          označených číselně. V těcho pozicích se vyskytují předchůdci zvolených šelem.<br/>
+          Například pozice #2 náleží matce zvolené šelmy a pozice #7 náleží otci otcova otce.
+        </p>
 
-    <div class="row mt-2">
-      <div class="col-md-6">
-        <DecFormInput v-model="pairing.maxGenerations" v-bind="pairingFields.maxGenerations"/>
-      </div>
-      <div class="col-md-6">
-        <DecFormInput v-model="pairing.walkOrder" v-bind="pairingFields.walkOrder"
-                      @change:model-value="pairing.walkOrder = $event"/>
-      </div>
-    </div>
-
-
-    <div class="row">
-      <div class="col-12">
-        <h2>Matka - rodokmen</h2>
-        <AncestryTree v-if="ancestorTrees.mother" :ancestry-tree="ancestorTrees.mother"
-                      :expand-levels="pairing.maxGenerations" :walk-relations="walkRelations"
-                      root-node-relation="mother"/>
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item" v-for="tab in visualisationTabs" :key="tab.name">
+            <a href="#" :class="['nav-link', activeTab === tab.name && 'active']"
+               @click.prevent="showTab(tab.name)">{{ $t('bestiary.pairing.tab.' + tab.name) }}</a>
+          </li>
+        </ul>
       </div>
 
-      <div class="col-12">
-        <h2>Otec - rodokmen</h2>
-        <AncestryTree v-if="ancestorTrees.father" :ancestry-tree="ancestorTrees.father"
-                      :expand-levels="pairing.maxGenerations" :walk-relations="walkRelations"
-                      root-node-relation="father"/>
+      <div class="card-body">
+        <template v-if="activeTab === 'explanation'">
+          <MultiOccurrence :max-calculation-level="maxCalculationLevel" :occurrences="beastMultiPresence"/>
+        </template>
+        <template v-else-if="activeTab === 'lineage'">
+          <div class="row">
+            <div class="col-md-6">
+              <DecFormInput v-model="pairing.maxGenerations" v-bind="pairingFields.maxGenerations"/>
+            </div>
+            <div class="col-md-6">
+              <DecFormInput v-model="pairing.walkOrder" v-bind="pairingFields.walkOrder"
+                            @change:model-value="pairing.walkOrder = $event"/>
+            </div>
+          </div>
+
+          <h3>Matčin rodokmen</h3>
+          <AncestryTree v-if="ancestorTrees.mother" :ancestry-tree="ancestorTrees.mother"
+                        :expand-levels="pairing.maxGenerations" :walk-relations="walkRelations"
+                        root-node-relation="mother"/>
+
+          <h3>Otcův rodokmen</h3>
+          <AncestryTree v-if="ancestorTrees.father" :ancestry-tree="ancestorTrees.father"
+                        :expand-levels="pairing.maxGenerations" :walk-relations="walkRelations"
+                        root-node-relation="father"/>
+        </template>
       </div>
     </div>
   </div>
@@ -58,7 +80,7 @@
 
 <script lang="ts">
 
-import {computed, reactive, watch} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 import beastSchema from "../typeful/beast.schema.json"
 import {getFields} from "@/modules/typeful/services/FormsService";
 import DecFormInput from "@/modules/typeful/components/DecFormInput.vue";
@@ -105,7 +127,7 @@ export default {
         label: 'bestiary.pairing.field.walkOrder'
       }
     }, {
-      createFieldLabel: 'bestiary.beast.field.',
+      createFieldLabel: 'bestiary.beast.lineage.',
     })
 
     const pairing = reactive({
@@ -169,6 +191,12 @@ export default {
       return beast
     }
 
+    const visualisationTabs = [
+      {name: 'explanation'},
+      {name: 'lineage'},
+    ]
+    const activeTab = ref('explanation')
+
     return {
       // Inputs
       maxCalculationLevel,
@@ -178,6 +206,11 @@ export default {
       // Calculation results
       wrightCoefficientPct,
       beastMultiPresence,
+
+      // Pairing visualization
+      visualisationTabs,
+      activeTab,
+      showTab: (tabName: string) => activeTab.value = tabName,
 
       // Tree visualisation
       ancestorTrees,

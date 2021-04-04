@@ -6,6 +6,8 @@
   "bestiary.view.BreedingStationsIndex": "Rejstřík chovatelských stanic",
   "bestiary.pairing.field.maxGenerations": "Maximální zanoření",
   "bestiary.pairing.field.walkOrder": "Pořadí procházení rodokmenu",
+  "bestiary.pairing.tab.explanation": "Vysvětlivky",
+  "bestiary.pairing.tab.lineage": "Rodokmeny",
   "bestiary.actions.createBeast": "Přidat šelmu",
   "bestiary.beast.fieldGroup.generalInfo": "Obecné informace",
   "bestiary.beast.fieldGroup.ancestry": "Rod",

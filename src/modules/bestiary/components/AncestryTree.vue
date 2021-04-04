@@ -10,9 +10,9 @@
               }}</span>
           </div>
 
-          <template v-else class="beast-info">
+          <div v-else class="beast-info">
             Záznam chybí
-          </template>
+          </div>
         </div>
 
       </template>
