@@ -15,9 +15,6 @@ export const state = reactive({
 })
 
 export const getters = {
-  count() {
-    return state.beastList.length
-  },
   breedingStationName: (stationId: string): string | null => {
     const station = state.breedingStations.find((s) => s.id === stationId)
     if (!station) {
