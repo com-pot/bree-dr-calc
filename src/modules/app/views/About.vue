@@ -12,15 +12,21 @@
     </p>
     <p>
       Zdrojové kódy aplikace jsou otevřené a k nalezení, prozkoumání a návrhům k úpravám na
-      portálu <a :href="repoLink" target="_blank">GitHub</a>. Zn.: Kritika je vítánáv podobě Pull Requestů.
+      portálu <a :href="repoLink" target="_blank">GitHub</a>. Zn.: Kritika je vítána podobě Pull Requestů.
     </p>
+
     <h2>Upozornění o datech</h2>
     <p>
       Aplikace aktuálně slouží pouze jako kalkulačka a osobní rejstřík. Pracujete totiž v režimu <b
-      class="text-warning">offline</b> a
-      všechna data jsou uložena v paměti prohlížeče anebo na vašem disku. <br/>
-      Možnost sdílet vaše šelmy anebo načítat data z vnějších databází je otázkou budoucího rozšíření.
+      class="text-warning">Offline</b> a všechna data jsou uložena v paměti prohlížeče anebo na vašem disku. <br/>
     </p>
+
+    <h2>Možná rozšíření</h2>
+    <ul class="list-unstyled">
+      <li>Načítání hodnot z existující databáze</li>
+      <li>Odesílání dat ke schválení do existující databáze</li>
+      <li>Online režim - více uživatelů spravující stanice a šelmy</li>
+    </ul>
   </div>
 </template>
 
