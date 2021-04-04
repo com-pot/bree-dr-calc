@@ -12,13 +12,7 @@
     </p>
     <p>
       Zdrojové kódy aplikace jsou otevřené a k nalezení, prozkoumání a návrhům k úpravám na
-      portálu <a :href="repoLink" target="_blank">GitHub</a>. Zn.: Kritika je vítána podobě Pull Requestů.
-    </p>
-
-    <h2>Upozornění o datech</h2>
-    <p>
-      Aplikace aktuálně slouží pouze jako kalkulačka a osobní rejstřík. Pracujete totiž v režimu <b
-      class="text-warning">Offline</b> a všechna data jsou uložena v paměti prohlížeče anebo na vašem disku. <br/>
+      portálu <a :href="repoLink" target="_blank">GitHub</a>. Zn.: Kritika je vítána v podobě Pull Requestů.
     </p>
 
     <h2>Možná rozšíření</h2>
