@@ -122,7 +122,7 @@ export default defineComponent({
   margin-right: -0.5em;
 
   .card-station {
-    flex: 1 1 240px;
+    flex: 1 1 320px;
 
     margin-bottom: 0.5em;
     margin-right: 0.5em;
@@ -140,6 +140,14 @@ export default defineComponent({
     align-self: center;
     font-size: 16pt;
     margin: 0 0.25em;
+  }
+
+  .actions {
+    min-width: 80px;
+
+    .btn-group {
+      width: 100%;
+    }
   }
 
 }
