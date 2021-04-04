@@ -47,7 +47,6 @@ export default defineComponent({
       userAuthenticated,
       beginDemo: () => {
         demoStore.actions.initDemoData()
-          .then(() => console.log("Data initialized"))
       },
       beastSummary,
     }

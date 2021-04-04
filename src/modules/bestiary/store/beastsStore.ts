@@ -40,8 +40,6 @@ export const actions = {
       existingBeast = await actions.getBeast(beast.id, 'raw')
     } while (existingBeast)
 
-    console.log(beast.id)
-
     state.beastList.push(beast)
     persistBeastsList()
   },
