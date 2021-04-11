@@ -50,3 +50,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.sign-in {
+  min-width: 320px;
+}
+</style>
