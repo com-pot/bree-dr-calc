@@ -7,7 +7,7 @@
 
       <Tippy interactive>
         <template #content>
-          <button v-for="option in filterTypeOptions" :key="option" class="btn btn-sm btn-light"
+          <button v-for="option in availableOperators" :key="option" class="btn btn-sm btn-light"
                   @click="$emit('change:filter-type', option)">
             {{ option }}
           </button>
@@ -19,12 +19,12 @@
     </label>
 
 
-    <DecInput v-bind="field.field" :model-value="filterCondition.args" @change:model-value="$emit('change:args', $event)"/>
+    <DecInput class="filter-input" v-bind="field.field" :model-value="filterCondition.args" @change:model-value="$emit('change:args', $event)"/>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, ref} from "vue"
+import {computed, defineComponent, PropType} from "vue"
 import {Tippy} from "vue-tippy"
 import {useI18n} from "@i18n"
 
@@ -41,15 +41,24 @@ export default defineComponent({
     filterCondition: {type: Object as PropType<FilterCondition>, required: true},
     field: {type: Object as PropType<FieldObj>, required: true},
   },
-  setup() {
+  setup(props) {
     const i18n = useI18n()
-    const filterTypeOptions = ref([
-      '=', '>', '>=', '<', '<=',
-    ])
+    const availableOperators = computed(() => {
+      const field = props.field.field
+
+      if (field.itemsSource) {
+        return ['=']
+      }
+      if (field.type === 'text') {
+        return ['=', 'like']
+      }
+
+      return ['=', '>', '>=', '<', '<=']
+    })
 
     return {
       ...i18n,
-      filterTypeOptions,
+      availableOperators,
     }
   },
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="beast-index">
-    <div class="heading mb-2">
+    <div class="section-heading mb-2">
       <h1>{{ t('bestiary.view.MyBeasts') }}</h1>
       <router-link :to="{name: 'bestiary.NewBeast'}" class="btn btn-primary ml-auto">{{
           t('bestiary.actions.createBeast')
@@ -14,13 +14,10 @@
 
     <div class="list-options">
       <ComposableFilter :filtering="filtering"/>
-      <b>Řazení</b><br/>
-      <a href="#" @click="sorting.toggleSort('general.name')">Podle jména: {{
-          sorting.sortDirectionLabel('general.name')
-        }}</a>
+      <ComposableSorting :sorting="sorting"/>
     </div>
 
-    <div class="beast-listing">
+    <div class="list-items">
       <div v-for="beast in beastList" :key="beast.id" class="card card-beast">
         <span class="gender">{{ t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
 
@@ -54,7 +51,7 @@ import {
   collectionPage,
   createFilteringFromSchema,
   createPagination,
-  createSorting,
+  createSortingFromSchema,
   useCollections
 } from "@vtf-collection"
 import ComposableFilter from "@vtf-ui/ComposableFilter.vue"
@@ -63,10 +60,12 @@ import Pagination from "@vtf-ui/Pagination.vue"
 import * as beastsStore from "../store/beastsStore"
 import {Beast} from "../model/Bestiary"
 import beastSchema from "../typeful/beast.schema.json"
+import ComposableSorting from "@vtf-ui/ComposableSorting.vue";
 
 
 export default defineComponent({
   components: {
+    ComposableSorting,
     ComposableFilter,
     Pagination,
   },
@@ -85,10 +84,8 @@ export default defineComponent({
     delete filterable.general.schema.birthDay
 
     const filtering = createFilteringFromSchema(filterable, 'bestiary.beast.')
+    const sorting = createSortingFromSchema(filterable, 'bestiary.beast.', {toggleRemove: false})
 
-    const sorting = createSorting([
-      {prop: 'general.name'},
-    ])
     sorting.toggleSort('general.name')
 
     const pagination = createPagination()
@@ -131,7 +128,7 @@ export default defineComponent({
 
 <style lang="scss">
 .beast-index {
-  .heading {
+  > .section-heading {
     display: flex;
     flex-direction: row;
     align-items: center;

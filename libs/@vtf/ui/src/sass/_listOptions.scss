@@ -1,0 +1,24 @@
+.list-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  > * {
+    flex: 1;
+    min-width: min(90%, 40ch);
+  }
+
+  & + .list-items {
+    margin-block-start: 1rem;
+  }
+}
+
+section.list-option {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1em;
+
+  .section-heading {
+    width: 100%;
+  }
+}

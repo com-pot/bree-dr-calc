@@ -19,8 +19,8 @@ export type SchemaField = {
   schema: TypefulSchema,
 }
 
-export type TypefulSchema = {
-  [field: string]: TypefulField | SchemaField
+export type TypefulSchema<TField extends TypefulField = TypefulField> = {
+  [field: string]: TField | SchemaField
 }
 
 export function transformModuleField<T extends TypefulField>(field: Readonly<FieldObj<T>>): FieldObj<T> {
@@ -67,4 +67,30 @@ function getPropertyType(module: TypefulModule, type: string): PropertyType {
   }
 
   return module.types && module.types[type]
+}
+
+export function walkSchema<TOut=any>(schema: TypefulSchema, fieldTransform: (field: TypefulField, path: string) => TOut): TOut[] {
+  const result: TOut[] = []
+
+  const schemaToWalk: {path: string, name: string, schema: TypefulSchema}[] = [
+    {path: '', name: '', schema}
+  ]
+
+  while(schemaToWalk.length) {
+    const currentSchema = schemaToWalk.shift()!
+
+    Object.entries(currentSchema.schema).forEach(([name, field]) => {
+      const path = (currentSchema.path ? currentSchema.path + '.' : '') + name
+      if (isSchemaField(field)) {
+        schemaToWalk.push({path, name, schema: field.schema})
+        return
+      }
+
+      result.push(fieldTransform(field, path))
+    })
+  }
+
+
+
+  return result
 }

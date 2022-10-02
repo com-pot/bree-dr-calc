@@ -71,8 +71,8 @@ const module: TypefulModule = {
   },
   registerItemSources(collections) {
     collections.addCollectionEntry('relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem))
-    collections.addCollectionEntry('bestiary:beast', localCollection(() => beastsStore.state.beastList, (i) => (i)))
-    collections.addCollectionEntry('bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations, (i) => (i)))
+    collections.addCollectionEntry('bestiary:beast', localCollection(() => beastsStore.state.beastList))
+    collections.addCollectionEntry('bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations))
   },
 }
 

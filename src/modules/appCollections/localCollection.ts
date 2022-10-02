@@ -3,7 +3,7 @@ import orderBy from "lodash/orderBy"
 import {Pagination, CollectionEntry} from "@vtf-collection"
 import {matchFilterFn} from "./localCollection/filtering"
 
-export default function localCollection<T, TOut>(getItems: () => T[], transformItem: (i: T) => TOut): CollectionEntry<TOut> {
+export default function localCollection<T, TOut=T>(getItems: () => T[], transformItem?: (i: T) => TOut): CollectionEntry<TOut> {
   return {
     retrieve: ((filter, sort, pagination) => {
       let items = getItems()
@@ -27,8 +27,10 @@ export default function localCollection<T, TOut>(getItems: () => T[], transformI
       const start = (paginationRes.page - 1) * perPage
       items = items.slice(start, start + perPage)
 
+      const itemsOut: TOut[] = transformItem ? items.map(transformItem) : items as unknown as TOut[]
+
       return {
-        items: items.map(transformItem),
+        items: itemsOut,
         filter: filter,
         sort: sort,
         pagination: paginationRes,

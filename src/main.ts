@@ -3,6 +3,7 @@ import App from './modules/app/App.vue'
 
 import './modules/app/sass/bdcApp.scss'
 import './modules/app/sass/bdcBootstrap.scss'
+import '../libs/@vtf/ui/src/sass/vtf-ui.scss'
 
 import 'tippy.js/dist/tippy.css'
 

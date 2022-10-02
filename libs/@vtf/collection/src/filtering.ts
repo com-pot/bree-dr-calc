@@ -1,6 +1,6 @@
 import {reactive} from "vue"
 import {PropExpression} from "./expressions"
-import {isSchemaField, PreparedField, TypefulSchema} from "@vtf-typeful"
+import {PreparedField, TypefulSchema, walkSchema} from "@vtf-typeful"
 import {getField} from "@vtf-typeful"
 
 
@@ -55,28 +55,10 @@ export const createFiltering = (fields: FilterField[]) => {
 }
 
 export const createFilteringFromSchema = (schema: TypefulSchema, createFieldLabel: string) => {
-  const fields: FilterField[] = []
-
-  const schemaToWalk: {path: string, name: string, schema: TypefulSchema}[] = [
-    {path: '', name: '', schema}
-  ]
-
-  while(schemaToWalk.length) {
-    const currentSchema = schemaToWalk.shift()!
-
-    Object.entries(currentSchema.schema).forEach(([name, field]) => {
-      const path = (currentSchema.path ? currentSchema.path + '.' : '') + name
-      if (isSchemaField(field)) {
-        schemaToWalk.push({path, name, schema: field.schema})
-        return
-      }
-
-      fields.push({
-        prop: path,
-        field: getField(path, field, {createFieldLabel}),
-      })
-    })
-  }
+  const fields: FilterField[] = walkSchema(schema, (field, path) => ({
+    prop: path,
+    field: getField(path, field, {createFieldLabel})
+  }))
 
   return createFiltering(fields)
 }

@@ -1,20 +1,10 @@
 <template>
-  <div class="tf-filter">
-    <div class="filter-heading">
+  <section class="list-option -filter">
+    <div class="section-heading">
       Filtrování
-      <Tippy trigger="mouseenter" interactive>
-        <template #content>
-          <div class="new-filter-fields">
-            <a v-for="(field, i) in filtering.fields" :key="i"
-               href="#" @click.prevent="addFilter(field)"
-            >{{ (field.field.label) }}</a>
-          </div>
-        </template>
-
-        <template #default>
-          <span class="badge badge-primary" title="Přidat filtr">+</span>
-        </template>
-      </Tippy>
+      <FieldSelection :fields="filtering.fields" :pick="addFilter" title="Přidat filtr">
+        <template v-slot:field="{field}">{{ field.field.label }}</template>
+      </FieldSelection>
     </div>
 
     <div>
@@ -28,22 +18,23 @@
     </div>
 
 
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, PropType} from "vue"
-import {Tippy} from "vue-tippy"
+
 import {useI18n} from "@i18n"
 
 import {useFields} from "@vtf-typeful"
 import {FilterField, Filtering} from "@vtf-collection"
-import FilterRule from "@vtf-ui/ComposableFilter/FilterRule.vue"
+import FilterRule from "./ComposableFilter/FilterRule.vue"
+import FieldSelection from "./FieldSelection.vue"
 
 
 export default defineComponent({
   components: {
-    Tippy,
+    FieldSelection,
     FilterRule,
   },
   props: {
@@ -76,11 +67,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.tf-filter {
-}
 
 .filter-rule {
-  label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  > label {
     margin-inline-end: 0.5em;
 
     > *:not(:first-child) {
@@ -94,6 +87,10 @@ export default defineComponent({
       display: inline-grid;
       place-content: center;
     }
+  }
+
+  .filter-input {
+    width: auto;
   }
 }
 

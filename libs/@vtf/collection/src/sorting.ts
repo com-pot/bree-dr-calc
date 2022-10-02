@@ -1,18 +1,22 @@
 import {reactive} from "vue"
-import {useI18n} from "@i18n"
+// import {useI18n} from "@i18n"
 
 import {PropExpression} from "./expressions"
+import {getField, TypefulSchema, walkSchema} from "@vtf-typeful";
 
 type SortDirection = 'asc'|'desc'
 export type SortOptions = [PropExpression, SortDirection][]
 
-type SortField = {
+export type SortField = {
   prop: string,
+  label: string,
+}
+type SortingConfig = {
+  toggleRemove: boolean,
 }
 
-export const createSorting = (fields: SortField[]) => {
-  const i18n = useI18n()!
-
+export const createSorting = (fields: SortField[], config?: SortingConfig) => {
+  // const i18n = useI18n()
   const value = reactive([
 
   ] as SortOptions)
@@ -20,11 +24,6 @@ export const createSorting = (fields: SortField[]) => {
   return {
     fields,
     value,
-    sortDirectionLabel: (field: string) => {
-      const index = value.findIndex((f) => f[0] === field)
-      const sortDirection = index === -1 ? 'none' : value[index][1]
-      return i18n.t('collections.sortDirection.' + sortDirection)
-    },
 
     toggleSort(prop: string) {
       const index = value.findIndex((sort) => sort[0] === prop)
@@ -32,11 +31,32 @@ export const createSorting = (fields: SortField[]) => {
         value.push([prop, 'asc'])
         return
       }
+
       if (value[index][1] === 'asc') {
         value[index][1] = 'desc'
+      } else if (!config?.toggleRemove) {
+        value[index][1] = 'asc'
       } else {
         value.splice(index, 1)
       }
     },
+    remove(i: number) {
+      value.splice(i, 1)
+    },
+    getFieldLabel(prop: string) {
+      const field = fields.find((f) => f.prop === prop)
+      return field?.label ?? '---'
+    },
   }
 }
+
+export const createSortingFromSchema = (schema: TypefulSchema, createFieldLabel: string, config?: SortingConfig) => {
+  const fields: SortField[] = walkSchema(schema, (field, path) => ({
+    prop: path,
+    label: getField(path, field, {createFieldLabel}).label!,
+  }))
+
+  return createSorting(fields, config)
+}
+
+export type Sorting = ReturnType<typeof createSorting>

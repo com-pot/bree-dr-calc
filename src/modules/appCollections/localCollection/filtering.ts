@@ -16,6 +16,14 @@ const filterTypeEvaluators: { [type: string]: FilterTypeEvaluator } = {
       return false
     }
     return argument.includes(value)
+  },
+  'like': (value, argument) => {
+    if (typeof value === 'string') {
+      return value.includes(argument)
+    }
+    console.warn("Cannot match 'like' operator with ", {value, argument});
+
+    return false
   }
 }
 
