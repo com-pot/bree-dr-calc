@@ -1,5 +1,9 @@
 root = true
 
-[*.{ts, vue}]
+[*]
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{ts, vue, scss}]
 indent_style = space
 indent_size = 2
