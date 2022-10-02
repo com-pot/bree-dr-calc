@@ -1,20 +1,28 @@
 <template>
   <div class="beast-index">
     <div class="heading mb-2">
-      <h1>{{ $t('bestiary.view.MyBeasts') }}</h1>
+      <h1>{{ t('bestiary.view.MyBeasts') }}</h1>
       <router-link :to="{name: 'bestiary.NewBeast'}" class="btn btn-primary ml-auto">{{
-          $t('bestiary.actions.createBeast')
+          t('bestiary.actions.createBeast')
         }}
       </router-link>
       <router-link :to="{name: 'bestiary.Pairing'}" class="btn btn-outline-primary ml-2">{{
-          $t('bestiary.view.Pairing')
+          t('bestiary.view.Pairing')
         }}
       </router-link>
     </div>
 
+    <div class="list-options">
+      <ComposableFilter :filtering="filtering"/>
+      <b>Řazení</b><br/>
+      <a href="#" @click="sorting.toggleSort('general.name')">Podle jména: {{
+          sorting.sortDirectionLabel('general.name')
+        }}</a>
+    </div>
+
     <div class="beast-listing">
       <div v-for="beast in beastList" :key="beast.id" class="card card-beast">
-        <span class="gender">{{ $t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
+        <span class="gender">{{ t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
 
         <div class="beast-text">
           <span class="full-name">
@@ -35,24 +43,76 @@
         </button>
       </div>
     </div>
+    <Pagination v-model:page="pagination.value.page" :max-page="pagination.value.totalPages" class="mt-2"/>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue";
-import {translateMixin} from "@/i18n";
+import {defineComponent, ref, watch} from "vue"
+import {useI18n} from "@i18n"
+import {
+  collectionPage,
+  createFilteringFromSchema,
+  createPagination,
+  createSorting,
+  useCollections
+} from "@vtf-collection"
+import ComposableFilter from "@vtf-ui/ComposableFilter.vue"
+import Pagination from "@vtf-ui/Pagination.vue"
 
 import * as beastsStore from "../store/beastsStore"
+import {Beast} from "../model/Bestiary"
+import beastSchema from "../typeful/beast.schema.json"
+
 
 export default defineComponent({
-  mixins: [
-    translateMixin,
-  ],
-  setup() {
+  components: {
+    ComposableFilter,
+    Pagination,
+  },
+  props: {
+    ...collectionPage.props,
+  },
+  setup(props) {
     const deleteId = ref<string | null>(null)
+    const i18n = useI18n()
+    const collections = useCollections()
+
+    const filterable = {
+      general: {...beastSchema.general},
+      lineage: {...beastSchema.lineage},
+    } as any
+    delete filterable.general.schema.birthDay
+
+    const filtering = createFilteringFromSchema(filterable, 'bestiary.beast.')
+
+    const sorting = createSorting([
+      {prop: 'general.name'},
+    ])
+    sorting.toggleSort('general.name')
+
+    const pagination = createPagination()
+    watch(() => props.page, (page) => pagination.value.page = page)
+
+    const beastList = ref([] as Beast[])
+    watch([filtering.value, sorting.value, pagination.value], ([filtering, sort, pagination]) => {
+      const collection = collections.fetchCollection<Beast>('bestiary:beast', undefined, filtering, sort, pagination)
+      if (collection instanceof Promise) {
+        console.warn("Whoops")
+        return
+      }
+      beastList.value = collection.items
+      pagination.totalPages = collection.pagination?.totalPages ?? pagination.totalPages
+
+    }, {immediate: true})
 
     return {
-      beastList: beastsStore.state.beastList,
+      ...i18n,
+
+      beastList,
+      filtering,
+      sorting,
+      pagination,
 
       breedingStationName: beastsStore.getters.breedingStationName,
 

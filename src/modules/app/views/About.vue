@@ -2,8 +2,8 @@
   <div class="about">
     <h1>O aplikaci</h1>
     <p>
-      Tato aplikace vznikla za účelem zjednodušení výpočtu <em
-      v-tippy="$t('bestiary.wrightCoefficient.termDefinition')">Wrightova
+      Tato aplikace vznikla za účelem zjednodušení výpočtu <em class="term"
+      v-tippy="{content: t('bestiary.wrightCoefficient.termDefinition')}">Wrightova
       koeficientu</em> příbuzenské plemenitby.
     </p>
 
@@ -24,16 +24,16 @@
   </div>
 </template>
 
-<script>
-import {translateMixin} from "@/i18n.ts";
-import appStore from "@/modules/app/store/appStore.ts";
+<script lang="ts">
+import {useI18n} from "@i18n"
+import appStore from "@app/store/appStore"
 
 export default {
-  mixins: [
-    translateMixin,
-  ],
   setup() {
+    const i18n = useI18n()
     return {
+      ...i18n,
+
       appVersion: appStore.state.appVersion,
       repoLink: appStore.state.repoLink,
     }
