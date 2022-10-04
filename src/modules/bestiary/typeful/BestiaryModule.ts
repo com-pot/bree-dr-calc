@@ -1,26 +1,30 @@
-import {PropertyType, TypefulModule} from "@/modules/typeful/TypefulModule";
-import * as gender from "@/modules/bestiary/typeful/gender.type";
-import * as i18n from "@/i18n";
+import {PropertyType, TypefulModule} from "@vtf-typeful"
+import {useI18n} from "@i18n"
+
+import localCollection from "@/modules/appCollections/localCollection"
+import * as gender from "./gender.type"
+import {BreedingStation} from "@/modules/bestiary/model/Bestiary"
+import {createBeastListItem} from "@/modules/bestiary/model/beastItemsSource"
+import beastsStore from "@/modules/bestiary/store/beastsStore"
 
 const fetchTypes: { [baseType: string]: (variant: string) => PropertyType } = {
   coatType: (variant: string): PropertyType => ({
     type: "select",
-    itemsSource: variant + ':coatType',
+    options: variant + ':coatType',
   }),
   coatPaint: (variant: string): PropertyType => ({
     type: "select",
-    itemsSource: variant + ':coatPaint',
+    options: variant + ':coatPaint',
   }),
+
 }
 
 const module: TypefulModule = {
   types: {
     gender: {
-      type: "btnSelect",
-      options: gender.options.map((option) => ({
-        value: option.value,
-        label: i18n.translate('bestiary.beast.gender.' + option.value),
-      })),
+      type: "string", appearance: "btn-group",
+      options: gender.options,
+      ui: {itemPrefix: 'bestiary.beast.gender.'},
     },
     geneticGrade: {
       type: "text",
@@ -34,6 +38,36 @@ const module: TypefulModule = {
     bonity: {
       type: "text",
     },
+
+    'relation.beast': {
+      type: "string",
+      options: "relation:beast",
+      valueKey: 'id',
+      ui: {
+        itemLabelTemplate: {
+          op: 'join', separator: ' ',
+          filter: 'non-empty',
+          args: [
+            {path: ['name']},
+            {path: ['breedingStation']},
+            {path: ['gender']},
+          ],
+        },
+      },
+    },
+    'relation.breedingStation': {
+      type: "select",
+      options: "bestiary:breedingStation",
+      valueKey: 'id',
+      ui: {
+        itemLabelTemplate: [
+          {path: ['name']},
+          {const: ' ['},
+          {path: ['country']},
+          {const: ']'},
+        ],
+      },
+    }
   },
   getPropertyType: (type, variant) => {
     if (type in fetchTypes && variant) {
@@ -45,6 +79,11 @@ const module: TypefulModule = {
     }
 
     return undefined
+  },
+  registerItemSources(collections) {
+    collections.addCollectionEntry('relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem))
+    collections.addCollectionEntry('bestiary:beast', localCollection(() => beastsStore.state.beastList))
+    collections.addCollectionEntry('bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations))
   },
 }
 

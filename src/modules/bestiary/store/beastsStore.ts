@@ -15,7 +15,7 @@ export const state = reactive({
 })
 
 export const getters = {
-  breedingStationName: (stationId: string): string | null => {
+  breedingStationName: (stationId?: string): string | null => {
     const station = state.breedingStations.find((s) => s.id === stationId)
     if (!station) {
       console.warn("No station with id", stationId)

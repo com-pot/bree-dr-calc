@@ -2,7 +2,7 @@
   <div class="sign-in">
     <div class="card">
       <div class="card-header">
-        <h1>{{ $t('auth.view.SignIn') }}</h1>
+        <h1>{{ t('auth.view.SignIn') }}</h1>
       </div>
 
       <div class="card-body">
@@ -14,37 +14,43 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {ref} from "vue";
 import {useRouter} from "vue-router"
+import {useI18n} from "@i18n"
 
-import DecForm from "@/modules/typeful/components/DecForm.vue"
-import {getFields} from "@/modules/typeful/services/FormsService"
-import {translateMixin} from "@/i18n.ts"
-import DecFormInput from "@/modules/typeful/components/DecFormInput.vue"
-import authStore from "@/modules/auth/store/authStore.ts"
+import {DecForm, DecFormInput} from "@typeful/vue-form"
+
+import authStore from "@/modules/auth/store/authStore"
+import { FieldRef } from "@typeful/model/TypefulModel";
+import { createPath } from "@typeful/model/path/pathTypes";
 
 
 export default {
-  mixins: [
-    translateMixin,
-  ],
   components: {
     DecFormInput,
     DecForm,
   },
   setup() {
     const $router = useRouter()
+    const i18n = useI18n()
 
-    const decFields = ref(getFields({
-      userName: {type: "text"},
-    }, {
-      createFieldLabel: 'auth.signIn.'
-    }))
+    const decFields = ref({
+      userName: ((): FieldRef => ({
+        name: 'userName',
+        path: createPath('userName'),
+        schema: {type: "text"},
+        ui: {
+          locPrefix: 'auth.signIn.'
+        },
+
+      }))(),
+    })
 
     return {
+      ...i18n,
       decFields,
-      onSubmit: (values) => {
+      onSubmit: (values: any) => {
         authStore.actions.logIn(values.userName)
         $router.push("/")
       },
@@ -52,3 +58,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.sign-in {
+  min-width: 320px;
+}
+</style>

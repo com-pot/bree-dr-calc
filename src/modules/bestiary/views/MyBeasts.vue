@@ -1,26 +1,99 @@
+<script lang="ts" setup>
+import {defineProps, ref, watch} from "vue"
+import {produce} from "immer"
+import {O} from "ts-toolbelt"
+
+import {useI18n} from "@i18n"
+import {
+  collectionPage,
+  createFilteringFromSchema,
+  createPagination,
+  createSortingFromSchema,
+  useCollections
+} from "@vtf-collection"
+import ComposableFilter from "@vtf-ui/ComposableFilter.vue"
+import Pagination from "@vtf-ui/Pagination.vue"
+
+import * as beastsStore from "../store/beastsStore"
+import {Beast} from "../model/Bestiary"
+import beastSchema from "../typeful/beast.schema.json"
+import ComposableSorting from "@vtf-ui/ComposableSorting.vue";
+
+
+const props = defineProps({
+  ...collectionPage.props,
+})
+
+const i18n = useI18n()
+const t = i18n.t
+const collections = useCollections()
+
+const filterable = produce(beastSchema, (schema: O.Partial<typeof beastSchema, 'deep'>) => {
+  if (schema?.properties?.general?.properties) {
+    delete schema.properties.general.properties.birthDay
+  }
+})
+
+const filtering = createFilteringFromSchema(filterable.properties, 'bestiary.beast.')
+const sorting = createSortingFromSchema(filterable.properties, {
+  locPrefix: 'bestiary.beast.',
+  toggleRemove: false,
+  defaultSorting: 'general.name',
+})
+
+const deleteId = ref<string | null>(null)
+
+const pagination = createPagination()
+watch(() => props.page, (page) => pagination.page = page)
+
+const beastList = ref([] as Beast[])
+watch([filtering.value, sorting.value, pagination], ([filtering, sort, pagination]) => {
+  const collection = collections.fetchCollection<Beast>('bestiary:beast', undefined, filtering, sort, pagination)
+  if (collection instanceof Promise) {
+    console.warn("Whoops")
+    return
+  }
+  beastList.value = collection.items
+  pagination.totalPages = collection.pagination?.totalPages ?? pagination.totalPages
+}, {immediate: true})
+
+function deleteBeast(id: string) {
+  if (deleteId.value !== id) {
+    deleteId.value = id
+    return
+  }
+  beastsStore.actions.deleteBeast(id)
+}
+</script>
+
 <template>
   <div class="beast-index">
-    <div class="heading mb-2">
-      <h1>{{ $t('bestiary.view.MyBeasts') }}</h1>
+    <div class="section-heading mb-2">
+      <h1>{{ t('bestiary.view.MyBeasts') }}</h1>
       <router-link :to="{name: 'bestiary.NewBeast'}" class="btn btn-primary ml-auto">{{
-          $t('bestiary.actions.createBeast')
+          t('bestiary.actions.createBeast')
         }}
       </router-link>
       <router-link :to="{name: 'bestiary.Pairing'}" class="btn btn-outline-primary ml-2">{{
-          $t('bestiary.view.Pairing')
+          t('bestiary.view.Pairing')
         }}
       </router-link>
     </div>
 
-    <div class="beast-listing">
+    <div class="list-options">
+      <ComposableFilter :filtering="filtering"/>
+      <ComposableSorting :sorting="sorting"/>
+    </div>
+
+    <div class="list-items">
       <div v-for="beast in beastList" :key="beast.id" class="card card-beast">
-        <span class="gender">{{ $t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
+        <span class="gender">{{ t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
 
         <div class="beast-text">
           <span class="full-name">
             <span class="name">{{ beast.general.name }}</span>
             <span class="station">&nbsp;{{
-                breedingStationName(beast.general.breedingStation) || 'Neznámá stanice'
+                beastsStore.getters.breedingStationName(beast.general.breedingStation) || 'Neznámá stanice'
               }}</span>
           </span>
           <span class="evidence-code">{{ beast.general.evidenceCode || 'Bez evidenčního čísla' }}</span>
@@ -35,43 +108,13 @@
         </button>
       </div>
     </div>
+    <Pagination v-model:page="pagination.page" :max-page="pagination.totalPages" class="mt-2"/>
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref} from "vue";
-import {translateMixin} from "@/i18n";
-
-import * as beastsStore from "../store/beastsStore"
-
-export default defineComponent({
-  mixins: [
-    translateMixin,
-  ],
-  setup() {
-    const deleteId = ref<string | null>(null)
-
-    return {
-      beastList: beastsStore.state.beastList,
-
-      breedingStationName: beastsStore.getters.breedingStationName,
-
-      deleteId,
-      deleteBeast(id: string) {
-        if (deleteId.value !== id) {
-          deleteId.value = id
-          return
-        }
-        beastsStore.actions.deleteBeast(id)
-      },
-    }
-  },
-})
-</script>
-
 <style lang="scss">
 .beast-index {
-  .heading {
+  > .section-heading {
     display: flex;
     flex-direction: row;
     align-items: center;

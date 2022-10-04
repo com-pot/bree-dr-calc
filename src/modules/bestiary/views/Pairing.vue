@@ -1,6 +1,6 @@
 <template>
   <div class="beast-pairing">
-    <h1>{{ $t('bestiary.view.Pairing') }}</h1>
+    <h1>{{ t('bestiary.view.Pairing') }}</h1>
 
     <p>
       Párování se počítá pro zvolené šelmy pro jejich předky až do {{ maxCalculationLevel }}. generace. Po zvolení
@@ -43,7 +43,7 @@
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item" v-for="tab in visualisationTabs" :key="tab.name">
             <a href="#" :class="['nav-link', activeTab === tab.name && 'active']"
-               @click.prevent="showTab(tab.name)">{{ $t('bestiary.pairing.tab.' + tab.name) }}</a>
+               @click.prevent="showTab(tab.name)">{{ t('bestiary.pairing.tab.' + tab.name) }}</a>
           </li>
         </ul>
       </div>
@@ -58,8 +58,7 @@
               <DecFormInput v-model="pairing.maxGenerations" v-bind="pairingFields.maxGenerations"/>
             </div>
             <div class="col-md-6">
-              <DecFormInput v-model="pairing.walkOrder" v-bind="pairingFields.walkOrder"
-                            @change:model-value="pairing.walkOrder = $event"/>
+              <DecFormInput v-bind="pairingFields.walkOrder" v-model="pairing.walkOrder"/>
             </div>
           </div>
 
@@ -80,30 +79,28 @@
 
 <script lang="ts">
 
-import {computed, reactive, ref, watch} from "vue";
-import beastSchema from "../typeful/beast.schema.json"
-import {getFields} from "@/modules/typeful/services/FormsService";
-import DecFormInput from "@/modules/typeful/components/DecFormInput.vue";
+import {computed, reactive, ref, watch} from "vue"
+import {getFields} from "@vtf-typeful"
+import {DecFormInput} from "@typeful/vue-form"
+import {useI18n} from "@i18n"
 
+import beastSchema from "../typeful/beast.schema.json"
 import * as beastStore from "../store/beastsStore"
-import BeastFamilyTree from "../model/BeastFamilyTree";
+import BeastFamilyTree from "../model/BeastFamilyTree"
 import * as WrightCalculation from "@/modules/bestiary/utils/WrightCalculation";
 import {Beast} from "@/modules/bestiary/model/Bestiary";
 
 import AncestryTree from "@/modules/bestiary/components/AncestryTree.vue";
-import {translateMixin} from "@/i18n";
 import MultiOccurrence from "@/modules/bestiary/components/MultiOccurrence.vue";
 
 export default {
-  mixins: [
-    translateMixin,
-  ],
   components: {
     MultiOccurrence,
     AncestryTree,
     DecFormInput,
   },
   setup() {
+    const i18n = useI18n()
     const maxCalculationLevel = 4
 
     const pairingFields = getFields({
@@ -114,17 +111,17 @@ export default {
         step: 1,
         label: 'bestiary.pairing.field.maxGenerations'
       },
-      mother: beastSchema.lineage.schema.mother,
-      father: beastSchema.lineage.schema.father,
+      mother: beastSchema.properties.lineage.properties.mother,
+      father: beastSchema.properties.lineage.properties.father,
       walkOrder: {
-        type: "btnSelect",
+        type: "string", appearance: "btn-group",
         options: [
           {value: 'father,mother', label: 'Otec, Matka'},
           {value: 'mother,father', label: 'Matka, Otec'},
           {value: 'father', label: 'Otec'},
           {value: 'mother', label: 'Matka'},
         ],
-        label: 'bestiary.pairing.field.walkOrder'
+        label: 'bestiary.pairing.field.walkOrder',
       }
     }, {
       createFieldLabel: 'bestiary.beast.lineage.',
@@ -198,6 +195,8 @@ export default {
     const activeTab = ref('explanation')
 
     return {
+      ...i18n,
+
       // Inputs
       maxCalculationLevel,
       pairingFields,

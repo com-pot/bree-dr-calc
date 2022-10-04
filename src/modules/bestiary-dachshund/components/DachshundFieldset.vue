@@ -1,45 +1,40 @@
 <template>
   <DecFieldset class="form-row" legend="Detaily jezevčíka" model-section="dachshund">
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.sizeVariant"></DecFormInput>
+      <DecFormInput path="sizeVariant"></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.coatType"></DecFormInput>
+      <DecFormInput path="coatType"></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.coatPaint"></DecFormInput>
+      <DecFormInput path="coatPaint"></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.geneticGrades" disabled></DecFormInput>
+      <DecFormInput path="geneticGrades" disabled></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.behaviorGrades" disabled></DecFormInput>
+      <DecFormInput path="behaviorGrades" disabled></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.healthGrades" disabled></DecFormInput>
+      <DecFormInput path="healthGrades" disabled></DecFormInput>
     </div>
     <div class="col-md-3">
-      <DecFormInput v-bind="dachshundFields.bonity" disabled></DecFormInput>
+      <DecFormInput path="bonity" appearance="block" disabled></DecFormInput>
     </div>
   </DecFieldset>
 </template>
 
-<script>
-import {getFields} from "@/modules/typeful/services/FormsService"
-import dachshundSchema from "@/modules/bestiary-dachshund/typeful/dachshund.schema.json"
-import DecFieldset from "@/modules/typeful/components/DecFieldset"
-import DecFormInput from "@/modules/typeful/components/DecFormInput"
+<script lang="ts">
+import {DecFieldset, DecFormInput} from "@typeful/vue-form"
+import useModel from "@typeful/model-vue/useModel"
 
 export default {
-  components: {DecFormInput, DecFieldset},
+  components: {
+    DecFieldset,
+    DecFormInput,
+  },
   data() {
-    const dachshundFields = getFields(dachshundSchema, {
-      createFieldLabel: 'dachshund.field.',
-    })
-
-    return {
-      dachshundFields,
-    }
+    const model = useModel('@com-pot/bestiary-dachshund.dachshund')
   },
 }
 </script>

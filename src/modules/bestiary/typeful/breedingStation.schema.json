@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "name": {"type": "string"},
+    "country": {
+      "type": "string",
+      "enum": "i18n:country"
+    }
+  }
+}

@@ -1,60 +1,54 @@
 <template>
   <DecForm :model-value="beast">
-    <DecFieldset :legend="$t('bestiary.beast.fieldGroup.generalInfo')" class="form-row" model-section="general">
+    <DecFieldset :legend="t('bestiary.beast.fieldGroup.generalInfo')" class="form-row" model-section="general">
       <div class="col-md-3">
-        <DecFormInput v-bind="generalFields.gender"/>
+        <DecFormInput path="gender"/>
       </div>
       <div class="col-md-4">
-        <DecFormInput v-bind="generalFields.name"/>
+        <DecFormInput path="name"/>
       </div>
       <div class="col-md-5">
-        <DecFormInput v-bind="generalFields.breedingStation"/>
+        <DecFormInput path="breedingStation"/>
       </div>
       <div class="col-md-3">
-        <DecFormInput v-bind="generalFields.birthDay"/>
+        <DecFormInput path="birthDay"/>
       </div>
-      <div class="offset-md-6"></div>
-      <div class="col-md-3">
-        <DecFormInput v-bind="generalFields.evidenceCode"/>
+      <div class="offset-md-6 col-md-3">
+        <DecFormInput path="evidenceCode"/>
       </div>
     </DecFieldset>
 
-    <DecFieldset :legend="$t('bestiary.beast.fieldGroup.ancestry')" class="form-row" model-section="lineage">
+    <DecFieldset :legend="t('bestiary.beast.fieldGroup.ancestry')" class="form-row" model-section="lineage">
       <div class="col-md">
-        <DecFormInput v-bind="lineageFields.father"/>
+        <DecFormInput path="father"/>
       </div>
       <div class="col-md">
-        <DecFormInput v-bind="lineageFields.mother"/>
+        <DecFormInput path="mother"/>
       </div>
-      <div class="col-md-3">
 
-        <DecFormInput v-bind="lineageFields.wright">
-          <template v-slot:labelAction>
+      <div class="col-md-3">
+        <DecFormInput path="wright">
+          <template #labelAction>
             <a :class="wrightDisabled && 'disabled'" href="#"
                @click.prevent="computeWright">Propočíst</a>
           </template>
         </DecFormInput>
-
       </div>
     </DecFieldset>
+
     <slot name="additionalSections"/>
   </DecForm>
 </template>
 
-<script>
-import DecFieldset from "@/modules/typeful/components/DecFieldset"
-import {getFields} from "@/modules/typeful/services/FormsService"
-import DecFormInput from "@/modules/typeful/components/DecFormInput"
-import DecForm from "@/modules/typeful/components/DecForm"
-import beastSchema from "@/modules/bestiary/typeful/beast.schema.json"
-import {translateMixin} from "@/i18n"
-import beastsStore from "@/modules/bestiary/store/beastsStore"
-import {computed, ref} from "vue";
+<script lang="ts">
+import {computed, defineComponent, ref} from "vue"
+import {useI18n} from "@i18n"
+import {DecForm, DecFieldset, DecFormInput} from "@typeful/vue-form"
 
-export default {
-  mixins: [
-    translateMixin,
-  ],
+import beastsStore from "@/modules/bestiary/store/beastsStore"
+import useModel from "@typeful/model-vue/useModel"
+
+export default defineComponent({
   components: {
     DecForm,
     DecFieldset,
@@ -64,12 +58,9 @@ export default {
     beast: {type: Object, required: true},
   },
   setup(props) {
-    const generalFields = getFields(beastSchema.general.schema, {
-      createFieldLabel: 'bestiary.beast.general.',
-    })
-    const lineageFields = getFields(beastSchema.lineage.schema, {
-      createFieldLabel: 'bestiary.beast.lineage.',
-    })
+    const i18n = useI18n()
+
+    const model = useModel('@com-pot/bestiary.beast')
 
     const wrightLoading = ref(false)
     const wrightDisabled = computed(() => {
@@ -77,11 +68,11 @@ export default {
     })
 
     return {
-      generalFields,
-      lineageFields,
+      ...i18n,
 
       wrightLoading,
       wrightDisabled,
+
       computeWright() {
         wrightLoading.value = true
         const {mother, father} = props.beast.general
@@ -95,4 +86,4 @@ export default {
     }
   },
 }
-</script>
+)</script>

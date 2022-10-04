@@ -13,16 +13,30 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "types": [
       "webpack-env",
       "mocha",
       "chai"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@i18n": ["libs/i18n/src/index.ts"],
+      "@i18n/*": ["libs/i18n/src/*"],
+      "@typeful/schema/*": ["./libs/@typeful/schema/src/*"],
+      "@typeful/model/*": ["./libs/@typeful/model/src/*"],
+      "@typeful/model-vue/*": ["./libs/@typeful/model-vue/src/*"],
+      "@typeful/vue-form": ["./libs/@typeful/vue-form/src/index.ts"],
+      "@typeful/vue-form/*": ["./libs/@typeful/vue-form/src/*"],
+
+      "@vtf-typeful": ["libs/@vtf/typeful/src/index.ts"],
+      "@vtf-typeful/*": ["libs/@vtf/typeful/src/*"],
+      "@vtf-form": ["libs/@vtf/form/src"],
+      "@vtf-collection": ["libs/@vtf/collection/src/index.ts"],
+      "@vtf-collection/*": ["libs/@vtf/collection/src/*"],
+      "@vtf-ui/*": ["libs/@vtf/ui/src/*"],
+      "@vue-tippy": ["libs/vue-tippy/src/index.ts"],
+      "@app/*": ["src/modules/app/*"],
+      "@/*": ["src/*"]
     },
     "lib": [
       "esnext",
@@ -32,11 +46,10 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue",
+    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue",
+
+    "tests/**/*.ts", "tests/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

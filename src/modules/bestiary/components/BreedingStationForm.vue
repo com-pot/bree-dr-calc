@@ -2,25 +2,23 @@
   <DecForm :model-value="station">
     <div class="form-row">
       <div class="col-md-6">
-        <DecFormInput v-bind="stationFields.name"/>
+        <DecFormInput path="name"/>
       </div>
       <div class="col-md-2 col-sm-5">
-        <DecFormInput v-bind="stationFields.country"/>
+        <DecFormInput path="country"/>
       </div>
       <div class="col-md-4 col-sm-7">
-        <DecFormInput v-bind="stationFields.id" :disabled="isPersisted"/>
+        <DecFormInput path="id" :disabled="isPersisted"/>
       </div>
     </div>
   </DecForm>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from "vue"
-import DecForm from "@/modules/typeful/components/DecForm.vue"
-import DecFormInput from "@/modules/typeful/components/DecFormInput.vue"
-import {getFields} from "@/modules/typeful/services/FormsService"
+import {defineComponent} from "vue"
+import {DecForm, DecFormInput} from "@typeful/vue-form"
 
-import stationSchema from "../typeful/breedingStationSchema.json"
+import useModel from "@typeful/model-vue/useModel"
 
 export default defineComponent({
   components: {
@@ -32,13 +30,7 @@ export default defineComponent({
     isPersisted: {type: Boolean},
   },
   setup() {
-    const stationFields = ref(getFields(stationSchema, {
-      createFieldLabel: 'bestiary.station.field.',
-    }))
-
-    return {
-      stationFields,
-    }
+    const model = useModel('@com-pot/bestiary.station')
   },
 })
 </script>

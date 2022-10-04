@@ -1,28 +1,37 @@
 {
-  "sizeVariant": {
-    "type": "dachshund:sizeVariant"
-  },
-  "coatType": {
-    "type": "bestiary:coatType.dachshund",
-    "createValueLabel": "dachshund.coatType."
-  },
-  "coatPaint": {
-    "type": "bestiary:coatPaint.dachshund",
-    "createValueLabel": "dachshund.coatPaint."
-  },
-  "geneticGrades": {
-    "type": "bestiary:geneticGrade.dachshund",
-    "multiple": true
-  },
-  "behaviorGrades": {
-    "type": "bestiary:behaviorGrade.dachshund",
-    "multiple": true
-  },
-  "healthGrades": {
-    "type": "bestiary:healthGrade.dachshund",
-    "multiple": true
-  },
-  "bonity": {
-    "type": "text"
+  "type": "object",
+  "properties": {
+    "sizeVariant": {
+      "type": "string",
+      "enum": "dachshund:sizeVariant"
+    },
+    "coatType": {
+      "type": "string",
+      "enum": "bestiary:coatType.dachshund",
+      "ui": {"itemPrefix": "dachshund.coatType."}
+    },
+    "coatPaint": {
+      "type": "string",
+      "enum": "bestiary:coatPaint.dachshund",
+      "ui": {"itemPrefix": "dachshund.coatPaint."}
+    },
+    "geneticGrades": {
+      "type": "string",
+      "enum": "bestiary:geneticGrade.dachshund",
+      "multiple": true
+    },
+    "behaviorGrades": {
+      "type": "string",
+      "enum": "bestiary:behaviorGrade.dachshund",
+      "multiple": true
+    },
+    "healthGrades": {
+      "type": "string",
+      "enum": "bestiary:healthGrade.dachshund",
+      "multiple": true
+    },
+    "bonity": {
+      "type": "string"
+    }
   }
 }

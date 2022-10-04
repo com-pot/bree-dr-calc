@@ -1,42 +1,42 @@
 {
-  "general": {
-    "type": "structure",
-    "schema": {
-      "name": {
-        "type": "text",
-        "required": true
-      },
-      "breedingStation": {
-        "type": "relation:breedingStation",
-        "required": true
-      },
-      "gender": {
-        "type": "bestiary:gender",
-        "required": false
-      },
-      "evidenceCode": {
-        "type": "text"
-      },
-      "birthDay": {
-        "type": "date"
+  "type": "object",
+  "properties": {
+    "general": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "breedingStation": {"type": "string", "enum": "bestiary:relation.breedingStation"},
+        "gender": {"type": "string", "enum": "bestiary:gender", "nullable": true},
+        "evidenceCode": {"type": "string"},
+        "birthDay": {"type": "date"}
       }
-    }
-  },
-  "lineage": {
-    "type": "structure",
-    "schema": {
-      "father": {
-        "type": "relation:beast",
-        "domain": "gender=m"
-      },
-      "mother": {
-        "type": "relation:beast",
-        "domain": "gender=f"
-      },
-      "wright": {
-        "type": "number",
-        "format": "percent",
-        "precision": 8
+    },
+    "lineage": {
+      "type": "object",
+      "properties": {
+        "father": {
+          "type": "hasOne",
+          "options": {
+            "source": "bestiary:beast",
+            "filter": [
+              { "prop": "general.gender", "op": "=", "args": ["f"], "neg": true}
+            ]
+          }
+        },
+        "mother": {
+          "type": "hasOne",
+          "options": {
+            "source": "bestiary:beast",
+            "filter": [
+              { "prop": "general.gender", "op": "=", "args": ["m"], "neg": true}
+            ]
+          }
+        },
+        "wright": {
+          "type": "number",
+          "format": "percent",
+          "precision": 8
+        }
       }
     }
   }
