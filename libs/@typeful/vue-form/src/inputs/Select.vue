@@ -1,9 +1,9 @@
 <script lang="ts">
 import {computed, defineComponent, inject, ref, PropType, Ref, watch} from "vue"
 import { OptionsObj } from "@typeful/schema/Schema"
-import { compileRecipeEvalFn } from "@typeful/model/recipes"
+import { compileRecipeEvalFn } from "@typeful/types/Recipe"
 import {useCollections, FilterOptions} from "@vtf-collection"
-import { TypefulField } from "@vtf-typeful"
+import { FieldRef } from "@typeful/model/Model"
 
 export default defineComponent({
   props: {
@@ -11,7 +11,7 @@ export default defineComponent({
     itemSort: {type: Object},
     valueKey: {type: String, default: 'value'},
 
-    ui: {type: Object as PropType<TypefulField['ui']>},
+    ui: {type: Object as PropType<FieldRef['ui']>},
   },
 
   setup(props) {

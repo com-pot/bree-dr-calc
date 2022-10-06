@@ -45,5 +45,5 @@ export function createInputRegistry(): InputRegistry {
   }
 }
 export const injectionKey = '@typeful/vue-form.inputRegistry'
-export const useInputRegistry = () => inject(injectionKey)
+export const useInputRegistry = () => inject(injectionKey) as InputRegistry
 export const provideInputRegistry = (app: App, inputRegistry: InputRegistry) => app.provide(injectionKey, inputRegistry)

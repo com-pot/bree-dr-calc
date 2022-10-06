@@ -31,7 +31,7 @@ export const calculateSharedPresence = (ancestryTrees: TreesByRelation): Presenc
   return map
 }
 
-export const filterCoveredPredecessors = <T = any>(
+export const filterCoveredPredecessors = <T = Beast>(
   occurrences: MultiOccurrenceEntry<T>[],
   ancestryTrees: TreesByRelation
 ): MultiOccurrenceEntry<T>[] => {
@@ -91,23 +91,24 @@ export function aggregateMultiOccurrence<TOut>(
   return multiPresence
 }
 
-export function evaluateWrightCoefficient(input: MultiOccurrenceEntry<Beast>[]): number {
-  const evaluateBeastOccurrences = (entry: MultiOccurrenceEntry<Beast>): number => {
-    if (entry.occurrences.length < 2 || entry.fullyCoveredByPredecessors) {
-      return 0
-    }
-
-    let levelCoefficient = 1
-    entry.occurrences.forEach((occurrence) => levelCoefficient += occurrence.level)
-
-    const beastWeight = 0.5 ** levelCoefficient
-    const beastCoefficient = 1 + (entry.beast.lineage.wright || 0)
-
-    return beastWeight * beastCoefficient
+export function evaluateWrightCoefficient<T extends Beast = Beast>(input?: MultiOccurrenceEntry<T>[]): number {
+  if (!input) {
+    return -1
   }
 
-  let sum = 0
-  input.forEach((beastPresence) => sum += evaluateBeastOccurrences(beastPresence))
+  return input.reduce((sum, beastPresence) => sum + evaluateBeastOccurrences(beastPresence), 0)
+}
 
-  return sum
+const evaluateBeastOccurrences = <T extends Beast>(entry: MultiOccurrenceEntry<T>): number => {
+  if (entry.occurrences.length < 2 || entry.fullyCoveredByPredecessors) {
+    return 0
+  }
+
+  let levelCoefficient = 1
+  entry.occurrences.forEach((occurrence) => levelCoefficient += occurrence.level)
+
+  const beastWeight = 0.5 ** levelCoefficient
+  const beastCoefficient = 1 + (entry.beast.lineage.wright || 0)
+
+  return beastWeight * beastCoefficient
 }

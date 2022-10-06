@@ -1,8 +1,7 @@
 import {reactive} from "vue"
 import { FieldPathRaw } from "@typeful/model/path/pathTypes"
 
-import { FieldRef } from "@typeful/model/TypefulModel"
-import ModelAccessor from "@typeful/model/ModelAccessor"
+import { FieldRef } from "@typeful/model/Model"
 
 
 type FilterType = '=' | '~=' | '>' | '<' | '>=' | '<=' | 'in' | 'like'
@@ -48,10 +47,6 @@ export const createFiltering = (fields: FieldRef[]) => {
       }
     },
   }
-}
-
-export const createFilteringFromSchema = (model: ModelAccessor) => {
-  return createFiltering(model.locate().fields('all'))
 }
 
 export type Filtering = ReturnType<typeof createFiltering>

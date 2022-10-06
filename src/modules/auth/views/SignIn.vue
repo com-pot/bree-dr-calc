@@ -1,63 +1,46 @@
+<script lang="ts" setup>
+import {useRouter} from "vue-router"
+import {useI18n} from "@i18n"
+
+import useModel, { provideActiveModel } from "@typeful/model-vue/useModel";
+import {DecForm, RefInput} from "@typeful/vue-form"
+
+import authStore from "@/modules/auth/store/authStore"
+
+const $router = useRouter()
+const i18n = useI18n()
+
+provideActiveModel(useModel({
+  meta: { name: 'auth.signIn' },
+  schema: {
+    type: "object",
+    properties: {
+      userName: {type: "text"},
+    },
+  },
+}))
+
+function submitSignInForm(values: any) {
+  authStore.actions.logIn(values.userName)
+  $router.push("/")
+}
+</script>
+
 <template>
   <div class="sign-in">
     <div class="card">
       <div class="card-header">
-        <h1>{{ t('auth.view.SignIn') }}</h1>
+        <h1>{{ i18n.t('auth.view.SignIn') }}</h1>
       </div>
 
       <div class="card-body">
-        <DecForm :on-submit="onSubmit">
-          <DecFormInput v-bind="decFields.userName"/>
+        <DecForm :on-submit="submitSignInForm">
+          <RefInput path="userName" />
         </DecForm>
       </div>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import {ref} from "vue";
-import {useRouter} from "vue-router"
-import {useI18n} from "@i18n"
-
-import {DecForm, DecFormInput} from "@typeful/vue-form"
-
-import authStore from "@/modules/auth/store/authStore"
-import { FieldRef } from "@typeful/model/TypefulModel";
-import { createPath } from "@typeful/model/path/pathTypes";
-
-
-export default {
-  components: {
-    DecFormInput,
-    DecForm,
-  },
-  setup() {
-    const $router = useRouter()
-    const i18n = useI18n()
-
-    const decFields = ref({
-      userName: ((): FieldRef => ({
-        name: 'userName',
-        path: createPath('userName'),
-        schema: {type: "text"},
-        ui: {
-          locPrefix: 'auth.signIn.'
-        },
-
-      }))(),
-    })
-
-    return {
-      ...i18n,
-      decFields,
-      onSubmit: (values: any) => {
-        authStore.actions.logIn(values.userName)
-        $router.push("/")
-      },
-    }
-  },
-}
-</script>
 
 <style lang="scss">
 .sign-in {

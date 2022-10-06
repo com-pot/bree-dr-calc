@@ -1,27 +1,27 @@
 <template>
   <div class="auth-page">
-    <h1>{{ t('auth.view.AuthInfo') }}</h1>
+    <h1>{{ i18n.t('auth.view.AuthInfo') }}</h1>
 
     <p>Právě zde máte uloženy tyto údaje:</p>
     <dl class="definitions">
       <dt>Uživatel</dt>
-      <dd style="grid-column: span 3">{{ userName }}</dd>
+      <dd style="grid-column: span 3">{{ authStore.state.userName }}</dd>
       <dt>Celkem šelem</dt>
-      <dd>{{ resetSummary.beastCount }}</dd>
+      <dd>{{ beastsStore.state.beastList.length }}</dd>
       <dt>Celkem chovatelských stanic</dt>
-      <dd>{{ resetSummary.breedingStations }}</dd>
+      <dd>{{ beastsStore.state.breedingStations.length }}</dd>
     </dl>
 
     <div class="card">
       <div class="card-body">
         <p>
-          Pokud si přejete všechny údaje smazat, vyplňte <b>{{ confirmationText }}</b> do následujícího formuláře.
+          Pokud si přejete všechny údaje smazat, vyplňte <b>{{ confirmation.template }}</b> do následujícího formuláře.
         </p>
 
         <div class="input-group">
-          <DecInput v-model="confirmation" type="text"></DecInput>
+          <DecInput v-model="confirmation" type="text"/>
           <div class="input-group-append">
-            <div :class="['btn btn-danger', !deleteEnabled && 'disabled']" @click="resetData">Smazat</div>
+            <div :class="['btn btn-danger', !confirmation.valid && 'disabled']" @click="resetDataIfValid">Smazat</div>
           </div>
         </div>
       </div>
@@ -36,50 +36,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import {computed, ref} from "vue"
+<script lang="ts" setup>
 import {useRouter} from "vue-router"
 import {useI18n} from "@i18n"
 import {DecInput} from "@typeful/vue-form"
+import useConfirmation from "@typeful/vue-utils/useConfirmation"
 
 import authStore from "../store/authStore"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
 
-export default {
-  components: {
-    DecInput,
-  },
-  setup() {
-    const $router = useRouter()
-    const i18n = useI18n()
+const $router = useRouter()
+const i18n = useI18n()
 
-    const confirmation = ref('')
-    const confirmationText = ref('Smazat všechna data')
-    const deleteEnabled = computed(() => confirmation.value.toLowerCase() === confirmationText.value.toLowerCase())
+const confirmation = useConfirmation({
+  template: 'Smazat všechna data',
+})
 
-    const resetSummary = computed(() => ({
-      beastCount: beastsStore.state.beastList.length,
-      breedingStations: beastsStore.state.breedingStations.length,
-    }))
+const resetDataIfValid = () => {
+  if (!confirmation.valid) {
+    return
+  }
 
-    return {
-      ...i18n,
-      userName: authStore.state.userName,
-
-      confirmation,
-      confirmationText,
-      deleteEnabled,
-      resetSummary,
-
-      resetData: () => {
-        if (!deleteEnabled.value) {
-          return
-        }
-        authStore.actions.logOut()
-        beastsStore.resetUserData()
-        $router.push({name: "app.Home"})
-      },
-    }
-  },
+  authStore.actions.logOut()
+  beastsStore.resetUserData()
+  $router.push({name: "app.Home"})
 }
+
 </script>

@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import {defineProps, ref, watch} from "vue"
-import {produce} from "immer"
-import {O} from "ts-toolbelt"
 
 import {useI18n} from "@i18n"
 import {
   collectionPage,
-  createFilteringFromSchema,
+  createFiltering,
   createPagination,
-  createSortingFromSchema,
+  createSorting,
   useCollections
 } from "@vtf-collection"
 import ComposableFilter from "@vtf-ui/ComposableFilter.vue"
@@ -16,8 +14,8 @@ import Pagination from "@vtf-ui/Pagination.vue"
 
 import * as beastsStore from "../store/beastsStore"
 import {Beast} from "../model/Bestiary"
-import beastSchema from "../typeful/beast.schema.json"
 import ComposableSorting from "@vtf-ui/ComposableSorting.vue";
+import useModel from "@typeful/model-vue/useModel"
 
 
 const props = defineProps({
@@ -27,18 +25,15 @@ const props = defineProps({
 const i18n = useI18n()
 const t = i18n.t
 const collections = useCollections()
+const model = useModel('@com-pot/bestiary.beast')
 
-const filterable = produce(beastSchema, (schema: O.Partial<typeof beastSchema, 'deep'>) => {
-  if (schema?.properties?.general?.properties) {
-    delete schema.properties.general.properties.birthDay
-  }
-})
+const filterable = model.locate().fields('all')
+  .filter((ref) => ref.name !== 'birthDay')
 
-const filtering = createFilteringFromSchema(filterable.properties, 'bestiary.beast.')
-const sorting = createSortingFromSchema(filterable.properties, {
-  locPrefix: 'bestiary.beast.',
+const filtering = createFiltering(filterable)
+const sorting = createSorting(filterable, {
   toggleRemove: false,
-  defaultSorting: 'general.name',
+  defaultSorting: ['general', 'name'],
 })
 
 const deleteId = ref<string | null>(null)

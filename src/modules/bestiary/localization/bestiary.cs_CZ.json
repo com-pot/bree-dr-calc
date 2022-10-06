@@ -9,8 +9,10 @@
   "bestiary.pairing.tab.explanation": "Vysvětlivky",
   "bestiary.pairing.tab.lineage": "Rodokmeny",
   "bestiary.actions.createBeast": "Přidat šelmu",
-  "bestiary.beast.fieldGroup.generalInfo": "Obecné informace",
+
+  "bestiary.beast.fieldGroup.general": "Obecné informace",
   "bestiary.beast.fieldGroup.ancestry": "Rod",
+
   "bestiary.beast.general.name": "Jméno",
   "bestiary.beast.general.gender": "Pohlaví",
   "bestiary.beast.general.breedingStation": "Chovná stanice",
@@ -25,5 +27,7 @@
   "bestiary.wrightCoefficient.termDefinition": "Wrightův koeficient vyjadřuje míru ztráty genetické variability daného jedince",
   "bestiary.station.field.id": "Unikátní kód",
   "bestiary.station.field.name": "Název",
-  "bestiary.station.field.country": "Země"
+  "bestiary.station.field.country": "Země",
+
+  "bestiary.lienage.computeWright": "Propočíst"
 }

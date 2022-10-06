@@ -28,7 +28,7 @@ import {defineComponent, PropType} from "vue"
 import {useI18n} from "@i18n"
 import {Sorting} from "@vtf-collection"
 import FieldSelection from "@vtf-ui/FieldSelection.vue"
-import { FieldRef } from "@typeful/model/TypefulModel"
+import { FieldRef } from "@typeful/model/Model"
 
 export default defineComponent({
   components: {FieldSelection},

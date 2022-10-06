@@ -1,16 +1,17 @@
 import { O } from "ts-toolbelt";
 import { Schema } from "@typeful/schema/Schema";
 import { createPath, FieldPath, FieldPathRaw, isFieldPath, pathToStr } from "./path/pathTypes";
-import { FieldNotFoundRef, FieldRef, TypefulModel } from "./TypefulModel";
-import { Recipe } from "./recipes";
-import { walkSchema } from "@typeful/schema/schemaUtils";
+import { ModelSpec } from "./ModelSpec";
+import { Recipe } from "@typeful/types/Recipe";
 
-export default class ModelAccessor {
+export default class Model<T extends object = any> {
 
   private readonly fieldLocators: Record<string, FieldLocator> = {}
+  public readonly spec: ModelSpec
 
-  constructor(model: TypefulModel) {
-    this.fieldLocators[''] = new FieldLocator(model.schema)
+  constructor(spec: ModelSpec) {
+    this.fieldLocators[''] = new FieldLocator(spec.schema)
+    this.spec = spec
   }
 
   locate(path?: FieldPath | FieldPathRaw): FieldLocator {
@@ -18,20 +19,33 @@ export default class ModelAccessor {
     return this.fieldLocators[key]
   }
 
+  setDefaults(target?: O.Partial<T, 'deep'>): T {
+    throw new Error("setDefaults not implemented")
+  }
 }
 
-type GetFieldArg = FieldPathRaw | Omit<O.Partial<FieldRef, 'deep'>, 'path'> & {path: FieldPathRaw}
+export type FieldRef = {
+  name: string,
+  path: FieldPath,
+  schema: Schema,
+
+  ui?: Record<string, any> & {
+    itemPrefix?: string,
+    itemLabelTemplate?: ((item: any) => string) | Recipe
+  },
+}
+export type FieldNotFoundRef = {
+  name: false,
+  path: FieldPath,
+}
+
+export type GetFieldArg = FieldPathRaw | Omit<O.Partial<FieldRef, 'deep'>, 'path'> & {path: FieldPathRaw}
 
 class FieldLocator {
   private fieldIndex: FieldIndex
 
-  constructor(private readonly rootSchema: Schema) {
+  constructor(rootSchema: Schema) {
     this.fieldIndex = new FieldIndex()
-
-    walkSchema(rootSchema)
-      .forEach(([path, schema]) => {
-        console.log(`at '${path}' found:`, schema);
-      })
   }
 
   public field(arg: GetFieldArg): FieldRef | FieldNotFoundRef {

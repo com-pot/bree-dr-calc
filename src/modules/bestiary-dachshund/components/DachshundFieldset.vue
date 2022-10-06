@@ -1,40 +1,37 @@
-<template>
-  <DecFieldset class="form-row" legend="Detaily jezevčíka" model-section="dachshund">
-    <div class="col-md-3">
-      <DecFormInput path="sizeVariant"></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="coatType"></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="coatPaint"></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="geneticGrades" disabled></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="behaviorGrades" disabled></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="healthGrades" disabled></DecFormInput>
-    </div>
-    <div class="col-md-3">
-      <DecFormInput path="bonity" appearance="block" disabled></DecFormInput>
-    </div>
-  </DecFieldset>
-</template>
+<script lang="ts" setup>
+import { RefFieldset } from "@typeful/vue-form"
+import { provideActiveModel } from "@typeful/model-vue/useModel"
 
-<script lang="ts">
-import {DecFieldset, DecFormInput} from "@typeful/vue-form"
-import useModel from "@typeful/model-vue/useModel"
+provideActiveModel('@com-pot/bestiary-dachshund.dachshund')
 
-export default {
-  components: {
-    DecFieldset,
-    DecFormInput,
-  },
-  data() {
-    const model = useModel('@com-pot/bestiary-dachshund.dachshund')
-  },
+const dachshundFieldset = {
+  label: "Detaily jezevčíka",
+
+  fields: [
+    {ref: ['dachshund', 'sizeVariant'], colClass: 'col-md-3'},
+    {ref: ['dachshund', 'coatType'], colClass: 'col-md-3'},
+    {ref: ['dachshund', 'coatPaint'], colClass: 'col-md-3'},
+    {
+      ref: ['dachshund', 'geneticGrades'], colClass: 'col-md-3',
+      props: {disabled: true},
+    },
+    {
+      ref: ['dachshund', 'behaviorGrades'], colClass: 'col-md-3',
+      props: {disabled: true},
+    },
+    {
+      ref: ['dachshund', 'healthGrades'], colClass: 'col-md-3',
+      props: {disabled: true},
+    },
+    {
+      ref: ['dachshund', 'bonity'], colClass: 'col-md-3',
+      props: {disabled: true, appearance: 'block'},
+    },
+  ],
 }
 </script>
+
+<template>
+  <RefFieldset v-bind="dachshundFieldset"/>
+</template>
+

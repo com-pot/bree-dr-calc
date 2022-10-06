@@ -30,7 +30,7 @@ import {useFields} from "@vtf-typeful"
 import {Filtering} from "@vtf-collection"
 import FilterRule from "./ComposableFilter/FilterRule.vue"
 import FieldSelection from "./FieldSelection.vue"
-import { FieldRef } from "@typeful/model/TypefulModel"
+import { FieldRef } from "@typeful/model/Model"
 import { pathToStr } from "@typeful/model/path/pathTypes"
 
 

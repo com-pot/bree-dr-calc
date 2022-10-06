@@ -1,23 +1,9 @@
-import {PropertyType, TypefulModule} from "@vtf-typeful"
-import {useI18n} from "@i18n"
+import {TypefulModule} from "@vtf-typeful"
 
 import localCollection from "@/modules/appCollections/localCollection"
 import * as gender from "./gender.type"
-import {BreedingStation} from "@/modules/bestiary/model/Bestiary"
 import {createBeastListItem} from "@/modules/bestiary/model/beastItemsSource"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
-
-const fetchTypes: { [baseType: string]: (variant: string) => PropertyType } = {
-  coatType: (variant: string): PropertyType => ({
-    type: "select",
-    options: variant + ':coatType',
-  }),
-  coatPaint: (variant: string): PropertyType => ({
-    type: "select",
-    options: variant + ':coatPaint',
-  }),
-
-}
 
 const module: TypefulModule = {
   types: {
@@ -68,17 +54,6 @@ const module: TypefulModule = {
         ],
       },
     }
-  },
-  getPropertyType: (type, variant) => {
-    if (type in fetchTypes && variant) {
-      return fetchTypes[type](variant)
-    }
-    const types = module.types!
-    if (type in types) {
-      return types[type]
-    }
-
-    return undefined
   },
   registerItemSources(collections) {
     collections.addCollectionEntry('relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem))

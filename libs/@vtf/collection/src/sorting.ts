@@ -1,15 +1,14 @@
 import {reactive} from "vue"
 
 import { createPath, FieldPath, FieldPathRaw, pathToStr } from "@typeful/model/path/pathTypes";
-import ModelAccessor from "@typeful/model/ModelAccessor";
-import { FieldRef } from "@typeful/model/TypefulModel";
+import { FieldRef } from "@typeful/model/Model";
 
 type SortDirection = 'asc'|'desc'
 export type SortOptions = [FieldPath, SortDirection][]
 
 type SortingConfig = {
   toggleRemove: boolean,
-  defaultSorting: FieldRef['path'],
+  defaultSorting: FieldRef['path'] | FieldPathRaw,
 }
 
 export const createSorting = (fields: FieldRef[], config?: SortingConfig) => {
@@ -50,10 +49,6 @@ export const createSorting = (fields: FieldRef[], config?: SortingConfig) => {
   }
 
   return sort
-}
-
-export const createSortingFromSchema = (model: ModelAccessor, config?: SortingConfig) => {
-  return createSorting(model.locate().fields('all'), config)
 }
 
 export type Sorting = ReturnType<typeof createSorting>

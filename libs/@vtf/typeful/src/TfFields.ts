@@ -1,4 +1,4 @@
-import { FieldRef } from "@typeful/model/TypefulModel";
+import { FieldRef } from "@typeful/model/Model";
 import {CollectionsService} from "@vtf-collection";
 
 export default class TfFields {
