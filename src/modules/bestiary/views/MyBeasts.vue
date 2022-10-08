@@ -4,9 +4,6 @@ import {defineProps, ref, watch} from "vue"
 import {useI18n} from "@i18n"
 import {
   collectionPage,
-  createFiltering,
-  createPagination,
-  createSorting,
   useCollections
 } from "@vtf-collection"
 import ComposableFilter from "@vtf-ui/ComposableFilter.vue"
@@ -16,6 +13,7 @@ import * as beastsStore from "../store/beastsStore"
 import {Beast} from "../model/Bestiary"
 import ComposableSorting from "@vtf-ui/ComposableSorting.vue";
 import useModel from "@typeful/model-vue/useModel"
+import { createListController } from "libs/@typeful/storage-vue/src/listController"
 
 
 const props = defineProps({
@@ -27,30 +25,20 @@ const t = i18n.t
 const collections = useCollections()
 const model = useModel('@com-pot/bestiary.beast')
 
-const filterable = model.locate().fields('all')
-  .filter((ref) => ref.name !== 'birthDay')
+const list = createListController<Beast>({
+  availableFields: model.locate().fields('all')
+    .filter((ref) => ref.name !== 'birthDay'),
 
-const filtering = createFiltering(filterable)
-const sorting = createSorting(filterable, {
-  toggleRemove: false,
-  defaultSorting: ['general', 'name'],
+  sort: {
+    toggleRemove: false,
+    defaultSorting: ['general', 'name'],
+  },
+
+  fetchItems: (filter, sort, pagination) => collections.fetchCollection<Beast>('bestiary:beast', undefined, filter, sort, pagination),
 })
 
 const deleteId = ref<string | null>(null)
-
-const pagination = createPagination()
-watch(() => props.page, (page) => pagination.page = page)
-
-const beastList = ref([] as Beast[])
-watch([filtering.value, sorting.value, pagination], ([filtering, sort, pagination]) => {
-  const collection = collections.fetchCollection<Beast>('bestiary:beast', undefined, filtering, sort, pagination)
-  if (collection instanceof Promise) {
-    console.warn("Whoops")
-    return
-  }
-  beastList.value = collection.items
-  pagination.totalPages = collection.pagination?.totalPages ?? pagination.totalPages
-}, {immediate: true})
+watch(() => props.page, (page) => list.pagination.page = page)
 
 function deleteBeast(id: string) {
   if (deleteId.value !== id) {
@@ -62,8 +50,8 @@ function deleteBeast(id: string) {
 </script>
 
 <template>
-  <div class="beast-index">
-    <div class="section-heading mb-2">
+  <div class="beast-index flow-block">
+    <div class="section-heading">
       <h1>{{ t('bestiary.view.MyBeasts') }}</h1>
       <router-link :to="{name: 'bestiary.NewBeast'}" class="btn btn-primary ml-auto">{{
           t('bestiary.actions.createBeast')
@@ -76,12 +64,12 @@ function deleteBeast(id: string) {
     </div>
 
     <div class="list-options">
-      <ComposableFilter :filtering="filtering"/>
-      <ComposableSorting :sorting="sorting"/>
+      <ComposableFilter v-if="list.filter" :ctrl="list.filter"/>
+      <ComposableSorting v-if="list.sort" :ctrl="list.sort"/>
     </div>
 
-    <div class="list-items">
-      <div v-for="beast in beastList" :key="beast.id" class="card card-beast">
+    <div class="list-items" v-if="list.data.ready">
+      <div v-for="beast in list.data.value.items" :key="beast.id" class="card card-beast">
         <span class="gender">{{ t('bestiary.beast.gender.' + (beast.general.gender || '?')) }}</span>
 
         <div class="beast-text">
@@ -103,19 +91,12 @@ function deleteBeast(id: string) {
         </button>
       </div>
     </div>
-    <Pagination v-model:page="pagination.page" :max-page="pagination.totalPages" class="mt-2"/>
+
+    <Pagination v-if="list.data.ready && list.data.value.pagination" v-model:page="list.pagination.page" :max-page="list.getTotalPages()" class="mt-2"/>
   </div>
 </template>
 
 <style lang="scss">
-.beast-index {
-  > .section-heading {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
 .card-beast {
   padding: 0.5em;
 

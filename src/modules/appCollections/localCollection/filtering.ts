@@ -1,8 +1,9 @@
+import { FilterCondition, FilteringController } from "@typeful/storage-vue/collection/filtering"
 import getNested from "lodash/get"
 
-import {FilterArgument, FilterCondition, FilterOptions} from "@vtf-collection"
 
-type FilterTypeEvaluator = (value: any, argument: FilterArgument) => boolean
+
+type FilterTypeEvaluator = (value: any, argument: FilterCondition['args']) => boolean
 const filterTypeEvaluators: { [type: string]: FilterTypeEvaluator } = {
   '=': (value, argument) => value === argument,
   '~=': (value, argument) => value == argument,
@@ -30,16 +31,16 @@ const filterTypeEvaluators: { [type: string]: FilterTypeEvaluator } = {
 export function evaluateFilterCondition<T>(item: T, condition: FilterCondition): boolean {
   const value = getNested(item, condition.prop)
 
-  const evaluator = filterTypeEvaluators[condition.type]
+  const evaluator = filterTypeEvaluators[condition.op]
   if (!evaluator) {
-    console.warn("No evaluator for condition type ", condition.type)
+    console.warn("No evaluator for condition type ", condition.op)
     return false
   }
 
   return evaluator(value, condition.args)
 }
 
-export function matchFilterFn<T>(filter: FilterOptions): (item: T) => boolean {
+export function matchFilterFn<T>(filter: FilteringController['value']): (item: T) => boolean {
   return (item: T) => filter.every((condition) => {
     return evaluateFilterCondition(item, condition) === !condition.neg
   })

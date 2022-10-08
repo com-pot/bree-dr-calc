@@ -26,6 +26,8 @@
       "@typeful/schema/*": ["./libs/@typeful/schema/src/*"],
       "@typeful/model/*": ["./libs/@typeful/model/src/*"],
       "@typeful/model-vue/*": ["./libs/@typeful/model-vue/src/*"],
+      "@typeful/storage/*": ["./libs/@typeful/storage/src/*"],
+      "@typeful/storage-vue/*": ["./libs/@typeful/storage-vue/src/*"],
 
       "@typeful/vue-utils/*": ["./libs/@typeful/vue-utils/src/*"],
       "@typeful/vue-form": ["./libs/@typeful/vue-form/src/index.ts"],

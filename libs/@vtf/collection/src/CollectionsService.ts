@@ -1,7 +1,7 @@
-import {FilterOptions} from "./filtering";
-import {SortOptions} from "./sorting";
-import {CollectionEntry, CollectionPortion, CollectionRetrieveFn} from "./Collection";
-import {Pagination} from "./pagination";
+import {CollectionEntry, CollectionRetrieveFn} from "./Collection";
+import { CollectionPage, PaginationConfig } from "libs/@typeful/storage/src/collection/ListController";
+import { SortController } from "libs/@typeful/storage/src/collection/sorting";
+import { FilteringController } from "@typeful/storage-vue/collection/filtering";
 
 type CollectionRegistry = Map<string, CollectionEntry>
 
@@ -25,8 +25,8 @@ export default class CollectionsService {
     return this
   }
 
-  public fetchItems<T>(sourceName: string, search?: string, filter?: FilterOptions, sort?: SortOptions): T[] | Promise<T[]> {
-    const normalize = (result: CollectionPortion<T> | T[]): T[] => {
+  public fetchItems<T>(sourceName: string, search?: string, filter?: FilteringController['value'], sort?: SortController['entries']): T[] | Promise<T[]> {
+    const normalize = (result: CollectionPage<T> | T[]): T[] => {
       if (!result) {
         console.warn("No result on item source", sourceName)
         return []
@@ -49,20 +49,19 @@ export default class CollectionsService {
 
   public fetchCollection<T>(
     sourceName: string, search?: string,
-    filter?: FilterOptions,
-    sort?: SortOptions,
-    pagination?: Pagination
-  ): CollectionPortion<T> | Promise<CollectionPortion<T>> {
-    const normalize = (result: CollectionPortion<T> | T[]): CollectionPortion<T> => {
+    filter?: FilteringController['value'],
+    sort?: SortController['entries'],
+    pagination?: PaginationConfig
+  ): CollectionPage<T> | Promise<CollectionPage<T>> {
+    const normalize = (result: CollectionPage<T> | T[]): CollectionPage<T> => {
       if (!result) {
         console.warn("No result on item source", sourceName)
         return {items: []}
       }
       if (Array.isArray(result)) {
-        return {
-          items: result,
-        }
+        return { items: result }
       }
+
       return result
     }
 
@@ -75,7 +74,7 @@ export default class CollectionsService {
     return normalize(result)
   }
 
-  private fetchFromItemSource<T>(sourceName: string, search?: string, filter?: FilterOptions, sort?: SortOptions, pagination?: Pagination) {
+  private fetchFromItemSource<T>(sourceName: string, search?: string, filter?: FilteringController['value'], sort?: SortController['entries'], pagination?: PaginationConfig) {
     const entry = this.registry.get(sourceName) as CollectionEntry<T>
     if (!entry) {
       throw new Error(`Items source '${sourceName}' does not exist`)

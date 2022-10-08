@@ -1,7 +1,8 @@
 import orderBy from "lodash/orderBy"
 
-import {Pagination, CollectionEntry} from "@vtf-collection"
+import {CollectionEntry} from "@vtf-collection"
 import {matchFilterFn} from "./localCollection/filtering"
+import { PaginationResult } from "libs/@typeful/storage/src/collection/ListController"
 
 export default function localCollection<T, TOut=T>(getItems: () => T[], transformItem?: (i: T) => TOut): CollectionEntry<TOut> {
   return {
@@ -14,14 +15,14 @@ export default function localCollection<T, TOut=T>(getItems: () => T[], transfor
       if (sort) {
         const iteratees = sort.map((s) => s[0])
         const orders = sort.map((s) => s[1])
-        items = orderBy(items, iteratees, orders)
+        items = orderBy(items, iteratees, orders) as T[]
       }
 
       const perPage = pagination?.perPage || 20
-      const paginationRes: Pagination = {
+      const paginationRes: PaginationResult = {
         page: pagination?.page || 1,
         perPage,
-        totalPages: Math.ceil(items.length / perPage),
+        totalItems: items.length,
       }
 
       const start = (paginationRes.page - 1) * perPage

@@ -2,13 +2,13 @@
 import {computed, defineComponent, inject, ref, PropType, Ref, watch} from "vue"
 import { OptionsObj } from "@typeful/schema/Schema"
 import { compileRecipeEvalFn } from "@typeful/types/Recipe"
-import {useCollections, FilterOptions} from "@vtf-collection"
+import {useCollections} from "@vtf-collection"
 import { FieldRef } from "@typeful/model/Model"
+import { FilteringController } from "@typeful/storage-vue/collection/filtering"
 
 export default defineComponent({
   props: {
     options: {type: [String, Array, Object] as PropType<string | any[] | OptionsObj>},
-    itemSort: {type: Object},
     valueKey: {type: String, default: 'value'},
 
     ui: {type: Object as PropType<FieldRef['ui']>},
@@ -44,8 +44,8 @@ export default defineComponent({
       availableOptions.value = items
     }
 
-    const initializeItemsSource = async (itemSourceName: string, filter?: FilterOptions) => {
-      let result = await collections.fetchItems(itemSourceName, '', filter, props.itemSort as any)
+    const initializeItemsSource = async (itemSourceName: string, filter?: FilteringController['value']) => {
+      let result = await collections.fetchItems(itemSourceName, '', filter)
       setItems(result)
     }
 

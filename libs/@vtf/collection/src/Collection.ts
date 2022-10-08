@@ -1,23 +1,15 @@
-import {FilterOptions} from "./filtering";
-import {SortOptions} from "./sorting";
-import {Pagination} from "./pagination";
 import { FieldPathRaw } from "@typeful/model/path/pathTypes";
+import { SortController } from "@typeful/storage/collection/sorting";
+import { FilteringController } from "@typeful/storage-vue/collection/filtering";
+import { CollectionPage, PaginationConfig, PaginationResult } from "@typeful/storage/collection/ListController";
 
 export type CollectionRetrieveFn<T = any> = (
-  filter?: FilterOptions,
-  sort?: SortOptions,
-  pagination?: Pagination
-) => CollectionPortion<T> | Promise<CollectionPortion<T>>
+  filter?: FilteringController['value'],
+  sort?: SortController['entries'],
+  pagination?: PaginationConfig
+) => CollectionPage<T> | Promise<CollectionPage<T>>
 
 export type CollectionEntry<T = any> = {
   retrieve: CollectionRetrieveFn<T>,
   searchParam?: FieldPathRaw,
-}
-
-export type CollectionPortion<T> = {
-  items: T[],
-
-  filter?: FilterOptions,
-  sort?: SortOptions,
-  pagination?: Pagination,
 }

@@ -2,18 +2,18 @@
   <section class="list-option -filter">
     <div class="section-heading">
       Filtrování
-      <FieldSelection :fields="filtering.fields" :pick="addFilter" title="Přidat filtr">
+      <FieldSelection :fields="ctrl.fields" :pick="addFilter" title="Přidat filtr">
         <template v-slot:field="{field}">{{ field.field.label }}</template>
       </FieldSelection>
     </div>
 
     <div>
-      <FilterRule v-for="(filter, i) in filtering.value" :key="i" class="form-group"
+      <FilterRule v-for="(filter, i) in ctrl.value" :key="i" class="form-group"
                   :field="filterFields[i]" :filter-condition="filter"
-                  @remove="filtering.removeFilter(i)"
-                  @update:filter-type="filtering.setFilterType(i, $event)"
-                  @update:args="filtering.setArgs(i, $event)"
-                  @toggle-negation="filtering.toggleNegation(i)"
+                  @remove="ctrl.removeFilter(i)"
+                  @update:filter-type="ctrl.setFilterType(i, $event)"
+                  @update:args="ctrl.setArgs(i, $event)"
+                  @toggle-negation="ctrl.toggleNegation(i)"
       />
     </div>
 
@@ -27,11 +27,11 @@ import {computed, defineComponent, PropType} from "vue"
 import {useI18n} from "@i18n"
 
 import {useFields} from "@vtf-typeful"
-import {Filtering} from "@vtf-collection"
 import FilterRule from "./ComposableFilter/FilterRule.vue"
 import FieldSelection from "./FieldSelection.vue"
 import { FieldRef } from "@typeful/model/Model"
 import { pathToStr } from "@typeful/model/path/pathTypes"
+import { FilteringController } from "@typeful/storage-vue/collection/filtering"
 
 
 export default defineComponent({
@@ -40,14 +40,14 @@ export default defineComponent({
     FilterRule,
   },
   props: {
-    filtering: {type: Object as PropType<Filtering>, required: true},
+    ctrl: {type: Object as PropType<FilteringController>, required: true},
   },
   setup(props) {
     const i18n = useI18n()
     const fields = useFields()
 
-    const filterFields = computed(() => props.filtering.value
-      .map((condition) => props.filtering.fields.find((f) => f.path.strSafe === pathToStr(condition.prop))!)
+    const filterFields = computed(() => props.ctrl.value
+      .map((condition) => props.ctrl.fields.find((f) => f.path.strSafe === pathToStr(condition.prop))!)
       .filter((condition) => condition)
     )
 
@@ -56,7 +56,7 @@ export default defineComponent({
 
       filterFields,
       addFilter(field: FieldRef) {
-        const add = (value: any) => props.filtering.addFilter(field.path, '=', value)
+        const add = (value: any) => props.ctrl.addFilter(field.path, '=', value)
         const value = fields.getDefaultValue(field)
         if (value instanceof Promise) {
           value.then(add)

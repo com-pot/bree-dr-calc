@@ -5,19 +5,16 @@ import { FieldRef } from "@typeful/model/Model"
 
 
 type FilterType = '=' | '~=' | '>' | '<' | '>=' | '<=' | 'in' | 'like'
-export type FilterArgument = any[]
 
-export type FilterCondition = {
+export type FilterCondition<TArgs = any[]> = {
   prop: FieldPathRaw,
   op: FilterType,
-  args?: FilterArgument,
+  args?: TArgs,
   neg?: boolean,
 }
 
-export type FilterOptions = FilterCondition[]
-
 export const createFiltering = (fields: FieldRef[]) => {
-  const value = reactive([] as FilterOptions)
+  const value = reactive([] as FilterCondition[])
 
   return {
     fields,
@@ -49,4 +46,4 @@ export const createFiltering = (fields: FieldRef[]) => {
   }
 }
 
-export type Filtering = ReturnType<typeof createFiltering>
+export type FilteringController = ReturnType<typeof createFiltering>
