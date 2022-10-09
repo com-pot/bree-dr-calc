@@ -1,7 +1,7 @@
-import {TypefulModule} from "@vtf-typeful/ModuleRegistry";
-import fetchingCollection from "@/modules/appCollections/fetchingCollection"
+import fetchingCollection from "@typeful/storage/collection/controllers/fetchingCollection";
+import { defineAppModule } from "@typeful/vue-app/AppModule";
 
-const module: TypefulModule = {
+export default defineAppModule({
   types: {
     sizeVariant: {
       type: "string",
@@ -9,11 +9,11 @@ const module: TypefulModule = {
       ui: {itemPrefix: "dachshund.sizeVariant."}
     }
   },
-  registerItemSources(collections) {
-    collections.addCollectionEntry('dachshund:sizeVariant', fetchingCollection('/api/dachshund/size-variant.json'))
-    collections.addCollectionEntry('dachshund:coatType', fetchingCollection('/api/dachshund/coat-type.json'))
-    collections.addCollectionEntry('dachshund:coatPaint', fetchingCollection('/api/dachshund/coat-paint.json'))
+  getCollections() {
+    return [
+      ['dachshund:sizeVariant', fetchingCollection('/api/dachshund/size-variant.json')],
+      ['dachshund:coatType', fetchingCollection('/api/dachshund/coat-type.json')],
+      ['dachshund:coatPaint', fetchingCollection('/api/dachshund/coat-paint.json')],
+    ]
   },
-}
-
-export default module
+})

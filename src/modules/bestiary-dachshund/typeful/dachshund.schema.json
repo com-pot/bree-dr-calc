@@ -3,31 +3,31 @@
   "properties": {
     "sizeVariant": {
       "type": "string",
-      "enum": "dachshund:sizeVariant"
+      "options": "dachshund:sizeVariant"
     },
     "coatType": {
       "type": "string",
-      "enum": "bestiary:coatType.dachshund",
+      "options": "bestiary:coatType.dachshund",
       "ui": {"itemPrefix": "dachshund.coatType."}
     },
     "coatPaint": {
       "type": "string",
-      "enum": "bestiary:coatPaint.dachshund",
+      "options": "bestiary:coatPaint.dachshund",
       "ui": {"itemPrefix": "dachshund.coatPaint."}
     },
     "geneticGrades": {
       "type": "string",
-      "enum": "bestiary:geneticGrade.dachshund",
+      "options": "bestiary:geneticGrade.dachshund",
       "multiple": true
     },
     "behaviorGrades": {
       "type": "string",
-      "enum": "bestiary:behaviorGrade.dachshund",
+      "options": "bestiary:behaviorGrade.dachshund",
       "multiple": true
     },
     "healthGrades": {
       "type": "string",
-      "enum": "bestiary:healthGrade.dachshund",
+      "options": "bestiary:healthGrade.dachshund",
       "multiple": true
     },
     "bonity": {

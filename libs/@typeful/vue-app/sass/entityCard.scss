@@ -1,0 +1,27 @@
+.entity-card {
+  padding: 0.5em;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.flow-inline {
+    > *:not(:first-child) {
+      margin-inline-start: var(--flow-inline-gap, var(--flow-gap, 0.5em));
+    }
+  }
+}
+
+.flow-block {
+  .text-stack {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.flow-inline {
+  .text-stack {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -78,5 +78,3 @@ export function asyncComputed<TRes>(cb: (...values: any[]) => TRes, ...refs: Asy
         value,
     }) as AsyncWrapper<TRes>
 }
-
-export type AsyncRefController<T = any> = ReturnType<typeof asyncRef<T>>

@@ -18,27 +18,27 @@ const wrightCoefficientPct = computed(() => {
 </script>
 
 <template>
-    <div class="row row-pairing">
-      <div class="col-md beast-selection">
-        <RefInput path="mother"/>
-      </div>
+  <div class="row row-pairing">
+    <div class="col-md beast-selection">
+      <RefInput path="mother"/>
+    </div>
 
-      <div class="text-center">
-        <div :class="[
-          'wright-coefficient',
-           pairing.mother && 'left-ready',
-           pairing.father && 'right-ready',
-         ]">
-          <span v-if="pairing.mother && pairing.father" class="value">
-            <template v-if="wrightCoefficientPct === -1">...</template>
-            <template v-else>{{ wrightCoefficientPct.toPrecision(8) }} %</template>
-          </span>
-          <span v-else>{{ (pairing.mother ? 1 : 0) + (pairing.father ? 1 : 0) }} / 2</span>
-        </div>
-      </div>
-
-      <div class="col-md beast-selection">
-        <RefInput path="father"/>
+    <div class="text-center">
+      <div :class="[
+        'wright-coefficient',
+          pairing.mother && 'left-ready',
+          pairing.father && 'right-ready',
+        ]">
+        <span v-if="pairing.mother && pairing.father" class="value">
+          <template v-if="wrightCoefficientPct === -1">...</template>
+          <template v-else>{{ wrightCoefficientPct.toPrecision(8) }} %</template>
+        </span>
+        <span v-else>{{ (pairing.mother ? 1 : 0) + (pairing.father ? 1 : 0) }} / 2</span>
       </div>
     </div>
+
+    <div class="col-md beast-selection">
+      <RefInput path="father"/>
+    </div>
+  </div>
 </template>

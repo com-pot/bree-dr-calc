@@ -22,6 +22,7 @@
     "paths": {
       "@i18n": ["libs/i18n/src/index.ts"],
       "@i18n/*": ["libs/i18n/src/*"],
+      "@typeful/utils/*": ["libs/@typeful/utils/src/*"],
       "@typeful/types/*": ["libs/@typeful/types/src/*"],
       "@typeful/schema/*": ["./libs/@typeful/schema/src/*"],
       "@typeful/model/*": ["./libs/@typeful/model/src/*"],
@@ -29,6 +30,7 @@
       "@typeful/storage/*": ["./libs/@typeful/storage/src/*"],
       "@typeful/storage-vue/*": ["./libs/@typeful/storage-vue/src/*"],
 
+      "@typeful/vue-app/*": ["./libs/@typeful/vue-app/src/*"],
       "@typeful/vue-utils/*": ["./libs/@typeful/vue-utils/src/*"],
       "@typeful/vue-form": ["./libs/@typeful/vue-form/src/index.ts"],
       "@typeful/vue-form/*": ["./libs/@typeful/vue-form/src/*"],

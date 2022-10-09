@@ -5,8 +5,8 @@
       "type": "object",
       "properties": {
         "name": {"type": "string"},
-        "breedingStation": {"type": "string", "enum": "bestiary:relation.breedingStation"},
-        "gender": {"type": "string", "enum": "bestiary:gender", "nullable": true},
+        "breedingStation": {"type": "string", "options": "bestiary:relation.breedingStation"},
+        "gender": {"type": "string", "options": "bestiary:gender", "nullable": true},
         "evidenceCode": {"type": "string"},
         "birthDay": {"type": "date"}
       }

@@ -3,13 +3,14 @@ import { Schema } from "@typeful/schema/Schema";
 import { createPath, FieldPath, FieldPathRaw, isFieldPath, pathToStr } from "./path/pathTypes";
 import { ModelSpec } from "./ModelSpec";
 import { Recipe } from "@typeful/types/Recipe";
+import ValueTypes from "@typeful/types/ValueTypes";
 
 export default class Model<T extends object = any> {
 
   private readonly fieldLocators: Record<string, FieldLocator> = {}
   public readonly spec: ModelSpec
 
-  constructor(spec: ModelSpec) {
+  constructor(spec: ModelSpec, private readonly ctx: ModelContext) {
     this.fieldLocators[''] = new FieldLocator(spec.schema)
     this.spec = spec
   }
@@ -20,7 +21,7 @@ export default class Model<T extends object = any> {
   }
 
   setDefaults(target?: O.Partial<T, 'deep'>): T {
-    throw new Error("setDefaults not implemented")
+    return this.ctx.types.setDefaults(this.spec.schema, target)
   }
 }
 
@@ -40,6 +41,7 @@ export type FieldNotFoundRef = {
 }
 
 export type GetFieldArg = FieldPathRaw | Omit<O.Partial<FieldRef, 'deep'>, 'path'> & {path: FieldPathRaw}
+export type ModelContext = {types: ValueTypes}
 
 class FieldLocator {
   private fieldIndex: FieldIndex

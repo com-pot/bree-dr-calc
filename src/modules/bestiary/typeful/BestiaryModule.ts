@@ -1,16 +1,15 @@
-import {TypefulModule} from "@vtf-typeful"
-
-import localCollection from "@/modules/appCollections/localCollection"
 import * as gender from "./gender.type"
 import {createBeastListItem} from "@/modules/bestiary/model/beastItemsSource"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
+import localCollection from "@typeful/storage/collection/controllers/localCollection"
+import { defineAppModule } from "@typeful/vue-app/AppModule"
 
-const module: TypefulModule = {
+export default defineAppModule({
   types: {
     gender: {
       type: "string", appearance: "btn-group",
       options: gender.options,
-      ui: {itemPrefix: 'bestiary.beast.gender.'},
+      ui: { itemPrefix: 'bestiary.beast.gender.' },
     },
     geneticGrade: {
       type: "text",
@@ -55,11 +54,11 @@ const module: TypefulModule = {
       },
     }
   },
-  registerItemSources(collections) {
-    collections.addCollectionEntry('relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem))
-    collections.addCollectionEntry('bestiary:beast', localCollection(() => beastsStore.state.beastList))
-    collections.addCollectionEntry('bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations))
+  getCollections() {
+    return [
+      ['relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem)],
+      ['bestiary:beast', localCollection(() => beastsStore.state.beastList)],
+      ['bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations),]
+    ]
   },
-}
-
-export default module
+})

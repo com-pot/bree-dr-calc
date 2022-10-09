@@ -3,14 +3,14 @@ import NumberInput from "./inputs/Number.vue";
 import SelectInput from "./inputs/Select.vue";
 import BtnSelectInput from "./inputs/BtnSelect.vue";
 import DateInput from "./inputs/Date.vue";
-import { App, DefineComponent, inject } from "vue";
+import { App, Component, inject } from "vue";
 
 type InputRegistryEntry = {
   match: (attrs: Record<string, any>) => boolean,
-  component: DefineComponent,
+  component: Component,
 }
 export type InputRegistry = {
-  matchInput(attrs: Record<string, any>): DefineComponent | null,
+  matchInput(attrs: Record<string, any>): Component | null,
 }
 export function createInputRegistry(): InputRegistry {
   const entries: InputRegistryEntry[] = [
@@ -36,7 +36,6 @@ export function createInputRegistry(): InputRegistry {
     },
   ]
 
-
   return {
     matchInput(attrs) {
       const entry = entries.find((entry) => entry.match(attrs))
@@ -44,6 +43,7 @@ export function createInputRegistry(): InputRegistry {
     },
   }
 }
+
 export const injectionKey = '@typeful/vue-form.inputRegistry'
 export const useInputRegistry = () => inject(injectionKey) as InputRegistry
 export const provideInputRegistry = (app: App, inputRegistry: InputRegistry) => app.provide(injectionKey, inputRegistry)

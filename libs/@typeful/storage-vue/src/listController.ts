@@ -1,9 +1,10 @@
+import { reactive } from "vue";
 import { FieldRef } from "@typeful/model/Model";
 import asyncRef from "@typeful/vue-utils/asyncRef";
 import { CollectionPage, PaginationConfig } from "@typeful/storage/collection/ListController";
 import { SortController } from "@typeful/storage/collection/sorting";
-import { reactive } from "vue";
-import { createFiltering, FilteringController } from "./collection/filtering";
+
+import { createFiltering, FilteringController } from "./collection/filter"
 import { createSorting, SortingConfig } from "./collection/sorting";
 
 type ListControllerOptions<TItem = any> = {
@@ -40,3 +41,5 @@ export function createListController<TItem = any>(opts: ListControllerOptions) {
     }
   }
 }
+
+export type ListController = ReturnType<typeof createListController>

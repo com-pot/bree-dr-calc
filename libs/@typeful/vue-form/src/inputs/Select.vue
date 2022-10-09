@@ -1,10 +1,11 @@
 <script lang="ts">
 import {computed, defineComponent, inject, ref, PropType, Ref, watch} from "vue"
+
 import { OptionsObj } from "@typeful/schema/Schema"
 import { compileRecipeEvalFn } from "@typeful/types/Recipe"
-import {useCollections} from "@vtf-collection"
 import { FieldRef } from "@typeful/model/Model"
-import { FilteringController } from "@typeful/storage-vue/collection/filtering"
+import { FilteringController } from "@typeful/storage-vue/collection/filter"
+import { useCollections } from "@typeful/storage-vue/collections"
 
 export default defineComponent({
   props: {

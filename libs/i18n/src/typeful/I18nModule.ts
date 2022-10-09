@@ -1,9 +1,9 @@
-import {TypefulModule} from "@vtf-typeful"
-import {codeToRegionalString} from "../RegionalUtils"
+import { defineAppModule } from "@typeful/vue-app/AppModule"
+import { codeToRegionalString } from "../RegionalUtils"
 
 import * as countries from "./countries"
 
-const module: TypefulModule = {
+export default defineAppModule({
   types: {
     country: {
       type: "select",
@@ -15,11 +15,12 @@ const module: TypefulModule = {
       },
     },
   },
-  registerItemSources(collections) {
-    collections.addCollectionEntry('i18n:country', countries.createCollection({
-      priorityCountries: ['CZ', 'SK', 'DE', 'PL', 'HU'],
-    }))
-  },
-}
 
-export default module
+  getCollections() {
+    return [
+      ['i18n:country', countries.createCollection({
+        priorityCountries: ['CZ', 'SK', 'DE', 'PL', 'HU'],
+      })],
+    ]
+  },
+})

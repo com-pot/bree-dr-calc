@@ -3,7 +3,7 @@ import {v4 as uuidV4} from "uuid"
 
 import {Beast, BreedingStation, EntityState} from "@/modules/bestiary/model/Bestiary"
 import BeastFamilyTree, {RelationName} from "@/modules/bestiary/model/BeastFamilyTree"
-import {resolveAfter} from "@/utils/AsyncUtils"
+import {dt, resolveAfter} from "@typeful/utils/async"
 
 import * as WrightCalculation from "../utils/WrightCalculation"
 
@@ -50,7 +50,6 @@ export const actions = {
   },
 
   async getBeast<T extends Beast<ES>, ES extends EntityState>(id: Beast['id'], entityState: ES): Promise<T | null> {
-    const delay = Math.round(50 + Math.random() * 150)
     const beast = state.beastList.find((b) => b.id === id) as T
 
     if (!beast) {
@@ -61,7 +60,7 @@ export const actions = {
       console.warn("Populated entity state is not implemented yet")
     }
 
-    return resolveAfter(delay, beast || null)
+    return resolveAfter(dt(50, 150), beast || null)
   },
   async deleteBeast(id: string) {
     const index = state.beastList.findIndex((b) => b.id === id)
