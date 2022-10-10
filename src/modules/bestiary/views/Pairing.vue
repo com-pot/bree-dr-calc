@@ -5,11 +5,11 @@ import {useI18n} from "@i18n"
 
 import * as beastStore from "../store/beastsStore"
 import BeastFamilyTree, { RelationName } from "../model/BeastFamilyTree"
-import * as WrightCalculation from "@/modules/bestiary/utils/WrightCalculation";
-import {Beast} from "@/modules/bestiary/model/Bestiary";
+import * as WrightCalculation from "../utils/WrightCalculation";
+import {Beast} from "../model/Bestiary";
 
-import AncestryTree from "@/modules/bestiary/components/AncestryTree.vue";
-import MultiOccurrence from "@/modules/bestiary/components/MultiOccurrence.vue";
+import AncestryTree from "../components/AncestryTree.vue";
+import MultiOccurrence from "../components/MultiOccurrence.vue";
 import useModel, { provideActiveModel } from "@typeful/model-vue/useModel"
 import PairingPicker from "../components/PairingPicker.vue"
 

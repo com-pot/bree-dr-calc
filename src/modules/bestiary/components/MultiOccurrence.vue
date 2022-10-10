@@ -27,30 +27,22 @@
   </div>
 </template>
 
-<script>
-import {computed} from "vue";
-import MultiOccurrenceBeast from "@/modules/bestiary/components/MultiOccurrenceBeast";
+<script lang="ts" setup>
+import {computed, PropType} from "vue";
+import { MultiOccurrenceEntry } from "../utils/WrightCalculation"
+import MultiOccurrenceBeast from "./MultiOccurrenceBeast.vue";
 
-export default {
-  components: {MultiOccurrenceBeast},
-  props: {
-    occurrences: {type: Array},
-    maxCalculationLevel: {type: Number, required: true},
-  },
-  setup(props) {
-    const beastPresenceWithEffect = computed(() => {
-      return props.occurrences?.filter((presence) => !presence.fullyCoveredByPredecessors);
-    })
-    const beastPresenceFullyCovered = computed(() => {
-      return props.occurrences?.filter((presence) => presence.fullyCoveredByPredecessors);
-    })
+const props = defineProps({
+  occurrences: {type: Array as PropType<MultiOccurrenceEntry[]>},
+  maxCalculationLevel: {type: Number, required: true},
+})
 
-    return {
-      beastPresenceWithEffect,
-      beastPresenceFullyCovered,
-    }
-  },
-}
+const beastPresenceWithEffect = computed(() => {
+  return props.occurrences?.filter((presence) => !presence.fullyCoveredByPredecessors);
+})
+const beastPresenceFullyCovered = computed(() => {
+  return props.occurrences?.filter((presence) => presence.fullyCoveredByPredecessors);
+})
 </script>
 
 <style lang="scss">

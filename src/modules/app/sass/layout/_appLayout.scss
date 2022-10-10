@@ -10,8 +10,6 @@
     .navbar-brand {
       font-size: 20pt;
       color: $activeLinkColor;
-
-
     }
 
     .navbar-nav {
@@ -30,13 +28,13 @@
   }
 
   .app-footer {
-    $width: 66.6vw;
+    --footer-width: 66.6vw;
 
-    margin-left: (100vw - $width) / 2;
+    margin-left: calc((100vw - var(--footer-width)) / 2);
     bottom: 2em;
 
     min-height: 2em;
-    width: $width;
+    width: var(--footer-width);
 
     display: flex;
     flex-direction: row;

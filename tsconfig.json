@@ -13,15 +13,12 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "baseUrl": "./",
-    "types": [
-      "webpack-env",
-      "mocha",
-      "chai"
-    ],
+    "types": [],
+
+    "baseUrl": ".",
     "paths": {
-      "@i18n": ["libs/i18n/src/index.ts"],
       "@i18n/*": ["libs/i18n/src/*"],
+      "@i18n": ["libs/i18n/src/index.ts"],
       "@typeful/utils/*": ["libs/@typeful/utils/src/*"],
       "@typeful/types/*": ["libs/@typeful/types/src/*"],
       "@typeful/schema/*": ["./libs/@typeful/schema/src/*"],
@@ -54,9 +51,7 @@
   },
   "include": [
     "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue",
-    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue",
-
-    "tests/**/*.ts", "tests/**/*.tsx"
+    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue"
   ],
   "exclude": [
     "node_modules",

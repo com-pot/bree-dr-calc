@@ -13,13 +13,19 @@ import TypefulPlugin from '@typeful/vue-app/TypefulPlugin'
 
 const i18nOptions = {
   initialDictionaries: [
-    require("@/modules/app/localization/app.cs_CZ.json"),
-    require("@typeful/storage/localization/collection.cs_CZ.json"),
-    require("@/modules/auth/localization/auth.cs_CZ"),
-    require("@/modules/bestiary/localization/bestiary.cs_CZ.json"),
-    require("@/modules/bestiary-dachshund/localization/dachshund.cs_CZ.json"),
+    // import.meta.glob("@/modules/app/localization/app.cs_CZ.json", {eager: true})[0],
+    // require("@typeful/storage/../localization/collection.cs_CZ.json"),
+    // require("@/modules/auth/localization/auth.cs_CZ.json"),
+    // require("@/modules/bestiary/localization/bestiary.cs_CZ.json"),
+    // require("@/modules/bestiary-dachshund/localization/dachshund.cs_CZ.json"),
   ],
 }
+
+import i18nModule from "@i18n/typeful/I18nModule"
+import bestiaryModule from "@/modules/bestiary/typeful/BestiaryModule"
+import dachshundModule from "@/modules/bestiary-dachshund/typeful/DachshundModule"
+
+import { createAppRouter } from "./modules/app/router"
 
 createApp(App)
   .use(VueTippy, {
@@ -28,11 +34,11 @@ createApp(App)
   .use(I18nPlugin, i18nOptions)
   .use(TypefulPlugin, {
     modules: {
-      i18n: require("@i18n/src/typeful/I18nModule").default,
-      bestiary: require("@/modules/bestiary/typeful/BestiaryModule").default,
-      dachshund: require("@/modules/bestiary-dachshund/typeful/DachshundModule").default,
+      i18n: i18nModule,
+      bestiary: bestiaryModule,
+      dachshund: dachshundModule,
     },
   })
   .use(vueFormPlugin)
-  .use(require("./modules/app/router").default)
+  .use(createAppRouter())
   .mount('body')

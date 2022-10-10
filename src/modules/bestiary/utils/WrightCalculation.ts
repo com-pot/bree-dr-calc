@@ -1,5 +1,5 @@
-import BeastFamilyTree, {RelationName} from "@/modules/bestiary/model/BeastFamilyTree";
-import {Beast} from "@/modules/bestiary/model/Bestiary";
+import BeastFamilyTree, {RelationName} from "../model/BeastFamilyTree";
+import {Beast} from "../model/Bestiary";
 
 const relations: RelationName[] = ['father', 'mother']
 
@@ -62,7 +62,7 @@ export const filterCoveredPredecessors = <T = Beast>(
   })
 }
 
-type MultiOccurrenceEntry<T> = {
+export type MultiOccurrenceEntry<T = Beast> = {
   beast: T,
   occurrences: BeastOccurrence[],
   fullyCoveredByPredecessors: boolean,

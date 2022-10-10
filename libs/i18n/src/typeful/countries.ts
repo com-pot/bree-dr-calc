@@ -1,4 +1,4 @@
-import fetchingCollection from "@/modules/appCollections/fetchingCollection"
+import fetchingCollection from "@typeful/storage/collection/controllers/fetchingCollection"
 
 type CountryCode = string
 

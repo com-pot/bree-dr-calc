@@ -1,10 +1,10 @@
 <template>
   <div :class="['home', userAuthenticated && 'home-full']">
     <template v-if="!userAuthenticated">
-      <h1>{{ appName }}</h1>
+      <h1>{{ appStore.state.appName }}</h1>
       <p>
         Vítejte v aplikaci sloužící pro evidenci šelem a plánování připouštění.
-        Na stránce <router-link :to="{name: 'app.About'}">{{ t('app.view.About') }}</router-link> se můžete dočíst
+        Na stránce <router-link :to="{name: 'app.About'}">{{ i18n.t('app.view.About') }}</router-link> se můžete dočíst
         podrobnosti ohledně vzniku a provozu aplikace.
       </p>
 
@@ -48,38 +48,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, reactive} from 'vue';
+<script lang="ts" setup>
+import {computed, reactive} from 'vue';
+import {useI18n} from "@i18n"
 
 import appStore from "@app/store/appStore"
 
 import authStore from "@/modules/auth/store/authStore"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
 import demoStore from "@/modules/demo/store/demoStore"
-import {useI18n} from "@i18n"
 
-export default defineComponent({
-  setup() {
-    const i18n = useI18n()
+const i18n = useI18n()
 
-    const bestiarySummary = reactive({
-      beastCount: computed(() => beastsStore.state.beastList.length),
-      stationCount: computed(() => beastsStore.state.breedingStations.length)
-    })
-    const userAuthenticated = computed(() => authStore.getters.isLoggedIn())
+const bestiarySummary = reactive({
+  beastCount: computed(() => beastsStore.state.beastList.length),
+  stationCount: computed(() => beastsStore.state.breedingStations.length)
+})
+const userAuthenticated = computed(() => authStore.getters.isLoggedIn())
 
-    return {
-      ...i18n,
+const beginDemo = () => {
+  demoStore.actions.initDemoData()
+}
 
-      appName: appStore.state.appName,
-      userAuthenticated,
-      beginDemo: () => {
-        demoStore.actions.initDemoData()
-      },
-      bestiarySummary,
-    }
-  },
-});
 </script>
 
 <style lang="scss">
