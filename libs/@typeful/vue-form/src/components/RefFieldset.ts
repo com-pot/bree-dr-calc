@@ -1,8 +1,8 @@
-import { useI18n } from "@i18n";
+import { useI18n } from "@typeful/vue-app/i18n";
 import { useActiveModel } from "@typeful/model-vue/useModel";
 import { FieldRef, GetFieldArg } from "@typeful/model/Model";
 import { computed, defineComponent, h, PropType } from "vue";
-import RefInput from "./RefInput.vue"
+import RefInput from "./RefInput"
 
 type FieldsetFieldArg = {ref: GetFieldArg, colClass: string, props?: Record<string, any>}
 export default defineComponent({

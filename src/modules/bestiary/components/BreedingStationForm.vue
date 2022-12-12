@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {defineProps} from "vue"
 import {DecForm, RefInput} from "@typeful/vue-form"
 
 import useModel, { provideActiveModel } from "@typeful/model-vue/useModel"

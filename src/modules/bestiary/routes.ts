@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
     name: 'bestiary.Pairing',
     component: () => import('./views/Pairing.vue'),
     meta: {
-      title: 'bestiary.view.Pairing',
+      title: {$t: 'bestiary.view.Pairing'},
     },
   },
   {
@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     name: "bestiary.MyBeasts",
     component: () => import("./views/MyBeasts.vue"),
     meta: {
-      title: 'bestiary.view.MyBeasts',
+      title: {$t: 'bestiary.view.MyBeasts'},
     },
   },
   {
@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
     name: 'bestiary.NewBeast',
     component: () => import("./views/BeastDetail.vue"),
     meta: {
-      title: 'bestiary.view.BeastDetail.new',
+      title: {$t: 'bestiary.view.BeastDetail.new'},
     },
   },
   {
@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import("./views/BeastDetail.vue"),
     props: true,
     meta: {
-      title: 'bestiary.view.BeastDetail',
+      title: {$t: 'bestiary.view.BeastDetail'},
     },
   },
   {
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
     name: 'bestiary.BreedingStationsIndex',
     component: () => import('./views/BreedingStationsIndex.vue'),
     meta: {
-      title: 'bestiary.view.BreedingStationsIndex',
+      title: {$t: 'bestiary.view.BreedingStationsIndex'},
     },
   },
 ]

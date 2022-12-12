@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {defineProps, PropType} from "vue"
-import {useI18n} from "@i18n"
+import {PropType} from "vue"
+import {useI18n} from "@typeful/vue-app/i18n"
 import { FieldRef } from "@typeful/model/Model"
 import { SortController } from "@typeful/storage-vue/collection/sorting"
 

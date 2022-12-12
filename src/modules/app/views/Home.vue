@@ -1,6 +1,6 @@
 <template>
-  <div :class="['home', userAuthenticated && 'home-full']">
-    <template v-if="!userAuthenticated">
+  <div :class="['home', authStore.user.isLoggedIn && 'home-full']">
+    <template v-if="!authStore.user.isLoggedIn">
       <h1>{{ appStore.state.appName }}</h1>
       <p>
         Vítejte v aplikaci sloužící pro evidenci šelem a plánování připouštění.
@@ -50,9 +50,9 @@
 
 <script lang="ts" setup>
 import {computed, reactive} from 'vue';
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
-import appStore from "@app/store/appStore"
+import appStore from "@typeful/vue-app/store/appStore"
 
 import authStore from "@/modules/auth/store/authStore"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
@@ -64,7 +64,6 @@ const bestiarySummary = reactive({
   beastCount: computed(() => beastsStore.state.beastList.length),
   stationCount: computed(() => beastsStore.state.breedingStations.length)
 })
-const userAuthenticated = computed(() => authStore.getters.isLoggedIn())
 
 const beginDemo = () => {
   demoStore.actions.initDemoData()

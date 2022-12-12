@@ -1,6 +1,6 @@
 import { FieldPathRaw } from "@typeful/model/path/pathTypes";
 import { SortController } from "@typeful/storage/collection/sorting";
-import { FilteringController } from "@typeful/storage-vue/collection/filter
+import { FilteringController } from "@typeful/storage-vue/collection/filter";
 import { CollectionPage, PaginationConfig } from "@typeful/storage/collection/ListController";
 
 export type CollectionRetrieveFn<T = any> = (

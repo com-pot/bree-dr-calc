@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import {useI18n} from "@i18n"
-import appStore from "@app/store/appStore"
+import {useI18n} from "@typeful/vue-app/i18n"
+import appStore from "@typeful/vue-app/store/appStore"
 
 export default {
   setup() {

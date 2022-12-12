@@ -1,6 +1,6 @@
 import {h} from "vue";
 
-import {codeToRegionalString} from "../RegionalUtils"
+import {codeToRegionalString} from "./regional"
 
 const RegioFlag = (props: { code: string }) => {
   const regionalString = codeToRegionalString(props.code.toLowerCase())

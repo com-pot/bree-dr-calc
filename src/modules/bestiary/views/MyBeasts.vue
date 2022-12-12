@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {defineProps, ref, watch} from "vue"
+import {ref, watch} from "vue"
 
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
 import * as beastsStore from "../store/beastsStore"
 import {Beast} from "../model/Bestiary"
 import useModel from "@typeful/model-vue/useModel"
 import { createListController } from "@typeful/storage-vue/listController"
-import { collectionComponentProps } from "@typeful/storage-vue/collections"
+import { collectionComponentProps, useCollections } from "@typeful/storage-vue/collections"
 
 
 const props = defineProps({

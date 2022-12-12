@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {computed, defineProps, PropType} from "vue"
+import {computed, PropType} from "vue"
 
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
 import FilterRule from "./ComposableFilter/FilterRule.vue"
 import FieldSelection from "./FieldSelection.vue"

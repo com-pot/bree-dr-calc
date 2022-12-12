@@ -21,7 +21,7 @@
 <script lang="ts">
 import {defineComponent, reactive} from "vue"
 import {useRouter} from "vue-router"
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
 import * as beastsStore from "../store/beastsStore"
 import BeastForm from "../components/BeastForm.vue"

@@ -55,10 +55,10 @@ export default defineAppModule({
     }
   },
   getCollections() {
-    return [
-      ['relation:beast', localCollection(() => beastsStore.state.beastList, createBeastListItem)],
-      ['bestiary:beast', localCollection(() => beastsStore.state.beastList)],
-      ['bestiary:breedingStation', localCollection(() => beastsStore.state.breedingStations),]
-    ]
+    return {
+      'relation:beast': localCollection(() => beastsStore.state.beastList, createBeastListItem),
+      'bestiary:beast': localCollection(() => beastsStore.state.beastList),
+      'bestiary:breedingStation': localCollection(() => beastsStore.state.breedingStations),
+    }
   },
 })

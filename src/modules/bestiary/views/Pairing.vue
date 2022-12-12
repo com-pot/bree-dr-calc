@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {computed, reactive, ref, watch} from "vue"
 import {RefInput} from "@typeful/vue-form"
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
 import * as beastStore from "../store/beastsStore"
 import BeastFamilyTree, { RelationName } from "../model/BeastFamilyTree"

@@ -10,10 +10,10 @@ export default defineAppModule({
     }
   },
   getCollections() {
-    return [
-      ['dachshund:sizeVariant', fetchingCollection('/api/dachshund/size-variant.json')],
-      ['dachshund:coatType', fetchingCollection('/api/dachshund/coat-type.json')],
-      ['dachshund:coatPaint', fetchingCollection('/api/dachshund/coat-paint.json')],
-    ]
+    return {
+      'dachshund:sizeVariant': fetchingCollection('/api/dachshund/size-variant.json'),
+      'dachshund:coatType': fetchingCollection('/api/dachshund/coat-type.json'),
+      'dachshund:coatPaint': fetchingCollection('/api/dachshund/coat-paint.json'),
+    }
   },
 })

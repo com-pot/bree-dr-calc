@@ -17,8 +17,6 @@
 
     "baseUrl": ".",
     "paths": {
-      "@i18n/*": ["libs/i18n/src/*"],
-      "@i18n": ["libs/i18n/src/index.ts"],
       "@typeful/utils/*": ["libs/@typeful/utils/src/*"],
       "@typeful/types/*": ["libs/@typeful/types/src/*"],
       "@typeful/schema/*": ["./libs/@typeful/schema/src/*"],

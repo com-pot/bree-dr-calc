@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType, ref, shallowRef} from "vue"
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 
 import TreeNode from "./AncestryTree/TreeNodeFlat.vue"
 import {TraversalRules} from "./AncestryTree/AncestryTree"

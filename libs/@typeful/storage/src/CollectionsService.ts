@@ -1,8 +1,8 @@
 import {CollectionController, CollectionRetrieveFn} from "./collection";
-import { CollectionPage, PaginationConfig } from "libs/@typeful/storage/src/collection/ListController";
-import { SortController } from "libs/@typeful/storage/src/collection/sorting";
+import { CollectionPage, PaginationConfig } from "@typeful/storage/collection/ListController";
+import { SortController } from "@typeful/storage/collection/sorting";
 import { FilteringController } from "@typeful/storage-vue/collection/filter";
-import Registry from "libs/@typeful/utils/src/Registry";
+import Registry from "@typeful/utils/Registry";
 
 
 export default class CollectionsService {

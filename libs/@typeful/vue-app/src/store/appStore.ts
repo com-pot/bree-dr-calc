@@ -1,9 +1,9 @@
 import {reactive} from "vue";
 
 const state = reactive({
-  appName: 'Bree Dr.Calc',
+  appName: process.env.VUE_APP_NAME,
   appVersion: process.env.VUE_APP_VERSION,
-  repoLink: 'https://github.com/Thoronir42/bree-dr-calc',
+  repoLink: process.env.VUE_APP_REPO,
 })
 
 export default {

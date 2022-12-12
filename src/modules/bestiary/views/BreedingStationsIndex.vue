@@ -46,8 +46,8 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "vue"
-import {useI18n} from "@i18n"
-import RegioFlag from "@i18n/components/RegioFlag"
+import {useI18n} from "@typeful/vue-app/i18n"
+import RegioFlag from "@typeful/vue-app/i18n/RegioFlag"
 
 import * as beastsStore from "../store/beastsStore"
 import {BreedingStation} from "../model/Bestiary"

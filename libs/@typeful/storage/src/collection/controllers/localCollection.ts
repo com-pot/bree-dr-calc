@@ -1,7 +1,7 @@
 import orderBy from "lodash/orderBy"
 
 import {matchFilterFn} from "./localCollection/filter"
-import { PaginationResult } from "libs/@typeful/storage/src/collection/ListController"
+import { PaginationResult } from "@typeful/storage/collection/ListController"
 import { CollectionController } from "../collection.types"
 
 export default function localCollection<T, TOut=T>(getItems: () => T[], transformItem?: (i: T) => TOut): CollectionController<TOut> {

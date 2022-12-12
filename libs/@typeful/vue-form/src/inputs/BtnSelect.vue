@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, defineProps, inject, PropType, Ref} from "vue";
+import {computed, inject, PropType, Ref} from "vue";
 
 type Option = {value: string|number, label: string}
 const props = defineProps({

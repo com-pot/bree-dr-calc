@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {computed, defineEmit, defineProps, inject, ComputedRef, provide, useAttrs} from "vue"
+import {computed, inject, ComputedRef, provide, useAttrs} from "vue"
 import {ModelObj} from "./types/ModelObj"
 import { useInputRegistry } from "../inputRegistry"
 import { get } from "lodash"
 
-const emit = defineEmit({
+const emit = defineEmits({
   "update:modelValue": (value: any) => value !== undefined,
 })
 const props = defineProps({
@@ -24,8 +24,7 @@ const name = attrs.name as string
 const internalValue = computed({
   get() {
     if (modelObj?.value) {
-      return get(modelObj.value, )
-      return modelObj.value[name]
+      return get(modelObj.value, name)
     }
 
     return props.modelValue

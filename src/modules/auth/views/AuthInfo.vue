@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import {useRouter} from "vue-router"
-import {useI18n} from "@i18n"
+import {useI18n} from "@typeful/vue-app/i18n"
 import {DecInput} from "@typeful/vue-form"
 import useConfirmation from "@typeful/vue-utils/useConfirmation"
 

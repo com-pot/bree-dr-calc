@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import {computed, defineProps, h} from "vue"
-  import {useI18n} from "@i18n"
+  import {computed, h} from "vue"
+  import {useI18n} from "@typeful/vue-app/i18n"
   import {DecForm} from "@typeful/vue-form"
 
   import beastsStore from "@/modules/bestiary/store/beastsStore"

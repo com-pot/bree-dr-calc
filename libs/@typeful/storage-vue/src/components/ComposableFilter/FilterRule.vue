@@ -1,11 +1,11 @@
 <script lang="ts" setup >
-import {computed, defineProps, PropType} from "vue"
+import {computed, PropType} from "vue"
 import {Tippy} from "vue-tippy"
 
 import {DecInput} from "@typeful/vue-form"
 import { FieldRef } from "@typeful/model/Model"
 import { FilterCondition } from "@typeful/storage-vue/collection/filter";
-import { useI18n } from "@i18n";
+import { useI18n } from "@typeful/vue-app/i18n";
 
 const props = defineProps({
   filterCondition: {type: Object as PropType<FilterCondition>, required: true},
@@ -20,7 +20,7 @@ const availableOperators = computed(() => {
   if (typeof schema.options === "string") {
     return ['=']
   }
-  if (schema.type === 'text') {
+  if (schema.type === 'string') {
     return ['=', 'like']
   }
 
