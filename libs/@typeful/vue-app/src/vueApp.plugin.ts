@@ -11,12 +11,15 @@ export default {
 
     opts.router.beforeEach((to, _, next) => {
       if (!to.meta.requireAuth || authStore.user.isLoggedIn) {
-        next()
-        return
+        return next()
       }
 
       console.warn("User not logged in, falling back", to.meta.requireAuth);
-      next(to.meta.requireAuth.fallback)
+      const fallback = to.meta.requireAuth.fallback || {name: 'app.Home'}
+      if (typeof fallback === 'object' && 'name' in fallback && fallback.name === to.name) {
+        throw new Error('Unauthorized fallback is same as currently rejected route: ')
+      }
+      next(fallback)
     })
 
     app.use(opts.router)

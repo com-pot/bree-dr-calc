@@ -15,12 +15,15 @@ provideActiveModel(useModel({
   schema: {
     type: "object",
     properties: {
-      userName: {type: "text"},
+      userName: {type: "string"},
     },
   },
 }))
 
 function submitSignInForm(values: any) {
+  console.log(values);
+  return
+
   authStore.actions.logIn(values.userName)
   $router.push("/")
 }

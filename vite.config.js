@@ -21,6 +21,7 @@ export default defineConfig({
         }),
     ],
     define: {
+        'process.env.NODE_ENV': '"development"',
         'process.env.VUE_APP_NAME': `"Bree Dr.Calc"`,
         'process.env.VUE_APP_VERSION': `"${process.env.npm_package_version}"`,
         'process.env.VUE_APP_REPO': `'https://github.com/Thoronir42/bree-dr-calc'`,

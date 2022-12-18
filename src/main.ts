@@ -12,7 +12,7 @@ import vueFormPlugin from '@typeful/vue-form/vueForm.plugin'
 import TypefulPlugin from '@typeful/vue-app/TypefulPlugin'
 
 import i18nModule from "@typeful/vue-app/i18n/I18nModule"
-import bestiaryModule from "@/modules/bestiary/typeful/BestiaryModule"
+import bestiaryModule from "@/modules/bestiary/typeful/bestiaryModule"
 import dachshundModule from "@/modules/bestiary-dachshund/typeful/DachshundModule"
 
 import { createAppRouter } from "./modules/app/router"
@@ -42,8 +42,8 @@ createApp(App)
   .use(TypefulPlugin, {
     modules: {
       i18n: i18nModule,
-      bestiary: bestiaryModule,
-      dachshund: dachshundModule,
+      '@com-pot/bestiary': bestiaryModule,
+      '@com-pot/dachshund': dachshundModule,
     },
   })
   .use(vueFormPlugin)

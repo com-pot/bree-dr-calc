@@ -1,72 +1,42 @@
-<script lang="ts" setup>
-import {computed, inject, ComputedRef, provide, useAttrs} from "vue"
-import {ModelObj} from "./types/ModelObj"
-import { useInputRegistry } from "../inputRegistry"
-import { get } from "lodash"
-
-const emit = defineEmits({
-  "update:modelValue": (value: any) => value !== undefined,
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
+  inheritAttrs: false,
 })
-const props = defineProps({
-  type: {type: String, default: 'text'},
-  modelValue: {type: undefined},
+</script>
 
+<script lang="ts" setup>
+import {computed, h, useAttrs, useSlots} from "vue"
+import { FormKit } from "@formkit/vue"
+import { useInputRegistry } from "../inputRegistry"
+
+defineProps({
   labelAction: Function,
 })
 
 const attrs = useAttrs()
+const slots = useSlots()
 
 const inputRegistry = useInputRegistry()
 
-const modelObj = props.modelValue !== undefined ? null : inject<ComputedRef<ModelObj>>('modelObj')
-const name = attrs.name as string
+const componentVNode = computed(() => {
+  const entry = inputRegistry.matchInput(attrs);
 
-const internalValue = computed({
-  get() {
-    if (modelObj?.value) {
-      return get(modelObj.value, name)
-    }
-
-    return props.modelValue
-  },
-  set(value) {
-    if (modelObj?.value) {
-      modelObj.value[name] = value
-    } else {
-      emit("update:modelValue", value)
-    }
-  },
-})
-
-provide('inputValue', internalValue)
-
-const component = computed(() => {
-  const component = inputRegistry.matchInput(attrs);
-  if (!component) {
-    console.warn("Unknown field ", props.type, attrs)
+  const inAttrs: any = {
+    ...attrs,
+    inputClass: 'form-control',
+    outerClass: 'form-group',
   }
 
-  return component
+  if (entry && entry.component) {
+    return h(entry.component, inAttrs, slots)
+  }
+  Object.assign(inAttrs, entry?.formkit)
+
+  return h(FormKit, inAttrs)
 })
 </script>
 
 <template>
-  <div class="form-group dc-fi">
-    <label>
-      <span>{{ $attrs.label }}</span>
-      <slot name="labelAction">
-        <component v-if="labelAction" :is="labelAction"/>
-      </slot>
-    </label>
-
-    <component v-if="component" :is="component" v-bind="attrs">
-      <template v-for="(_, name) in $slots" v-slot:[name]="data">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
-    </component>
-
-    <span v-else>
-      <span>[path={{ attrs.name }}]</span>: <span>{{ internalValue }}</span>
-    </span>
-  </div>
+  <component :is="componentVNode" />
 </template>

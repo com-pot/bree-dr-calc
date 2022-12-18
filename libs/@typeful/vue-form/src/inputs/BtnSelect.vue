@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import {computed, inject, PropType, Ref} from "vue";
+import {computed, PropType} from "vue";
 
 type Option = {value: string|number, label: string}
 const props = defineProps({
   options: {type: Array as PropType<Option[]>, required: true},
   createItemLabel: {type: Function as PropType<(opt: Option) => string>},
 })
-const inputValue = inject('inputValue') as Ref
 
 const availableOptions = computed(() => {
   let options = props.options
@@ -20,8 +19,8 @@ const availableOptions = computed(() => {
 <template>
   <div class="btn-group btn-group-select">
     <label v-for="option in availableOptions" :key="option.value"
-           :class="['btn', inputValue === option.value ? 'btn-primary' : 'btn-light']">
-      <input v-model="inputValue" :value="option.value" type="radio"/>
+           :class="['btn', modelValue === option.value ? 'btn-primary' : 'btn-light']">
+      <input :value="option.value" type="radio"/>
       <span>{{ option.label }}</span>
     </label>
   </div>

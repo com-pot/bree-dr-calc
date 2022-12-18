@@ -1,19 +1,40 @@
-import TextInput from "./inputs/Text.vue";
-import NumberInput from "./inputs/Number.vue";
 import SelectInput from "./inputs/Select.vue";
 import BtnSelectInput from "./inputs/BtnSelect.vue";
-import DateInput from "./inputs/Date.vue";
+
+import { FormKitNode } from "@formkit/core"
+
 import { App, Component, inject } from "vue";
 
 type InputRegistryEntry = {
   match: (attrs: Record<string, any>) => boolean,
-  component: Component,
+  component?: Component,
+  formkit?: {
+    type?: string,
+    plugins?: ((node: FormKitNode) => void)[],
+  },
 }
 export type InputRegistry = {
-  matchInput(attrs: Record<string, any>): Component | null,
+  matchInput(attrs: Record<string, any>): InputRegistryEntry | null,
 }
 export function createInputRegistry(): InputRegistry {
   const entries: InputRegistryEntry[] = [
+    {
+      match: (attrs) => attrs.type === 'string',
+      formkit: {
+        type: 'text',
+      },
+    },
+    {
+      match: (attrs) => attrs.type === 'integer',
+      formkit: {
+        type: 'number',
+        plugins: [
+          (node) => {
+            node.hook.input((value, next) => next(Number(value)))
+          },
+        ],
+      },
+    },
     {
       match: (attrs) => !!(attrs.options || attrs.enum) && attrs.appearance === 'btn-group',
       component: BtnSelectInput,
@@ -22,24 +43,11 @@ export function createInputRegistry(): InputRegistry {
       match: (attrs) => !!(attrs.options || attrs.enum),
       component: SelectInput,
     },
-    {
-      match: (attrs) => attrs.type === 'string',
-      component: TextInput,
-    },
-    {
-      match: (attrs) => attrs.type === 'number',
-      component: NumberInput,
-    },
-    {
-      match: (attrs) => attrs.type === 'date',
-      component: DateInput,
-    },
   ]
 
   return {
     matchInput(attrs) {
-      const entry = entries.find((entry) => entry.match(attrs))
-      return entry ? entry.component : null
+      return entries.find((entry) => entry.match(attrs)) || null
     },
   }
 }

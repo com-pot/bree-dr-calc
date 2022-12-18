@@ -3,7 +3,7 @@ import {DecForm, RefInput} from "@typeful/vue-form"
 
 import useModel, { provideActiveModel } from "@typeful/model-vue/useModel"
 
-provideActiveModel(useModel('@com-pot/bestiary.station'))
+provideActiveModel(useModel('@com-pot/bestiary.BreedingStation'))
 
 defineProps({
   station: {type: Object, required: true},
@@ -11,9 +11,9 @@ defineProps({
 })
 </script>
 
-  <template>
+<template>
   <DecForm :model-value="station">
-    <div class="form-row">
+    <div class="row form-row">
       <div class="col-md-6">
         <RefInput path="name"/>
       </div>

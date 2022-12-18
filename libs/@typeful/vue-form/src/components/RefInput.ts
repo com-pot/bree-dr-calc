@@ -1,8 +1,10 @@
 import { useActiveModel, useModelInstance } from "@typeful/model-vue/useModel";
-import { FieldRef } from "@typeful/model/Model";
+import { FieldNotFoundRef, FieldRef } from "@typeful/model/Model";
 import { FieldPathRaw } from "@typeful/model/path/pathTypes";
+import { useValueTypes } from "@typeful/vue-app/index";
 import { get, set } from "lodash";
 import { computed, defineComponent, h, PropType } from "vue";
+import { useI18n } from "vue-i18n";
 import DecInput from "./DecInput.vue";
 
 export default defineComponent({
@@ -14,8 +16,10 @@ export default defineComponent({
   setup(props, {emit, slots, attrs}) {
     const model = useActiveModel()
     const instance = useModelInstance()
+    const i18n = useI18n()
+    const valueTypes = useValueTypes()
 
-    const pathRaw = computed<FieldPathRaw | undefined>(() => {
+    const pathRaw = computed((): FieldPathRaw | undefined => {
       if (!props.path) {
         return
       }
@@ -27,7 +31,7 @@ export default defineComponent({
       }
       console.warn("Unknown path prop", props.path);
     })
-    const fieldRef = computed(() => {
+    const fieldRef = computed<FieldRef | FieldNotFoundRef | undefined>(() => {
       if (props.fieldRef) {
         return props.fieldRef
       }
@@ -36,7 +40,7 @@ export default defineComponent({
       }
     })
 
-    const internalValue = typeof props.modelValue === "undefined"
+    const internalValue = typeof props.modelValue !== "undefined"
      ? computed({
       get: () => props.modelValue,
       set: (value) => emit('update:modelValue', value),
@@ -54,7 +58,7 @@ export default defineComponent({
           return undefined
         }
 
-        return get(i, fRef.path)
+        return get(i, fRef.path) ?? valueTypes.getRefDefaultValue(fRef)
       },
       set: (value) => {
         const i = instance?.value
@@ -77,23 +81,22 @@ export default defineComponent({
         return
       }
 
-      const slottedChildren = Object.entries(slots).map(([name, slot]) => {
-        return h(() => slot, {slot: name})
-      })
+      // const slottedChildren = Object.entries(slots).map(([name, slot]) => {
+      //   return h(() => slot, {slot: name})
+      // })
 
-
-      h(DecInput, {
+      return h(DecInput, {
         ...fRef.schema,
 
         modelValue: internalValue.value,
         'onUpdate:modelValue': (value: any) => internalValue.value = value,
 
-
+        label: i18n.t(`${fRef.modelMeta.name}._p.${fRef.path.strSafe}`),
         ...fRef.ui,
         ...attrs,
 
         name: fRef.name,
-      }, slottedChildren)
+      }, slots)
      }
   },
 })

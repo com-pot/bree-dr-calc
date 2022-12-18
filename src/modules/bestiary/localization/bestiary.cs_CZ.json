@@ -25,9 +25,10 @@
   "bestiary.beast.gender.f": "♀️",
   "bestiary.beast.gender.?": "❔",
   "bestiary.wrightCoefficient.termDefinition": "Wrightův koeficient vyjadřuje míru ztráty genetické variability daného jedince",
-  "bestiary.station.field.id": "Unikátní kód",
-  "bestiary.station.field.name": "Název",
-  "bestiary.station.field.country": "Země",
+
+  "@com-pot/bestiary.BreedingStation._p.id": "Unikátní kód",
+  "@com-pot/bestiary.BreedingStation._p.name": "Název",
+  "@com-pot/bestiary.BreedingStation._p.country": "Země",
 
   "bestiary.lienage.computeWright": "Propočíst"
 }

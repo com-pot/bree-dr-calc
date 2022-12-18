@@ -23,3 +23,24 @@ export default function useConfirmation(opts: ConfirmationOptions) {
 
   return confirmation
 }
+
+export function useDeleteConfirmation<TRef = string | number>(deleteCb: (ref: TRef) => Promise<unknown>) {
+  return reactive({
+    value: null as TRef | null,
+
+    delete(ref: TRef) {
+      console.log('confirm delete', ref, this.value);
+
+      if (!ref) {
+        this.value = null
+        return
+      }
+      if (ref !== this.value) {
+        this.value = ref
+        return
+      }
+      this.value = null
+      return deleteCb(ref)
+    },
+  })
+}

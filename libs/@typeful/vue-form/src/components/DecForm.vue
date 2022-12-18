@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import {computed, provide, ref} from "vue"
+import { provideModelInstance } from "@typeful/model-vue/useModel";
+import {computed, ref} from "vue"
 
 const props = defineProps({
   modelValue: {type: Object},
@@ -9,7 +10,8 @@ const props = defineProps({
 
 const internalModel = ref(props.modelValue ? null : {})
 const modelObj = computed(() => props.modelValue || internalModel.value)
-provide('modelObj', modelObj)
+provideModelInstance(modelObj)
+
 </script>
 
 <template>

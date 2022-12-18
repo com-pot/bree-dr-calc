@@ -1,5 +1,5 @@
 <script lang="ts">
-import {computed, defineComponent, inject, ref, PropType, Ref, watch} from "vue"
+import {computed, defineComponent, ref, PropType, watch} from "vue"
 
 import { OptionsObj } from "@typeful/schema/Schema"
 import { compileRecipeEvalFn } from "@typeful/types/Recipe"
@@ -16,7 +16,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    const inputValue = inject('inputValue') as Ref
     const collections = useCollections()
 
     const availableOptions = ref([] as any[])
@@ -62,7 +61,6 @@ export default defineComponent({
 
 
     return {
-      inputValue,
       availableOptions,
     }
   },
@@ -70,7 +68,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <select v-model="inputValue" class="form-control">
+  <select class="form-control">
     <option v-for="option in availableOptions" :key="option[valueKey]" :value="option[valueKey]">{{
         option.label
       }}

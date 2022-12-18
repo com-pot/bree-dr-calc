@@ -2,9 +2,10 @@ import * as gender from "./gender.type"
 import {createBeastListItem} from "@/modules/bestiary/model/beastItemsSource"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
 import localCollection from "@typeful/storage/collection/controllers/localCollection"
-import { defineAppModule } from "@typeful/vue-app/AppModule"
+import { defineAppModule, stripSchemaModules } from "@typeful/vue-app/AppModule"
 
 export default defineAppModule({
+  models: stripSchemaModules(import.meta.glob("./*.schema.json", {eager: true, import: 'default'})),
   types: {
     gender: {
       type: "string", appearance: "btn-group",
@@ -12,16 +13,16 @@ export default defineAppModule({
       ui: { itemPrefix: 'bestiary.beast.gender.' },
     },
     geneticGrade: {
-      type: "text",
+      type: "string",
     },
     behaviorGrade: {
-      type: "text",
+      type: "string",
     },
     healthGrade: {
-      type: "text",
+      type: "string",
     },
     bonity: {
-      type: "text",
+      type: "string",
     },
 
     'relation.beast': {

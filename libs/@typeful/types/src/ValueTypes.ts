@@ -1,6 +1,6 @@
 import { FieldRef } from "@typeful/model/Model";
 import { Schema } from "@typeful/schema/Schema";
-import Registry from "libs/@typeful/utils/src/Registry";
+import Registry from "@typeful/utils/Registry";
 
 export default class ValueTypes {
   public readonly registry: Registry<any> = new Registry()
