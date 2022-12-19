@@ -46,10 +46,10 @@ const hView = {
   optionsContainer: (ctrl: ListController) => {
     let result: VNode[] | undefined
     if (ctrl.filter) {
-      result = pushNode(h(ComposableFilter, {ctrl}), result)
+      result = pushNode(h(ComposableFilter, {ctrl: ctrl.filter}), result)
     }
     if (ctrl.sort) {
-      result = pushNode(h(ComposableSorting, {ctrl}), result)
+      result = pushNode(h(ComposableSorting, {ctrl: ctrl.sort}), result)
     }
 
     if (result) {

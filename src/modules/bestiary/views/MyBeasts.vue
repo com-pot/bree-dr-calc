@@ -8,6 +8,7 @@ import {Beast} from "../model/Bestiary"
 import useModel from "@typeful/model-vue/useModel"
 import { createListController } from "@typeful/storage-vue/listController"
 import { collectionComponentProps, useCollections } from "@typeful/storage-vue/collections"
+import CollectionView from "@typeful/storage-vue/components/CollectionView"
 
 
 const props = defineProps({
@@ -16,7 +17,7 @@ const props = defineProps({
 
 const i18n = useI18n()
 const collections = useCollections()
-const model = useModel('@com-pot/bestiary.beast')
+const model = useModel('@com-pot/bestiary.Beast')
 
 const list = createListController<Beast>({
   availableFields: model.locate().fields('all')
@@ -50,7 +51,7 @@ function deleteBeast(id: string) {
       <router-link :to="{name: 'bestiary.Pairing'}" class="btn btn-outline-primary ml-2">{{ i18n.t('bestiary.view.Pairing') }}</router-link>
     </div>
 
-    <CollectionView>
+    <CollectionView :ctrl="list">
       <template #item="{item}">
         <div
           class="card entity-card"
@@ -82,7 +83,7 @@ function deleteBeast(id: string) {
 </template>
 
 <style lang="scss">
-[data-entity="@com-pot/bestiary.beast"].card {
+[data-entity="@com-pot/bestiary.Beast"].card {
   [data-name="gender"] {
     padding: 0.5em;
   }

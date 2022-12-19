@@ -1,7 +1,7 @@
 import {reactive} from "vue"
 
 import { createPath, FieldPath, FieldPathRaw, pathToStr } from "@typeful/model/path/pathTypes";
-import { FieldRef } from "@typeful/model/Model";
+import { FieldNotFoundRef, FieldRef } from "@typeful/model/Model";
 import { SortController as $SortController } from "@typeful/storage/collection/sorting";
 
 
@@ -42,9 +42,9 @@ export const createSorting = (availableFields: FieldRef[], config?: SortingConfi
     remove(i: number) {
       sort.value.splice(i, 1)
     },
-    getFieldLabel(prop: FieldPathRaw) {
-      const field = availableFields.find((f) => f.path.strSafe === pathToStr(prop))
-      return field?.ui?.label ?? '---'
+    getFieldRef(prop: FieldPathRaw): FieldRef | FieldNotFoundRef {
+      const ref = availableFields.find((f) => f.path.strSafe === pathToStr(prop))
+      return ref || {name: false, path: createPath(...prop)}
     },
   })
 

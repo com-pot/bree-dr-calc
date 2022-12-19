@@ -6,6 +6,7 @@ import {DecInput} from "@typeful/vue-form"
 import { FieldRef } from "@typeful/model/Model"
 import { FilterCondition } from "@typeful/storage-vue/collection/filter";
 import { useI18n } from "@typeful/vue-app/i18n";
+import { useRenderer } from "@typeful/model/recipes";
 
 const props = defineProps({
   filterCondition: {type: Object as PropType<FilterCondition>, required: true},
@@ -13,6 +14,7 @@ const props = defineProps({
 })
 
 const i18n = useI18n()
+const render = useRenderer()
 
 const availableOperators = computed(() => {
   const schema = props.field.schema
@@ -32,7 +34,7 @@ const availableOperators = computed(() => {
   <div class="filter-rule">
     <label>
       <span class="badge badge-light text-danger" @click="$emit('remove')">&times;</span>
-      <span>{{ (field.ui?.label) }}</span>
+      <span>{{ render.refToStr(field) }}</span>
       <span @click.prevent="$emit('toggle-negation')" class="term">{{ i18n.t('storage.collection.filter.match-' + !filterCondition.neg) }}</span>
 
       <Tippy interactive>

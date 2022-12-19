@@ -2,6 +2,7 @@
 import {computed, PropType} from "vue"
 
 import {useI18n} from "@typeful/vue-app/i18n"
+import { useRenderer } from "@typeful/model/recipes";
 
 import FilterRule from "./ComposableFilter/FilterRule.vue"
 import FieldSelection from "./FieldSelection.vue"
@@ -9,9 +10,14 @@ import { FieldRef } from "@typeful/model/Model"
 import { pathToStr } from "@typeful/model/path/pathTypes"
 import { FilteringController } from "@typeful/storage-vue/collection/filter"
 
+const render = useRenderer();
+
 const props = defineProps({
   ctrl: {type: Object as PropType<FilteringController>, required: true},
 })
+
+console.log(props.ctrl);
+
 
 const i18n = useI18n()
 
@@ -28,7 +34,7 @@ const addFilter = (field: FieldRef) => props.ctrl.addFilter(field.path)
     <div class="section-heading">
       {{ i18n.t('storage.collection.section.filter') }}
       <FieldSelection :fields="ctrl.fields" :pick="addFilter" :title="i18n.t('storage.collection.action.addFilter')">
-        <template v-slot:field="{field}">{{ field.field.label }}</template>
+        <template v-slot:field="{field}">{{ render.refToStr(field) }}</template>
       </FieldSelection>
     </div>
 

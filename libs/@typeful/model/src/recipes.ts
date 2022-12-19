@@ -1,4 +1,5 @@
 import { useI18n } from "vue-i18n";
+import { FieldRef } from "./Model";
 
 export function useRenderer() {
   const i18n = useI18n()
@@ -15,6 +16,14 @@ export function useRenderer() {
       console.warn("Unable to stringify", val);
 
       return null
+    },
+
+    refToStr(ref: FieldRef) {
+      if (ref.ui?.label) {
+        return ref.ui.label
+      }
+
+      return i18n.t(ref.modelMeta.name + '._p.' + ref.path.join('.'))
     },
   }
 }

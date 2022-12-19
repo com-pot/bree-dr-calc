@@ -25,6 +25,9 @@ function saveStation() {
   if (!station) {
     throw new Error("No station to be saved")
   }
+  if (!station.id || !station.country || !station.name) {
+    throw new Error("Invalid station data")
+  }
 
   let savePromise = stationWorkingCopy.origin === 'store'
     ? beastsStore.actions.updateStation(station)
