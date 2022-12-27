@@ -91,7 +91,7 @@ export default defineComponent({
         modelValue: internalValue.value,
         'onUpdate:modelValue': (value: any) => internalValue.value = value,
 
-        label: i18n.t(`${fRef.modelMeta.name}._p.${fRef.path.strSafe}`),
+        label: i18n.t(`${fRef.modelMeta.name}._p.${fRef.path.join('.')}`),
         ...fRef.ui,
         ...attrs,
 

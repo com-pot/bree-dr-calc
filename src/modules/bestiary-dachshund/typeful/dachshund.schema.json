@@ -1,37 +1,53 @@
 {
+  "$meta": {
+    "injectTo": "@com-pot/bestiary.Beast"
+  },
   "type": "object",
   "properties": {
-    "sizeVariant": {
-      "type": "string",
-      "options": "dachshund:sizeVariant"
-    },
-    "coatType": {
-      "type": "string",
-      "options": "bestiary:coatType.dachshund",
-      "ui": {"itemPrefix": "dachshund.coatType."}
-    },
-    "coatPaint": {
-      "type": "string",
-      "options": "bestiary:coatPaint.dachshund",
-      "ui": {"itemPrefix": "dachshund.coatPaint."}
-    },
-    "geneticGrades": {
-      "type": "string",
-      "options": "bestiary:geneticGrade.dachshund",
-      "multiple": true
-    },
-    "behaviorGrades": {
-      "type": "string",
-      "options": "bestiary:behaviorGrade.dachshund",
-      "multiple": true
-    },
-    "healthGrades": {
-      "type": "string",
-      "options": "bestiary:healthGrade.dachshund",
-      "multiple": true
-    },
-    "bonity": {
-      "type": "string"
+    "dachshund": {
+      "type": "object",
+      "properties": {
+        "sizeVariant": {
+          "type": "string",
+          "options": "dachshund:sizeVariant"
+        },
+        "coatType": {
+          "type": "string",
+          "options": "dachshund:coatType",
+          "ui": {
+            "createLabel": {
+              "prefix": "dachshund.coatType."
+            }
+          }
+        },
+        "coatPaint": {
+          "type": "string",
+          "options": "dachshund:coatPaint",
+          "ui": {
+            "createLabel": {
+              "prefix": "dachshund.coatPaint."
+            }
+          }
+        },
+        "geneticGrades": {
+          "type": "string",
+          "options": "dachshund:geneticGrade",
+          "multiple": true
+        },
+        "behaviorGrades": {
+          "type": "string",
+          "options": "dachshund:behaviorGrade",
+          "multiple": true
+        },
+        "healthGrades": {
+          "type": "string",
+          "options": "dachshund:healthGrade",
+          "multiple": true
+        },
+        "bonity": {
+          "type": "string"
+        }
+      }
     }
   }
 }

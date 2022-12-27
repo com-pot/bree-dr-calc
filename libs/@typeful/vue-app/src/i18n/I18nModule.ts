@@ -7,18 +7,18 @@ export default defineAppModule({
     country: {
       type: "select",
       options: "i18n:country",
-
-      ui: {
-        itemLabelTemplate: (item: CountryItem) => item.code + ' - ' + codeToRegionalString(item.code),
-      },
     },
   },
 
   getCollections() {
     return {
-      'i18n:country': fetchingCollection('/api/i18n/countries.json', {
+      'i18n:country': fetchingCollection<CountryItem, string>('/api/i18n/countries.json', {
         priorityValues: ['CZ', 'SK', 'DE', 'PL', 'HU'],
         getValue: (country) => country.code,
+
+        ui: {
+          createLabel: (item: CountryItem) => item.code + ' - ' + codeToRegionalString(item.code),
+        },
       }),
     }
   },

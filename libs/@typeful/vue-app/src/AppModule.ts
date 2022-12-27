@@ -17,7 +17,15 @@ export function stripSchemaModules<T extends object>(files: T) {
       const i = name.indexOf('.schema.json')
       const newName = name.substring('./'.length, i)
 
-      return [newName, {schema: {...spec}}]
+      const model: ModelSpecRaw = {
+        schema: {...spec},
+      }
+      if (model.schema.$meta) {
+        model.meta = model.schema.$meta
+        delete model.schema.$meta
+      }
+
+      return [newName, model]
     })
 
   return Object.fromEntries(entries)

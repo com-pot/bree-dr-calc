@@ -18,7 +18,7 @@ export const getters = {
   breedingStationName: (stationId?: string): string | null => {
     const station = state.breedingStations.find((s) => s.id === stationId)
     if (!station) {
-      console.warn("No station with id", stationId)
+      stationId && console.warn("No station with id", stationId)
       return null
     }
     return station.name

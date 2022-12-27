@@ -8,5 +8,4 @@ export type SortController = {
   availableFields: FieldRef[],
 
   entries: SortOption[],
-
 }

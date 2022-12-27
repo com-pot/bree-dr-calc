@@ -10,7 +10,6 @@
 
     > * {
       flex: 1;
-      min-width: min(90%, 40ch);
     }
 
     section.list-option {
@@ -21,6 +20,14 @@
       .section-heading {
         width: 100%;
       }
+
+      min-width: min(90%, 40ch);
+    }
+
+    > .submit-group {
+      display: flex;
+      justify-content: end;
+      min-width: 100%;
     }
   }
 

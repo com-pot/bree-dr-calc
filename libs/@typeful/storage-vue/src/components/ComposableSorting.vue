@@ -25,7 +25,7 @@ const addSorting = (field: FieldRef) => props.ctrl.toggleSort(field.path)
       </FieldSelection>
     </div>
 
-    <div class="sort-rule" v-for="([prop, direction], i) in ctrl.value">
+    <div class="sort-rule" v-for="([prop, direction], i) in ctrl.entries">
       <div class="input-group input-group-sm">
         <span class="input-group-text">
           <span class="badge badge-light text-danger" @click="ctrl.remove(i)">&times;</span>

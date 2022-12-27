@@ -14,6 +14,7 @@
     "@vueuse/core": "^9.6.0",
     "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
+    "iconify-icon": "^1.0.2",
     "immer": "^9.0.15",
     "lodash": "^4.17.21",
     "tippy.js": "^6.3.1",

@@ -41,7 +41,7 @@ export default defineComponent({
     })
 
     return () => {
-      const children = fieldRefs.value.map((field) => {
+      const inputCols = fieldRefs.value.map((field) => {
         const inputNode = h(RefInput, {
           ...field.arg.props,
           fieldRef: field.ref,
@@ -51,6 +51,10 @@ export default defineComponent({
           class: field.arg.colClass,
         }, [inputNode])
       })
+
+      const children = [
+        h('div', {class: 'row'}, inputCols),
+      ]
 
       if (legend.value) {
         children.unshift(h('legend', legend.value))

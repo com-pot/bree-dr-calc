@@ -12,11 +12,11 @@ type TypefulPluginOptions = {
 
 export default {
   install(vue: any, opts: TypefulPluginOptions) {
-    const moduleRegistry = new Registry<TypefulModule>()
-    const valueTypes = new ValueTypes()
-    const modelRegistry = new Registry<Model>()
-
     const collections = new CollectionsService()
+
+    const moduleRegistry = new Registry<TypefulModule>()
+    const valueTypes = new ValueTypes(collections)
+    const modelRegistry = new Registry<Model>()
 
     const modelSpecEntries: [string, ModelSpecRaw][] = []
 
@@ -29,6 +29,26 @@ export default {
       })
 
       Object.entries(module.models || {}).forEach(([modelName, specRaw]) => {
+
+        // TODO: Consider using struct refs instead of injecting nested schema.
+        if (specRaw.meta?.injectTo) {
+          const iModel = modelSpecEntries.findIndex(([name]) => name === specRaw.meta?.injectTo)
+          if (iModel === -1) {
+            console.warn(`Could not extend '${specRaw.meta.injectTo}' by `, specRaw);
+            return
+          }
+          const entry = modelSpecEntries[iModel][1]
+          const overlappingKeys = Object.keys(specRaw.schema.properties || {})
+            .filter((key) => entry.schema.properties?.[key])
+          if (overlappingKeys.length) {
+            console.warn(`Could not extend '${specRaw.meta.injectTo}' - overlapping keys: `, overlappingKeys);
+            return
+          }
+          Object.assign(entry.schema.properties!, specRaw.schema.properties)
+          console.log('Injected', specRaw);
+
+          return
+        }
         modelSpecEntries.push([`${name}.${modelName}`, specRaw])
       })
 

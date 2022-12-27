@@ -19,6 +19,18 @@ export type InputRegistry = {
 export function createInputRegistry(): InputRegistry {
   const entries: InputRegistryEntry[] = [
     {
+      match: (attrs) => !!(attrs.options || attrs.enum) && attrs.appearance === 'btn-group',
+      formkit: {
+        type: 'btnSelect',
+      },
+    },
+    {
+      match: (attrs) => !!(attrs.options || attrs.enum),
+      formkit: {
+        type: 'select',
+      },
+    },
+    {
       match: (attrs) => attrs.type === 'string',
       formkit: {
         type: 'text',
@@ -34,14 +46,6 @@ export function createInputRegistry(): InputRegistry {
           },
         ],
       },
-    },
-    {
-      match: (attrs) => !!(attrs.options || attrs.enum) && attrs.appearance === 'btn-group',
-      component: BtnSelectInput,
-    },
-    {
-      match: (attrs) => !!(attrs.options || attrs.enum),
-      component: SelectInput,
     },
   ]
 

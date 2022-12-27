@@ -1,10 +1,11 @@
 import {createApp} from 'vue'
 import App from '@typeful/vue-app/App.vue'
 
-import './modules/app/sass/bdcApp.scss'
 import './modules/app/sass/bdcBootstrap.scss'
+import './modules/app/sass/bdcApp.scss'
 
 import 'tippy.js/dist/tippy.css'
+import 'iconify-icon'
 
 import VueTippy from "vue-tippy"
 import I18nPlugin from "@typeful/vue-app/I18nPlugin"
@@ -27,9 +28,6 @@ createApp(App)
   })
   .use(I18nPlugin, {
     locales: ['cs_CZ'],
-    initialDictionaries: [
-      // import.meta.glob("@/modules/app/localization/app.cs_CZ.json", {eager: true})[0],
-    ],
     staticModules: [
       {source: 'local', module: '@typeful/storage', file: 'collection'},
 
@@ -43,7 +41,7 @@ createApp(App)
     modules: {
       i18n: i18nModule,
       '@com-pot/bestiary': bestiaryModule,
-      '@com-pot/dachshund': dachshundModule,
+      '@com-pot/bestiary-dachshund': dachshundModule,
     },
   })
   .use(vueFormPlugin)

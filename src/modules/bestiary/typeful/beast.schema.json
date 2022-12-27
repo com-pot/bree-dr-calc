@@ -5,8 +5,8 @@
       "type": "object",
       "properties": {
         "name": {"type": "string"},
-        "breedingStation": {"type": "string", "options": "bestiary:relation.breedingStation"},
-        "gender": {"type": "string", "options": "bestiary:gender", "nullable": true},
+        "breedingStation": {"type": "hasOne", "options": "bestiary:breedingStation"},
+        "sex": {"type": "string", "options": "bestiary:sex", "nullable": true},
         "evidenceCode": {"type": "string"},
         "birthDay": {"type": "date"}
       }
@@ -19,7 +19,7 @@
           "options": {
             "source": "bestiary:beast",
             "filter": [
-              { "prop": "general.gender", "op": "=", "args": ["f"], "neg": true}
+              { "prop": "general.sex", "op": "=", "args": ["f"], "neg": true}
             ]
           }
         },
@@ -28,7 +28,7 @@
           "options": {
             "source": "bestiary:beast",
             "filter": [
-              { "prop": "general.gender", "op": "=", "args": ["m"], "neg": true}
+              { "prop": "general.sex", "op": "=", "args": ["m"], "neg": true}
             ]
           }
         },

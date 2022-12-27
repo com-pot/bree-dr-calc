@@ -1,8 +1,5 @@
 <script lang="ts" setup>
 import { RefFieldset } from "@typeful/vue-form"
-import { provideActiveModel } from "@typeful/model-vue/useModel"
-
-provideActiveModel('@com-pot/bestiary-dachshund.dachshund')
 
 const dachshundFieldset = {
   label: "Detaily jezevčíka",

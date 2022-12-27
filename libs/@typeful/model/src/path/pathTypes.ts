@@ -15,3 +15,8 @@ export function pathToStr(path: FieldPathRaw | FieldPath): string {
 export function isFieldPath(subject: any): subject is FieldPathRaw | FieldPath {
   return Array.isArray(subject)
 }
+
+export function pathSame(a: FieldPathRaw, b: FieldPathRaw): boolean {
+  if (a.length !== b.length) return false
+  return a.every((part, i) => part === b[i])
+}

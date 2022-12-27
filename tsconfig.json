@@ -51,7 +51,8 @@
   },
   "include": [
     "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue",
-    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue"
+    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue",
+    "test/**/*.ts",
   ],
   "exclude": [
     "node_modules",

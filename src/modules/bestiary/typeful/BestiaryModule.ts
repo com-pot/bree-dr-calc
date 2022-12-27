@@ -1,5 +1,3 @@
-import * as gender from "./gender.type"
-import {createBeastListItem} from "@/modules/bestiary/model/beastItemsSource"
 import beastsStore from "@/modules/bestiary/store/beastsStore"
 import localCollection from "@typeful/storage/collection/controllers/localCollection"
 import { defineAppModule, stripSchemaModules } from "@typeful/vue-app/AppModule"
@@ -7,10 +5,9 @@ import { defineAppModule, stripSchemaModules } from "@typeful/vue-app/AppModule"
 export default defineAppModule({
   models: stripSchemaModules(import.meta.glob("./*.schema.json", {eager: true, import: 'default'})),
   types: {
-    gender: {
+    sex: {
       type: "string", appearance: "btn-group",
-      options: gender.options,
-      ui: { itemPrefix: 'bestiary.beast.gender.' },
+      options: 'bestiary:sex',
     },
     geneticGrade: {
       type: "string",
@@ -24,42 +21,45 @@ export default defineAppModule({
     bonity: {
       type: "string",
     },
-
-    'relation.beast': {
-      type: "string",
-      options: "relation:beast",
-      valueKey: 'id',
-      ui: {
-        itemLabelTemplate: {
-          op: 'join', separator: ' ',
-          filter: 'non-empty',
-          args: [
-            {path: ['name']},
-            {path: ['breedingStation']},
-            {path: ['gender']},
-          ],
-        },
-      },
-    },
-    'relation.breedingStation': {
-      type: "select",
-      options: "bestiary:breedingStation",
-      valueKey: 'id',
-      ui: {
-        itemLabelTemplate: [
-          {path: ['name']},
-          {const: ' ['},
-          {path: ['country']},
-          {const: ']'},
-        ],
-      },
-    }
   },
   getCollections() {
     return {
-      'relation:beast': localCollection(() => beastsStore.state.beastList, createBeastListItem),
-      'bestiary:beast': localCollection(() => beastsStore.state.beastList),
-      'bestiary:breedingStation': localCollection(() => beastsStore.state.breedingStations),
+      'bestiary:sex': localCollection(() => [{value: 'm'}, {value: 'f'}], {
+        ui: {
+          createLabel: { prefix: '@com-pot/bestiary.sex.' },
+        },
+      }),
+      'bestiary:beast': localCollection(() => beastsStore.state.beastList, {
+        valueKey: 'id',
+        ui: {
+          createLabel: {
+            type: 'template',
+            template: {
+              op: 'join', separator: ' ',
+              filter: 'non-empty',
+              args: [
+                {path: ['general', 'name']},
+                {path: ['general', 'breedingStation']},
+                {path: ['general', 'sex']},
+              ],
+            },
+          },
+        },
+      }),
+      'bestiary:breedingStation': localCollection(() => beastsStore.state.breedingStations, {
+        valueKey: 'id',
+        ui: {
+          createLabel: {
+            type: 'template',
+            template: [
+              {path: ['name']},
+              {const: ' ['},
+              {path: ['country']},
+              {const: ']'},
+            ],
+          }
+        }
+      }),
     }
   },
 })

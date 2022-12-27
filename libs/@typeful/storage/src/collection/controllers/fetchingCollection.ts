@@ -1,4 +1,4 @@
-import { CollectionController } from "../collection.types"
+import { CollectionController, CollectionOptions } from "../collection.types"
 
 type NormalizeCallback<I, T> = (item: I) => T
 
@@ -6,7 +6,7 @@ type FetchingOptions<T, TKey extends string | number = number> = {
   priorityValues?: TKey[],
   getValue?: (item: T) => TKey,
   normalizeCollection?: NormalizeCallback<T[], any[]>,
-}
+} & CollectionOptions<T>
 
 export default function fetchingCollection<T, TKey extends string | number = number>(url: string, options?: FetchingOptions<T, TKey>): CollectionController<T> {
   const getValue = options?.getValue || ((item) => item as any)
@@ -27,6 +27,10 @@ export default function fetchingCollection<T, TKey extends string | number = num
   }
 
   return {
+    mode: 'async',
+    opts: {
+      ui: options?.ui,
+    },
     retrieve,
   }
 }

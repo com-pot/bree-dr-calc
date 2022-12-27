@@ -27,8 +27,8 @@ const pairingModel = useModel({
         min: 1, max: maxCalculationLevel, step: 1,
         default: maxCalculationLevel,
       },
-      mother: { $ref: '@com-pot/bestiary.beast', path: ['lineage', 'mother'] },
-      father: { $ref: '@com-pot/bestiary.beast', path: ['lineage', 'father'] },
+      mother: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'mother'] },
+      father: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'father'] },
       walkOrder: {
         type: "string", appearance: "btn-group", default: 'father, mother',
         options: [

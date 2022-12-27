@@ -11,6 +11,7 @@ export default defineComponent({
   props: {
     options: {type: [String, Array, Object] as PropType<string | any[] | OptionsObj>},
     valueKey: {type: String, default: 'value'},
+    type: {type: String},
 
     ui: {type: Object as PropType<FieldRef['ui']>},
   },
@@ -19,21 +20,6 @@ export default defineComponent({
     const collections = useCollections()
 
     const availableOptions = ref([] as any[])
-
-    const createItemLabel = computed(() => {
-      let createLabel = props.ui?.itemLabelTemplate
-      if (createLabel && typeof createLabel === "object") {
-        return compileRecipeEvalFn(createLabel)
-      }
-      if (typeof createLabel === "function") {
-        return createLabel
-      }
-      if (createLabel) {
-        console.warn("itemLabelTemplate value not recognized", createLabel);
-      }
-
-      return null
-    })
 
     const setItems = (items: any[]) => {
       const cLabel = createItemLabel.value

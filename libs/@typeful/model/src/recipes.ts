@@ -1,5 +1,5 @@
 import { useI18n } from "vue-i18n";
-import { FieldRef } from "./Model";
+import { FieldNotFoundRef, FieldRef } from "./Model";
 
 export function useRenderer() {
   const i18n = useI18n()
@@ -18,7 +18,11 @@ export function useRenderer() {
       return null
     },
 
-    refToStr(ref: FieldRef) {
+    refToStr(ref: FieldRef | FieldNotFoundRef) {
+      if (ref.name === false) {
+        console.warn("Unknown field", ref);
+        return "---"
+      }
       if (ref.ui?.label) {
         return ref.ui.label
       }

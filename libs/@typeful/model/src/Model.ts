@@ -32,8 +32,7 @@ export type FieldRef = {
   modelMeta: ModelSpec['meta'],
 
   ui?: Record<string, any> & {
-    itemPrefix?: string,
-    itemLabelTemplate?: ((item: any) => string) | Recipe
+    createLabel: ((item: any) => string) | {prefix: string} | Recipe,
   },
 }
 export type FieldNotFoundRef = {
@@ -163,6 +162,7 @@ export type ModelSpec = {
 export type ModelSpecRaw = {
   meta?: {
     name?: string,
+    injectTo?: string,
   },
 
   schema: ModelSpec['schema'],

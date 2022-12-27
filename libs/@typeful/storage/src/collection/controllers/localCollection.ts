@@ -2,10 +2,13 @@ import orderBy from "lodash/orderBy"
 
 import {matchFilterFn} from "./localCollection/filter"
 import { PaginationResult } from "@typeful/storage/collection/ListController"
-import { CollectionController } from "../collection.types"
+import { CollectionController, CollectionOptions } from "../collection.types"
 
-export default function localCollection<T, TOut=T>(getItems: () => T[], transformItem?: (i: T) => TOut): CollectionController<TOut> {
+export default function localCollection<TItem>(getItems: () => TItem[], opts?: CollectionOptions<TItem>): CollectionController<TItem, 'sync'> {
   return {
+    mode: 'sync',
+    opts,
+
     retrieve: ((filter, sort, pagination) => {
       let items = getItems()
       if (filter) {
@@ -15,7 +18,7 @@ export default function localCollection<T, TOut=T>(getItems: () => T[], transfor
       if (sort) {
         const iteratees = sort.map((s) => s[0])
         const orders = sort.map((s) => s[1])
-        items = orderBy(items, iteratees, orders) as T[]
+        items = orderBy(items, iteratees, orders) as TItem[]
       }
 
       const perPage = pagination?.perPage || 20
@@ -28,14 +31,12 @@ export default function localCollection<T, TOut=T>(getItems: () => T[], transfor
       const start = (paginationRes.page - 1) * perPage
       items = items.slice(start, start + perPage)
 
-      const itemsOut: TOut[] = transformItem ? items.map(transformItem) : items as unknown as TOut[]
-
       return {
-        items: itemsOut,
+        items: items,
         filter: filter,
         sort: sort,
         pagination: paginationRes,
       }
-    })
+    }),
   }
 }

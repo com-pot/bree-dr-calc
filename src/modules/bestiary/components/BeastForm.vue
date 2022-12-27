@@ -1,11 +1,12 @@
 <script lang="ts" setup>
   import {computed, h} from "vue"
   import {useI18n} from "@typeful/vue-app/i18n"
-  import {DecForm} from "@typeful/vue-form"
+  import {DecForm, RefFieldset} from "@typeful/vue-form"
 
   import beastsStore from "@/modules/bestiary/store/beastsStore"
   import { provideActiveModel } from "@typeful/model-vue/useModel"
   import asyncRef from "@typeful/vue-utils/asyncRef"
+
 
   const props = defineProps({
     beast: {type: Object, required: true},
@@ -14,13 +15,17 @@
   const i18n = useI18n()
   const wrightCalc = asyncRef()
 
-  provideActiveModel('@com-pot/bestiary.beast')
+  provideActiveModel('@com-pot/bestiary.Beast', {
+    extend: {
+      dachshund: '@com-pot/bestiary-dachshund.dachshund',
+    }
+  })
 
   const generalFieldset = {
-    name: 'general', locPrefix: 'bestiary.beast.fieldGroup.',
+    name: 'general', locPrefix: 'bestiary.beast.fieldGroup',
 
     fields: [
-      {ref: ['general', 'gender'], colClass: 'col-md-3'},
+      {ref: ['general', 'sex'], colClass: 'col-md-3'},
       {ref: ['general', 'name'], colClass: 'col-md-4'},
       {ref: ['general', 'breedingStation'], colClass: 'col-md-5'},
       {ref: ['general', 'birthDay'], colClass: 'col-md-3'},
@@ -29,7 +34,7 @@
   }
 
   const lineageFieldset = {
-    name: 'lineage', locPrefix: 'bestiary.beast.fieldGroup.',
+    name: 'lineage', locPrefix: 'bestiary.beast.fieldGroup',
 
     fields: [
       {ref: ['lineage', 'father'], colClass: 'col-md'},

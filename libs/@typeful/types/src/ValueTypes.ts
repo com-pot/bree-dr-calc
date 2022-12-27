@@ -1,32 +1,41 @@
 import { FieldRef } from "@typeful/model/Model";
 import { Schema } from "@typeful/schema/Schema";
+import CollectionsService from "@typeful/storage/CollectionsService";
 import Registry from "@typeful/utils/Registry";
 
 export default class ValueTypes {
   public readonly registry: Registry<any> = new Registry()
 
-  public getRefDefaultValue(field: FieldRef): any {
+  public constructor(private readonly collections: CollectionsService) {
+
+  }
+
+  public getRefDefaultValue(field: FieldRef): unknown {
     if (field.schema.default) {
       return field.schema.default
     }
 
-    const getFirstItemValue = ([item]: any[]) => item && item[field.ui?.valueKey || 'value']
-
-    const options = field.schema.options
-    if (Array.isArray(options)) {
-      return getFirstItemValue(options)
+    let options = field.schema.options
+    if (options && field.schema.multiple) {
+      return []
     }
+    if (options && !Array.isArray(options)) {
+      if (!this.collections) {
+        console.warn("Collections not available");
+        return
+      }
 
-    if (options) {
-      console.warn("getRefDefaultValue not implemented for ", field);
-      // let source: string, filter: any
-      // if (typeof options === "string") {
-      //   source = options
-      // } else {
-      //   source = options.source
-      //   filter = options.filter
-      // }
-      // return this.collections.getDefaultValue(source, filter)
+      let source: string, filter: any
+      if (typeof options === "string") {
+        source = options
+      } else {
+        source = options.source
+        filter = options.filter
+      }
+      options = this.collections.getDefaultValue(source, filter)
+    }
+    if (Array.isArray(options)) {
+      return getFirstItemValue(options, field)
     }
 
     return this.getDefaultValue(field.schema)
@@ -73,3 +82,5 @@ export default class ValueTypes {
     return target ?? this.getDefaultValue(schema)
   }
 }
+
+const getFirstItemValue = ([item]: any[], field: FieldRef) => item && item[field.ui?.valueKey || 'value']

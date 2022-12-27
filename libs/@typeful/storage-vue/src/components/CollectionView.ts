@@ -8,6 +8,7 @@ export default defineComponent({
   props: {
     ctrl: {type: Object as PropType<ListController>, required: true},
     appearance: {type: String as PropType<'list'>, default: "list"},
+    flow: {type: String},
   },
   setup(props, {slots}) {
 
@@ -23,9 +24,9 @@ export default defineComponent({
       let elements: VNode[] = []
       pushNode(hView.optionsContainer(props.ctrl), elements)
 
-      pushNode(viewController.value.h.body(props.ctrl, slots))
+      pushNode(viewController.value.h.body(props.ctrl, slots, props), elements)
 
-      pushNode(hView.pagination(props.ctrl))
+      pushNode(hView.pagination(props.ctrl), elements)
 
       return elements
     }
@@ -35,8 +36,21 @@ export default defineComponent({
 const viewControllers = {
   list: {
     h: {
-      body(ctrl: ListController, slots: Readonly<Slots>) {
+      body(ctrl: ListController, slots: Readonly<Slots>, props: any) {
+        if (ctrl.data.status === 'n/a') {
+          return h('span', 'n/a')
+        }
+        if (ctrl.data.status === "busy") {
+          return h('span', ['loading'])
+        }
+        if (ctrl.data.status === 'error' || !ctrl.data.ready) {
+          return h('span', ['error'])
+        }
+        const items = ctrl.data.value.items.map((item) => {
+          return slots.item?.({item})
+        })
 
+        return h('div', {class: ['list-items', props?.flow && 'flow-' + props.flow]}, items)
       },
     }
   }
@@ -53,31 +67,49 @@ const hView = {
     }
 
     if (result) {
+      pushNode(h('div', {class: 'submit-group'}, [
+        h('button', {
+          class: 'btn btn-secondary',
+          'onClick'() {
+            console.log('Display results');
+          },
+        }, ['Zobrazit']),
+      ]), result)
+
       return h('div', {class: 'list-options'}, result)
     }
   },
 
   pagination: (ctrl: ListController) => {
     if (!ctrl.pagination || (ctrl.data.ready && !ctrl.data.value.pagination)) {
+      console.log('no pagination');
+
       return
     }
+    console.log('pagination', ctrl.pagination);
+
     return h(Pagination, {
-      page: ctrl.pagination.page,
-      'onUpdate:page': (value: number) => ctrl.pagination.page = value,
+      modelValue: ctrl.pagination.page,
+      'onUpdate:modelValue': (value: number) => {
+        ctrl.pagination.page = value
+        ctrl.load()
+      },
       maxPage: ctrl.getTotalPages(),
     })
   },
 }
 
-function pushNode(node: VNode, container?: VNode[]): VNode[]
-function pushNode(node: VNode | undefined, container: VNode[]): VNode[]
-function pushNode(node?: VNode, container?: VNode[]): VNode[] | undefined
-function pushNode(node?: VNode, container?: VNode[]) {
+function pushNode(node: VNode | VNode[], container?: VNode[]): VNode[]
+function pushNode(node: VNode | VNode[] | undefined, container: VNode[]): VNode[]
+function pushNode(node?: VNode | VNode[], container?: VNode[]): VNode[] | undefined
+function pushNode(node?: VNode | VNode[] , container?: VNode[]) {
   if (node) {
     if (!container) {
       container = []
     }
-    container.push(node)
+    Array.isArray(node)
+      ? container.push(...node)
+      : container.push(node)
   }
 
   return container

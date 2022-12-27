@@ -4,9 +4,19 @@ import vue from "@vitejs/plugin-vue"
 import tsconfifigPaths from "vite-tsconfig-paths"
 import {viteStaticCopy as copy} from "vite-plugin-static-copy"
 
+const knownCustomElements = {
+    'iconify-icon': true,
+}
+
 export default defineConfig({
     plugins: [
-        vue(),
+        vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (str) => !!knownCustomElements[str],
+                },
+            },
+        }),
         tsconfifigPaths({
             extensions: ['.js', '.ts', '.vue'],
             loose: true,

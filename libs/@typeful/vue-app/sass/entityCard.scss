@@ -12,16 +12,7 @@
   }
 }
 
-.flow-block {
-  .text-stack {
-    display: flex;
-    flex-direction: row;
-  }
-}
-
-.flow-inline {
-  .text-stack {
-    display: flex;
-    flex-direction: column;
-  }
+.text-stack {
+  display: flex;
+  flex-direction: column;
 }

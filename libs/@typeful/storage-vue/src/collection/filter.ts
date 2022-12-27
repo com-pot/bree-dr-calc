@@ -1,5 +1,5 @@
 import {reactive} from "vue"
-import { FieldPathRaw } from "@typeful/model/path/pathTypes"
+import { FieldPathRaw, pathSame } from "@typeful/model/path/pathTypes"
 
 import { FieldRef } from "@typeful/model/Model"
 
@@ -14,36 +14,39 @@ export type FilterCondition<TArgs = any[]> = {
 }
 
 export const createFiltering = (fields: FieldRef[]) => {
-  const value = reactive([] as FilterCondition[])
-
-  return {
+  return reactive({
     fields,
-    value,
+    value: [] as FilterCondition[],
 
     addFilter(prop: FilterCondition['prop'], op: FilterType = '=', args?: FilterCondition['args']) {
-      value.push({
+      const iExisting = this.value.findIndex((condition) => pathSame(prop, condition.prop))
+      if (iExisting !== -1) {
+        this.removeFilter(iExisting)
+      }
+
+      this.value.push(reactive({
         prop: prop,
         op,
         args,
-      })
+      }))
     },
     removeFilter(i: number) {
-      value.splice(i, 1)
+      this.value.splice(i, 1)
     },
     setFilterType(i: number, filterType: FilterType) {
-      value[i].op = filterType
+      this.value[i].op = filterType
     },
     setArgs(i: number, args: any) {
-      value[i].args = args
+      this.value[i].args = args
     },
     toggleNegation(i: number) {
-      if (value[i].neg) {
-        delete value[i].neg
+      if (this.value[i].neg) {
+        delete this.value[i].neg
       } else {
-        value[i].neg = true
+        this.value[i].neg = true
       }
     },
-  }
+  })
 }
 
 export type FilteringController = ReturnType<typeof createFiltering>
