@@ -3,6 +3,7 @@ import { isRefSchema, RefSchema, Schema } from "@typeful/schema/Schema";
 import { createPath, FieldPath, FieldPathRaw, isFieldPath, pathToStr } from "./path/pathTypes";
 import { Recipe } from "@typeful/types/Recipe";
 import ValueTypes from "@typeful/types/ValueTypes";
+import { merge } from "lodash";
 
 export default class Model<T extends object = any> {
 
@@ -32,7 +33,7 @@ export type FieldRef = {
   modelMeta: ModelSpec['meta'],
 
   ui?: Record<string, any> & {
-    createLabel: ((item: any) => string) | {prefix: string} | Recipe,
+    createLabel?: ((item: any) => string) | {prefix: string} | Recipe,
   },
 }
 export type FieldNotFoundRef = {
@@ -49,7 +50,7 @@ class FieldLocator {
 
   public field(arg: GetFieldArg): FieldRef | FieldNotFoundRef {
     if (!isFieldPath(arg)) {
-      return Object.assign({}, this.field(arg.path), arg)
+      return merge({}, this.field(arg.path), arg)
     }
 
     const candidate = this.fieldIndex.find(arg)
@@ -132,14 +133,20 @@ class FieldIndex {
       if (!index[pathStr]) {
         index[pathStr] = []
       }
-      index[pathStr].push({
+
+      const candidate: FieldIndexEntryCandidate = {
         field: {
           name: path[path.length - 1],
           path: path,
           schema,
           modelMeta,
         },
-      })
+      }
+      if (schema['x-ui']) {
+        candidate.field.ui = schema['x-ui']
+        delete schema['x-ui']
+      }
+      index[pathStr].push(candidate)
     }
 
     return new FieldIndex(index)

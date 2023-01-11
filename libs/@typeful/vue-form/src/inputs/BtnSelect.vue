@@ -1,22 +1,27 @@
 <script lang="ts" setup>
-import {PropType} from "vue";
-
-const emit = defineEmits(['update:modelValue'])
+import { FormKitContext } from "@formkit/core";
+import {computed, PropType} from "vue";
 
 type Option = {value: string|number, label: string}
-defineProps({
-  modelValue: {},
-  options: {type: Array as PropType<Option[]>, required: true},
+const props = defineProps({
+  context: {type: Object as PropType<FormKitContext>, required: true},
 })
+
+const options = computed<Option[]>(() => {
+  return (props.context as any).attrs?.options || []
+})
+function handleValue(value: any) {
+  (props.context as any).node.input(value)
+}
 
 </script>
 
 <template>
   <div class="btn-group btn-group-select">
     <label v-for="option in options" :key="option.value"
-           :class="['btn', modelValue === option.value ? 'btn-primary' : 'btn-light']">
+           :class="['btn', context.value === option.value ? 'btn-primary' : 'btn-light']">
       <input type="radio" :value="option.value"
-             :checked="option.value === modelValue" @update:checked="emit('update:modelValue', option.value)"
+             :checked="option.value === context.value" @input="handleValue(option.value)"
       />
       <span>{{ option.label }}</span>
     </label>

@@ -1,5 +1,6 @@
 import { diKeyModelRegistry } from "@typeful/model-vue/useModel";
 import Model, { ModelContext, ModelSpecRaw } from "@typeful/model/Model";
+import { Schema } from "@typeful/schema/Schema";
 import CollectionsService from "@typeful/storage/CollectionsService";
 import ValueTypes from "@typeful/types/ValueTypes";
 import Registry from "@typeful/utils/Registry";
@@ -24,11 +25,7 @@ export default {
       Object.entries(module.getCollections?.() || {})
         .forEach(([name, collection]) => collections.registry.put(name, collection))
 
-      Object.entries(module.types || {}).forEach(([name, type]) => {
-        valueTypes.registry.put(name, type)
-      })
-
-      Object.entries(module.models || {}).forEach(([modelName, specRaw]) => {
+      Object.entries(augmentModels(module.models, module.modelAugments) || {}).forEach(([modelName, specRaw]) => {
 
         // TODO: Consider using struct refs instead of injecting nested schema.
         if (specRaw.meta?.injectTo) {
@@ -70,4 +67,26 @@ export default {
     vue.provide('vtf-valueTypes', valueTypes)
     vue.provide(diKeyModelRegistry, modelRegistry)
   }
+}
+
+function augmentModels(models?: TypefulModule['models'], augments?: TypefulModule['modelAugments']) {
+  if (!models || !augments) {
+    return models
+  }
+
+  augments.forEach((augment) => {
+    const model = models[augment.model]
+    if (!model) {
+      console.error("Could not find model " + augment.model);
+      return
+    }
+    const field = augment.path.reduce((schema, pathPart) => schema?.properties?.[pathPart] as any, model.schema as Schema | undefined)
+    if (!field) {
+      console.error("Could not find field on model", augment.model, augment.path, model);
+      return
+    }
+    Object.assign(field, augment.op.assign)
+  })
+
+  return models
 }

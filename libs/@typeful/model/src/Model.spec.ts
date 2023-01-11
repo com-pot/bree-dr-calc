@@ -14,7 +14,12 @@ describe("Model", () => {
     schema: {
       type: 'object',
       properties: {
-        userName: {type: 'string'},
+        userName: {
+          type: 'string',
+          'x-ui': {
+            prefix: '@',
+          },
+        },
         password: {
           type: 'string', mode: 'password',
         },
@@ -28,6 +33,7 @@ describe("Model", () => {
         name: 'userName',
         path: ['userName'],
         schema: {type: "string"},
+        ui: {prefix: '@'},
         modelMeta: model.spec.meta,
       })
     })
@@ -55,6 +61,21 @@ describe("Model", () => {
       ui: { mode: 'otp', length: 6 },
       modelMeta: model.spec.meta,
     })
+  })
+  it ('locates field, merging ui options with schema', () => {
+    expect(model.locate().field({
+      path: ['userName'],
+      ui: {
+        suffix: '@mastod.on',
+      },
+    }))
+      .to.deep.equal({
+        name: 'userName',
+        path: ['userName'],
+        schema: {type: 'string'},
+        ui: {prefix: '@', suffix: '@mastod.on'},
+        modelMeta: model.spec.meta,
+      })
   })
 
   it("locates all fields", () => {

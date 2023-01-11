@@ -16,6 +16,13 @@ const props = defineProps({
 const i18n = useI18n()
 const render = useRenderer()
 
+const inputAttrs = computed(() => {
+  return {
+    ...props.field.schema,
+    ...props.field.ui,
+  }
+})
+
 const availableOperators = computed(() => {
   const schema = props.field.schema
 
@@ -50,7 +57,7 @@ const availableOperators = computed(() => {
       </Tippy>
     </label>
 
-    <DecInput class="filter-input" v-bind="field.schema"
+    <DecInput class="filter-input" v-bind="inputAttrs"
        :model-value="filterCondition.args?.[0] ?? null"
        @update:model-value="$emit('update:args', [$event])"
     />

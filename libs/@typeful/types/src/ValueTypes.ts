@@ -6,7 +6,7 @@ import Registry from "@typeful/utils/Registry";
 export default class ValueTypes {
   public readonly registry: Registry<any> = new Registry()
 
-  public constructor(private readonly collections: CollectionsService) {
+  public constructor(private readonly collections?: CollectionsService) {
 
   }
 

@@ -19,7 +19,7 @@ export type InputRegistry = {
 export function createInputRegistry(): InputRegistry {
   const entries: InputRegistryEntry[] = [
     {
-      match: (attrs) => !!(attrs.options || attrs.enum) && attrs.appearance === 'btn-group',
+      match: (attrs) => !!(attrs.options || attrs.enum) && attrs.appearance === 'buttons',
       formkit: {
         type: 'btnSelect',
       },

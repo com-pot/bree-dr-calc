@@ -3,25 +3,10 @@ import localCollection from "@typeful/storage/collection/controllers/localCollec
 import { defineAppModule, stripSchemaModules } from "@typeful/vue-app/AppModule"
 
 export default defineAppModule({
-  models: stripSchemaModules(import.meta.glob("./*.schema.json", {eager: true, import: 'default'})),
-  types: {
-    sex: {
-      type: "string", appearance: "btn-group",
-      options: 'bestiary:sex',
-    },
-    geneticGrade: {
-      type: "string",
-    },
-    behaviorGrade: {
-      type: "string",
-    },
-    healthGrade: {
-      type: "string",
-    },
-    bonity: {
-      type: "string",
-    },
-  },
+  models: stripSchemaModules(import.meta.glob("./*.schema.json", {eager: true, import: 'default'}), ),
+  modelAugments: [
+    {model: 'Beast', path: ['general', 'sex'], op: {assign: {'x-ui': {appearance: 'buttons'}}}},
+  ],
   getCollections() {
     return {
       'bestiary:sex': localCollection(() => [{value: 'm'}, {value: 'f'}], {
@@ -31,6 +16,7 @@ export default defineAppModule({
       }),
       'bestiary:beast': localCollection(() => beastsStore.state.beastList, {
         valueKey: 'id',
+
         ui: {
           createLabel: {
             type: 'template',
@@ -48,6 +34,7 @@ export default defineAppModule({
       }),
       'bestiary:breedingStation': localCollection(() => beastsStore.state.breedingStations, {
         valueKey: 'id',
+
         ui: {
           createLabel: {
             type: 'template',

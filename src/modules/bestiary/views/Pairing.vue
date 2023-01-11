@@ -30,7 +30,7 @@ const pairingModel = useModel({
       mother: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'mother'] },
       father: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'father'] },
       walkOrder: {
-        type: "string", appearance: "btn-group", default: 'father, mother',
+        type: "string", appearance: "buttons", default: 'father, mother',
         options: [
           {value: 'father,mother', label: 'Otec, Matka'},
           {value: 'mother,father', label: 'Matka, Otec'},
