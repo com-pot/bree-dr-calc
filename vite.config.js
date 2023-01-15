@@ -35,5 +35,6 @@ export default defineConfig({
         'process.env.VUE_APP_NAME': `"Bree Dr.Calc"`,
         'process.env.VUE_APP_VERSION': `"${process.env.npm_package_version}"`,
         'process.env.VUE_APP_REPO': `'https://github.com/Thoronir42/bree-dr-calc'`,
+        'import.meta.env.MAX_CALCULATION_LEVEL': 4,
     },
 })

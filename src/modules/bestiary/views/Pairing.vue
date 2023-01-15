@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import {computed, reactive, ref, watch} from "vue"
-import {RefInput} from "@typeful/vue-form"
+import {computed, reactive, watch} from "vue"
+import {RefInput, DecInput} from "@typeful/vue-form"
 import {useI18n} from "@typeful/vue-app/i18n"
+import {useTabs} from "@typeful/vue-app/components/tabs"
 
 import * as beastStore from "../store/beastsStore"
 import BeastFamilyTree, { RelationName } from "../model/BeastFamilyTree"
@@ -10,14 +11,16 @@ import {Beast} from "../model/Bestiary";
 
 import AncestryTree from "../components/AncestryTree.vue";
 import MultiOccurrence from "../components/MultiOccurrence.vue";
-import useModel, { provideActiveModel } from "@typeful/model-vue/useModel"
+import useModel, { provideActiveModel, provideModelInstance } from "@typeful/model-vue/useModel"
 import PairingPicker from "../components/PairingPicker.vue"
 
 
 const i18n = useI18n()
-const maxCalculationLevel = 4
+const maxCalculationLevel: number = import.meta.env.MAX_CALCULATION_LEVEL
 
-const pairingModel = useModel({
+const beastModel = useModel('@com-pot/bestiary.Beast')
+
+const model = provideActiveModel(useModel({
   meta: { name: "bestiary.pairing" },
   schema: {
     type: "object",
@@ -27,10 +30,12 @@ const pairingModel = useModel({
         min: 1, max: maxCalculationLevel, step: 1,
         default: maxCalculationLevel,
       },
-      mother: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'mother'] },
-      father: { $ref: '@com-pot/bestiary.Beast', path: ['lineage', 'father'] },
+
+      mother: beastModel.locate().field(['lineage', 'mother'], 'null')?.schema!,
+      father: beastModel.locate().field(['lineage', 'father'], 'null')?.schema!,
+
       walkOrder: {
-        type: "string", appearance: "buttons", default: 'father, mother',
+        type: "string", appearance: "buttons", default: 'father,mother',
         options: [
           {value: 'father,mother', label: 'Otec, Matka'},
           {value: 'mother,father', label: 'Matka, Otec'},
@@ -40,10 +45,15 @@ const pairingModel = useModel({
       },
     },
   }
-})
-const model = provideActiveModel(pairingModel)
+}))
 
 const pairing = reactive(model.value.setDefaults())
+if (!pairing.walkOrder) {
+  console.warn("Walk order not initialized");
+}
+console.log(pairing);
+
+provideModelInstance(pairing)
 
 const ancestorTrees = reactive({
   mother: null as BeastFamilyTree | null,
@@ -89,11 +99,10 @@ const getBeast = (id: string): Beast => {
   return beast
 }
 
-const visualisationTabs = [
+const visualisationTabs = useTabs([
   {name: 'explanation'},
   {name: 'lineage'},
-]
-const activeTab = ref('explanation')
+])
 
 </script>
 
@@ -111,6 +120,11 @@ const activeTab = ref('explanation')
       :beast-multi-presence="beastMultiPresence"
     />
 
+    <div>
+      <RefInput path="maxGenerations"/>
+      <DecInput type="number" name="maxGenerations_dec" v-model="pairing.maxGenerations"/>
+    </div>
+
     <div class="card mt-4">
       <div class="card-header">
         <h2>Detaily párování</h2>
@@ -121,21 +135,22 @@ const activeTab = ref('explanation')
         </p>
 
         <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item" v-for="tab in visualisationTabs" :key="tab.name">
-            <a href="#" :class="['nav-link', activeTab === tab.name && 'active']"
-               @click.prevent="activeTab = tab.name">{{ i18n.t('bestiary.pairing.tab.' + tab.name) }}</a>
+          <li class="nav-item" v-for="tab in visualisationTabs.tabs" :key="tab.name">
+            <a href="#" :class="['nav-link', visualisationTabs.value === tab.name && 'active']"
+               @click.prevent="visualisationTabs.value = tab.name">{{ i18n.t('bestiary.pairing.tab.' + tab.name) }}</a>
           </li>
         </ul>
       </div>
 
       <div class="card-body">
-        <template v-if="activeTab === 'explanation'">
+        <template v-if="visualisationTabs.value === 'explanation'">
           <MultiOccurrence :max-calculation-level="maxCalculationLevel" :occurrences="beastMultiPresence"/>
         </template>
-        <template v-else-if="activeTab === 'lineage'">
+        <template v-else-if="visualisationTabs.value === 'lineage'">
           <div class="row">
             <div class="col-md-6">
               <RefInput path="maxGenerations"/>
+              <DecInput type="number" name="maxGenerations_dec" v-model="pairing.maxGenerations"/>
             </div>
             <div class="col-md-6">
               <RefInput path="walkOrder"/>

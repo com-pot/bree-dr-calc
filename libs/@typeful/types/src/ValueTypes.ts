@@ -1,5 +1,5 @@
 import { FieldRef } from "@typeful/model/Model";
-import { Schema } from "@typeful/schema/Schema";
+import { Schema, isRefSchema, getValueKeyFromSchemaOptions } from "@typeful/schema/Schema";
 import CollectionsService from "@typeful/storage/CollectionsService";
 import Registry from "@typeful/utils/Registry";
 
@@ -19,6 +19,7 @@ export default class ValueTypes {
     if (options && field.schema.multiple) {
       return []
     }
+    /*
     if (options && !Array.isArray(options)) {
       if (!this.collections) {
         console.warn("Collections not available");
@@ -34,6 +35,7 @@ export default class ValueTypes {
       }
       options = this.collections.getDefaultValue(source, filter)
     }
+     */
     if (Array.isArray(options)) {
       return getFirstItemValue(options, field)
     }
@@ -44,6 +46,10 @@ export default class ValueTypes {
   public getDefaultValue(schema: Schema): any {
     if (schema.default) {
       return schema.default
+    }
+
+    if (Array.isArray(schema.options)) {
+      return schema.options[0].value
     }
 
     if (schema.type === "string") {
@@ -60,13 +66,21 @@ export default class ValueTypes {
   }
 
   public setDefaults(schema: Schema, target?: any): any {
+    if (!schema) {
+      throw new Error("No schema provided")
+    }
     if (schema.type === "object") {
       if (!target) {
         target = {}
       }
 
-      Object.entries(schema.properties || {}).forEach(([name, subShema]) => {
-        target[name] = this.setDefaults(target[name], subShema)
+      Object.entries(schema.properties || {}).forEach(([name, subSchema]) => {
+        if (isRefSchema(subSchema)) {
+          target[name] = null
+          console.warn("No defaults setting for $ref schema", [name, subSchema]);
+          return
+        }
+        target[name] = this.setDefaults(subSchema, target[name])
       })
     }
     if (schema.type === "array") {
@@ -83,4 +97,8 @@ export default class ValueTypes {
   }
 }
 
-const getFirstItemValue = ([item]: any[], field: FieldRef) => item && item[field.ui?.valueKey || 'value']
+
+const getFirstItemValue = ([item]: any[], field: FieldRef) => {
+  const valueKey = field.ui?.valueKey || getValueKeyFromSchemaOptions(field.schema.options) || 'value'
+  return item && item[valueKey]
+}

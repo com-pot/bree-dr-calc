@@ -18,6 +18,7 @@ export type AsyncableResult<Mode extends AsyncableMode, TResult> = Mode extends 
     : TResult | Promise<TResult>
 
 export type CollectionOptions<TItem> = {
+  valueKey?: string,
   ui?: {
     createLabel?: {prefix: string} | {type: 'template', template: Recipe} | ((item: TItem) => string),
   },

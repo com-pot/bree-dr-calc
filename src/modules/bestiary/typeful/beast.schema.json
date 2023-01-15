@@ -17,18 +17,18 @@
         "father": {
           "type": "hasOne",
           "options": {
-            "source": "bestiary:beast",
+            "source": "bestiary:beast", "valueKey": "id",
             "filter": [
-              { "prop": "general.sex", "op": "=", "args": ["f"], "neg": true}
+              { "prop": ["general", "sex"], "op": "=", "args": ["f"], "neg": true}
             ]
           }
         },
         "mother": {
           "type": "hasOne",
           "options": {
-            "source": "bestiary:beast",
+            "source": "bestiary:beast", "valueKey": "id",
             "filter": [
-              { "prop": "general.sex", "op": "=", "args": ["m"], "neg": true}
+              { "prop": ["general", "sex"], "op": "=", "args": ["m"], "neg": true}
             ]
           }
         },

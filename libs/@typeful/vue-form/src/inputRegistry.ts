@@ -1,7 +1,4 @@
-import SelectInput from "./inputs/Select.vue";
-import BtnSelectInput from "./inputs/BtnSelect.vue";
-
-import { FormKitNode } from "@formkit/core"
+import { FormKitPlugin } from "@formkit/core"
 
 import { App, Component, inject } from "vue";
 
@@ -10,7 +7,7 @@ type InputRegistryEntry = {
   component?: Component,
   formkit?: {
     type?: string,
-    plugins?: ((node: FormKitNode) => void)[],
+    plugins?: FormKitPlugin[],
   },
 }
 export type InputRegistry = {
@@ -37,13 +34,19 @@ export function createInputRegistry(): InputRegistry {
       },
     },
     {
+      match: (attrs) => attrs.type === 'number',
+      formkit: {
+        plugins: [
+          parseNumberValuePlugin,
+        ],
+      }
+    },
+    {
       match: (attrs) => attrs.type === 'integer',
       formkit: {
         type: 'number',
         plugins: [
-          (node) => {
-            node.hook.input((value, next) => next(Number(value)))
-          },
+          parseNumberValuePlugin,
         ],
       },
     },
@@ -54,6 +57,10 @@ export function createInputRegistry(): InputRegistry {
       return entries.find((entry) => entry.match(attrs)) || null
     },
   }
+}
+
+const parseNumberValuePlugin: FormKitPlugin = (node) => {
+  node.hook.input((value, next) => next(Number(value)))
 }
 
 export const injectionKey = '@typeful/vue-form.inputRegistry'

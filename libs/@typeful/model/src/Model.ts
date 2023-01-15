@@ -48,7 +48,9 @@ class FieldLocator {
 
   constructor(private fieldIndex: FieldIndex) {}
 
-  public field(arg: GetFieldArg): FieldRef | FieldNotFoundRef {
+  public field(arg: GetFieldArg, fallback?: 'not-found'): FieldRef | FieldNotFoundRef
+  public field(arg: GetFieldArg, fallback: 'null'): FieldRef | null
+  public field(arg: GetFieldArg, fallback: 'not-found' | 'null' = 'not-found') {
     if (!isFieldPath(arg)) {
       return merge({}, this.field(arg.path), arg)
     }
@@ -56,6 +58,10 @@ class FieldLocator {
     const candidate = this.fieldIndex.find(arg)
     const entry = candidate?.field
     if (!entry) {
+      if (fallback === "null") {
+        return null
+      }
+
       return {
         name: false,
         path: createPath(...arg),

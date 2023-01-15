@@ -5,9 +5,11 @@ import { useValueTypes } from "@typeful/vue-app/index";
 import { get, set } from "lodash";
 import { computed, defineComponent, h, PropType } from "vue";
 import { useI18n } from "vue-i18n";
-import DecInput from "./DecInput.vue";
+import DecInput from "./DecInput.ts";
 
 export default defineComponent({
+  inheritAttrs: false,
+
   props: {
     path: {type: [String, Array] as PropType<string | FieldPathRaw>},
     fieldRef: {type: Object as PropType<FieldRef>},
@@ -47,10 +49,9 @@ export default defineComponent({
      })
      : computed({
       get: () => {
-        const i = instance?.value
         const fRef = fieldRef.value
-        if (!i || !fRef) {
-          console.warn("Invalid state for RefInput", {i, fRef});
+        if (!instance || !fRef) {
+          console.warn("Invalid state for RefInput", {instance, fRef});
           return undefined
         }
         if (!fRef.name) {
@@ -58,19 +59,18 @@ export default defineComponent({
           return undefined
         }
 
-        return get(i, fRef.path) ?? valueTypes.getRefDefaultValue(fRef)
+        return get(instance, fRef.path) ?? valueTypes.getRefDefaultValue(fRef)
       },
       set: (value) => {
-        const i = instance?.value
         const fRef = fieldRef.value
-        if (!i || !fRef) {
-          return console.warn("Invalid state for RefInput", {i, fRef});
+        if (!instance || !fRef) {
+          return console.warn("Invalid state for RefInput", {instance, fRef});
         }
         if (!fRef.name) {
           return console.warn("FieldRef got unfound field", fRef);
         }
 
-        set(i, fRef.path, value)
+        set(instance, fRef.path, value)
       }
      })
 
@@ -87,13 +87,12 @@ export default defineComponent({
 
       return h(DecInput, {
         ...fRef.schema,
-
-        modelValue: internalValue.value,
-        'onUpdate:modelValue': (value: any) => internalValue.value = value,
-
         label: i18n.t(`${fRef.modelMeta.name}._p.${fRef.path.join('.')}`),
         ...fRef.ui,
         ...attrs,
+
+        modelValue: internalValue.value,
+        'onUpdate:modelValue': (value: any) => internalValue.value = value,
 
         name: fRef.name,
       }, slots)

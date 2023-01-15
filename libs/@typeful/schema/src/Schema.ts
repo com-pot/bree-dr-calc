@@ -1,5 +1,5 @@
 import { FieldPathRaw } from "@typeful/model/path/pathTypes";
-import { Recipe } from "@typeful/types/Recipe";
+import { FilterCondition } from "@typeful/storage-vue/collection/filter";
 
 export type Schema = {
   type: string,
@@ -24,6 +24,21 @@ export function isRefSchema(subject: any): subject is RefSchema {
 
 // TODO: Move this type where it belongs. Where that is is TBD.
 export type OptionsObj = {
-  source: string,
-  filter?: Recipe,
+  source: string, valueKey?: string,
+  filter?: FilterCondition,
+}
+
+export const isOptionsObj = (sub?: unknown): sub is OptionsObj => {
+  if (!sub || typeof sub !== 'object' || Array.isArray(sub)) {
+    return false
+  }
+
+  return 'source' in sub && typeof sub.source === 'string'
+}
+
+export const getValueKeyFromSchemaOptions = (options: Schema['options']): string | undefined => {
+  if (!isOptionsObj(options)) {
+    return
+  }
+  return options.valueKey
 }

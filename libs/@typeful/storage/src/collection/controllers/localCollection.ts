@@ -21,7 +21,7 @@ export default function localCollection<TItem>(getItems: () => TItem[], opts?: C
         items = orderBy(items, iteratees, orders) as TItem[]
       }
 
-      const perPage = pagination?.perPage || 20
+      const perPage = pagination?.perPage || 50
       const paginationRes: PaginationResult = {
         page: pagination?.page || 1,
         perPage,
