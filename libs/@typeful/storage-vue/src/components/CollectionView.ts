@@ -71,7 +71,7 @@ const hView = {
         h('button', {
           class: 'btn btn-secondary',
           'onClick'() {
-            console.log('Display results');
+            ctrl.load()
           },
         }, ['Zobrazit']),
       ]), result)
@@ -82,11 +82,8 @@ const hView = {
 
   pagination: (ctrl: ListController) => {
     if (!ctrl.pagination || (ctrl.data.ready && !ctrl.data.value.pagination)) {
-      console.log('no pagination');
-
       return
     }
-    console.log('pagination', ctrl.pagination);
 
     return h(Pagination, {
       modelValue: ctrl.pagination.page,

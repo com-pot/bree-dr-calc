@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {computed, reactive, watch} from "vue"
-import {RefInput, DecInput} from "@typeful/vue-form"
+import {computed, reactive, ref, watch} from "vue"
+import {RefInput} from "@typeful/vue-form"
 import {useI18n} from "@typeful/vue-app/i18n"
 import {useTabs} from "@typeful/vue-app/components/tabs"
 
@@ -11,7 +11,7 @@ import {Beast} from "../model/Bestiary";
 
 import AncestryTree from "../components/AncestryTree.vue";
 import MultiOccurrence from "../components/MultiOccurrence.vue";
-import useModel, { provideActiveModel, provideModelInstance } from "@typeful/model-vue/useModel"
+import useModel, { provideActiveModel, provideModelInstanceRef } from "@typeful/model-vue/useModel"
 import PairingPicker from "../components/PairingPicker.vue"
 
 
@@ -51,9 +51,8 @@ const pairing = reactive(model.value.setDefaults())
 if (!pairing.walkOrder) {
   console.warn("Walk order not initialized");
 }
-console.log(pairing);
 
-provideModelInstance(pairing)
+provideModelInstanceRef(ref(pairing))
 
 const ancestorTrees = reactive({
   mother: null as BeastFamilyTree | null,
@@ -120,11 +119,6 @@ const visualisationTabs = useTabs([
       :beast-multi-presence="beastMultiPresence"
     />
 
-    <div>
-      <RefInput path="maxGenerations"/>
-      <DecInput type="number" name="maxGenerations_dec" v-model="pairing.maxGenerations"/>
-    </div>
-
     <div class="card mt-4">
       <div class="card-header">
         <h2>Detaily párování</h2>
@@ -150,7 +144,6 @@ const visualisationTabs = useTabs([
           <div class="row">
             <div class="col-md-6">
               <RefInput path="maxGenerations"/>
-              <DecInput type="number" name="maxGenerations_dec" v-model="pairing.maxGenerations"/>
             </div>
             <div class="col-md-6">
               <RefInput path="walkOrder"/>

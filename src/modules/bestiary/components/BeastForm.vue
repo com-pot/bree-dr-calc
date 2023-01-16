@@ -15,11 +15,7 @@
   const i18n = useI18n()
   const wrightCalc = asyncRef()
 
-  provideActiveModel('@com-pot/bestiary.Beast', {
-    extend: {
-      dachshund: '@com-pot/bestiary-dachshund.dachshund',
-    }
-  })
+  provideActiveModel('@com-pot/bestiary.Beast')
 
   const generalFieldset = {
     name: 'general', locPrefix: 'bestiary.beast.fieldGroup',

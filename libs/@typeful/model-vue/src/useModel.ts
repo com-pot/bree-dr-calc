@@ -1,4 +1,4 @@
-import { App, inject, isReactive, isRef, provide, ref, Ref } from "vue"
+import { App, inject, isRef, provide, ref, Ref } from "vue"
 import Model, { ModelSpec } from "@typeful/model/Model";
 import { useValueTypes } from "@typeful/vue-app/index";
 import Registry from "@typeful/utils/Registry";
@@ -44,12 +44,12 @@ export function useActiveModel(): Ref<Model> {
 }
 
 const diKeyActiveInstance = '@typeful/model.activeInstance'
-export function provideModelInstance<T extends object>(instance: T) {
-  if (!isReactive(instance)) {
-    console.warn("provideModelInstance used with non-reactive object");
+export function provideModelInstanceRef<T extends object>(instance: Ref<T>) {
+  if (!isRef(instance)) {
+    console.warn("provideModelInstanceRef used with non-ref object", instance);
   }
   provide(diKeyActiveInstance, instance)
 }
-export function useModelInstance<T extends object = any>(): T {
-  return inject(diKeyActiveInstance) as T
+export function useModelInstanceRef<T extends object = any>(): Ref<T> {
+  return inject(diKeyActiveInstance) as Ref<T>
 }

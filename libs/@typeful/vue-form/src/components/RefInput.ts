@@ -1,4 +1,4 @@
-import { useActiveModel, useModelInstance } from "@typeful/model-vue/useModel";
+import { useActiveModel, useModelInstanceRef } from "@typeful/model-vue/useModel";
 import { FieldNotFoundRef, FieldRef } from "@typeful/model/Model";
 import { FieldPathRaw } from "@typeful/model/path/pathTypes";
 import { useValueTypes } from "@typeful/vue-app/index";
@@ -17,7 +17,7 @@ export default defineComponent({
   },
   setup(props, {emit, slots, attrs}) {
     const model = useActiveModel()
-    const instance = useModelInstance()
+    const instance = useModelInstanceRef()
     const i18n = useI18n()
     const valueTypes = useValueTypes()
 
@@ -50,8 +50,8 @@ export default defineComponent({
      : computed({
       get: () => {
         const fRef = fieldRef.value
-        if (!instance || !fRef) {
-          console.warn("Invalid state for RefInput", {instance, fRef});
+        if (!instance.value || !fRef) {
+          console.warn("Invalid state for RefInput", {instance: instance.value, fRef});
           return undefined
         }
         if (!fRef.name) {
@@ -59,18 +59,18 @@ export default defineComponent({
           return undefined
         }
 
-        return get(instance, fRef.path) ?? valueTypes.getRefDefaultValue(fRef)
+        return get(instance.value, fRef.path) ?? valueTypes.getRefDefaultValue(fRef)
       },
       set: (value) => {
         const fRef = fieldRef.value
-        if (!instance || !fRef) {
-          return console.warn("Invalid state for RefInput", {instance, fRef});
+        if (!instance.value || !fRef) {
+          return console.warn("Invalid state for RefInput", {instance: instance.value, fRef});
         }
         if (!fRef.name) {
           return console.warn("FieldRef got unfound field", fRef);
         }
 
-        set(instance, fRef.path, value)
+        set(instance.value, fRef.path, value)
       }
      })
 

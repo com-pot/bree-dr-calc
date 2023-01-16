@@ -62,9 +62,6 @@ function getSexIcon(gender: string) {
       <router-link :to="{name: 'bestiary.Pairing'}" class="btn btn-outline-primary">{{ i18n.t('bestiary.view.Pairing') }}</router-link>
     </div>
 
-    {{ list.filter?.value }}
-    {{ list.sort?.entries }}
-
     <CollectionView :ctrl="list" flow="block">
       <template #item="{item}">
         <div

@@ -65,13 +65,6 @@ const visiblePages = computed(() => {
     .map((_, i) => i + pageFrom.value)
 })
 
-console.log([
-  pageFrom.value,
-  pageTo.value,
-  visiblePages.value,
-]);
-
-
 function goTo(page: number) {
   emit('update:modelValue', page)
 }
