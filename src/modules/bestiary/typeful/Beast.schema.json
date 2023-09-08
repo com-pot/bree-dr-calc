@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "general": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "breedingStation": {"type": "hasOne", "options": "bestiary:breedingStation"},
+        "sex": {"type": "string", "options": "bestiary:sex", "nullable": true},
+        "evidenceCode": {"type": "string"},
+        "birthDay": {"type": "date"}
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "properties": {
+        "father": {
+          "type": "hasOne",
+          "options": {
+            "source": "bestiary:beast", "valueKey": "id",
+            "filter": [
+              { "prop": ["general", "sex"], "op": "=", "args": ["f"], "neg": true}
+            ]
+          }
+        },
+        "mother": {
+          "type": "hasOne",
+          "options": {
+            "source": "bestiary:beast", "valueKey": "id",
+            "filter": [
+              { "prop": ["general", "sex"], "op": "=", "args": ["m"], "neg": true}
+            ]
+          }
+        },
+        "wright": {
+          "type": "number",
+          "format": "percent",
+          "precision": 8
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
-import {expect} from "chai"
+import {describe, it, expect} from "vitest"
 
-import TreeArithmetics from "@/utils/TreeArithmetics";
+import TreeArithmetics from "./TreeArithmetics";
 
 describe("TreeArray with 2 ancestors per instance", () => {
   type RelationName = 'mother' | 'father'

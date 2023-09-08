@@ -1,0 +1,3 @@
+[submodule "libs/@typeful"]
+	path = libs/@typeful
+	url = git@github.com:com-pot/typeful.git

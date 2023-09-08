@@ -1,19 +1,30 @@
-import {TypefulModule} from "@/modules/typeful/TypefulModule"
-import fetchingItemsSource from "@/modules/typeful/utils/fetchingItemsSource"
+import fetchingCollection from "@typeful/storage/collection/controllers/fetchingCollection";
+import localCollection from "@typeful/storage/collection/controllers/localCollection";
+import { defineAppModule, stripSchemaModules } from "@typeful/vue-app/AppModule";
 
-const module: TypefulModule = {
-  types: {
-    sizeVariant: {
-      type: "select",
-      itemsSource: "dachshund:sizeVariant",
-      createValueLabel: "dachshund.sizeVariant.",
+export default defineAppModule({
+  models: stripSchemaModules(import.meta.glob("./*.schema.json", {eager: true, import: 'default'})),
+
+  getCollections() {
+    return {
+      'dachshund:sizeVariant': fetchingCollection('/api/dachshund/size-variant.json', {
+        ui: {
+          createLabel: { prefix: 'dachshund.sizeVariant.' },
+        },
+      }),
+      'dachshund:coatType': fetchingCollection('/api/dachshund/coat-type.json', {
+        ui: {
+          createLabel: { prefix: 'dachshund.coatType.' },
+        },
+      }),
+      'dachshund:coatPaint': fetchingCollection('/api/dachshund/coat-paint.json', {
+        ui: {
+          createLabel: { prefix: 'dachshund.coatPaint.' },
+        },
+      }),
+      'dachshund:geneticGrade': localCollection(() => [] as any[]),
+      'dachshund:behaviorGrade': localCollection(() => [] as any[]),
+      'dachshund:healthGrade': localCollection(() => [] as any[]),
     }
   },
-  registerItemSources(registry) {
-    registry.registerItemsSource('dachshund:sizeVariant', fetchingItemsSource('/api/dachshund/size-variant.json'))
-    registry.registerItemsSource('dachshund:coatType', fetchingItemsSource('/api/dachshund/coat-type.json'))
-    registry.registerItemsSource('dachshund:coatPaint', fetchingItemsSource('/api/dachshund/coat-paint.json'))
-  },
-}
-
-export default module
+})

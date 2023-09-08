@@ -1,16 +1,22 @@
 <template>
-  <div class="home">
-    <template v-if="!userAuthenticated">
-      <p>Vítejte v aplikace {{ appName }}. Nyní zde nemáte uloženy žádné údaje.</p>
+  <div :class="['home', authStore.user.isLoggedIn && 'home-full']">
+    <template v-if="!authStore.user.isLoggedIn">
+      <h1>{{ appStore.state.appName }}</h1>
+      <p>
+        Vítejte v aplikaci sloužící pro evidenci šelem a plánování připouštění.
+        Na stránce <router-link :to="{name: 'app.About'}">{{ i18n.t('app.view.About') }}</router-link> se můžete dočíst
+        podrobnosti ohledně vzniku a provozu aplikace.
+      </p>
+
+      <p>
+        Aplikace aktuálně podporuje <b class="text-warning">lokální</b> režim, tedy režim ve kterém jsou data ukládána
+        pouze ve vašem prohlížeči.
+      </p>
 
       <div class="start-actions">
-        <router-link :to="{name: 'auth.SignIn'}" class="btn btn-primary">Připravit prázdná data</router-link>
-        <button class="btn btn-secondary" @click.prevent="beginDemo">Načíst demo data</button>
+        <router-link :to="{name: 'auth.SignIn'}" class="btn btn-outline-warning font-weight-bold">Vytvořit lokální účet</router-link>
+        <button class="btn btn-secondary" @click.prevent="beginDemo">Vytvořit demo účet</button>
       </div>
-
-      <p class="mt-5">
-        Více se můžete dočíst na stránce <router-link :to="{name: 'app.About'}">{{ $t('app.view.About') }}</router-link>.
-      </p>
     </template>
 
     <template v-else>
@@ -42,53 +48,45 @@
   </div>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, reactive} from 'vue';
-import {translateMixin} from "@/i18n";
-import authStore from "@/modules/auth/store/authStore";
-import appStore from "@/modules/app/store/appStore";
-import beastsStore from "@/modules/bestiary/store/beastsStore";
-import demoStore from "@/modules/demo/store/demoStore";
+<script lang="ts" setup>
+import {computed, reactive} from 'vue';
+import {useI18n} from "@typeful/vue-app/i18n"
 
-export default defineComponent({
-  name: 'Home',
-  mixins: [
-    translateMixin,
-  ],
-  setup() {
-    const bestiarySummary = reactive({
-      beastCount: computed(() => beastsStore.state.beastList.length),
-      stationCount: computed(() => beastsStore.state.breedingStations.length)
-    })
-    const userAuthenticated = computed(() => authStore.getters.isLoggedIn())
+import appStore from "@typeful/vue-app/store/appStore"
 
-    return {
-      appName: appStore.state.appName,
-      userAuthenticated,
-      beginDemo: () => {
-        demoStore.actions.initDemoData()
-      },
-      bestiarySummary,
-    }
-  },
-});
+import authStore from "@/modules/auth/store/authStore"
+import beastsStore from "@/modules/bestiary/store/beastsStore"
+import demoStore from "@/modules/demo/store/demoStore"
+
+const i18n = useI18n()
+
+const bestiarySummary = reactive({
+  beastCount: computed(() => beastsStore.state.beastList.length),
+  stationCount: computed(() => beastsStore.state.breedingStations.length)
+})
+
+const beginDemo = () => {
+  demoStore.actions.initDemoData()
+}
+
 </script>
 
 <style lang="scss">
+.home {
+  max-width: 666px;
+}
+.home-full {
+  flex: 1;
+}
 .start-actions {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 
-  .btn-primary {
-    padding: 1em;
-    font-size: 24pt;
+  margin-inline-end: -0.5em;
+  > * {
+    margin-inline-end: 0.5em;
   }
 
-  .btn-secondary {
-    margin-top: 0.5em;
-
-    padding: 0.25em 1em;
-  }
 }
 </style>

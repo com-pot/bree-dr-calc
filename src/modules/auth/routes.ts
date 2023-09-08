@@ -1,5 +1,4 @@
 import {RouteRecordRaw} from "vue-router";
-import authStore from "@/modules/auth/store/authStore";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -7,32 +6,18 @@ const routes: RouteRecordRaw[] = [
     name: 'auth.SignIn',
     component: () => import('./views/SignIn.vue'),
     meta: {
-      title: 'auth.view.SignIn',
+      title: {$t: 'auth.view.SignIn'},
+      layoutMode: 'center',
     },
-    beforeEnter: ((_to, _from, next) => {
-      if (authStore.getters.isLoggedIn()) {
-        next({name: 'auth.AuthInfo'})
-        return
-      }
-
-      next()
-    })
   },
   {
     path: '/auth-info',
     name: 'auth.AuthInfo',
     component: () => import('./views/AuthInfo.vue'),
     meta: {
-      title: 'auth.view.AuthInfo',
+      title: {$t: 'auth.view.AuthInfo'},
+      requireAuth: { fallback: {name: 'auth.SignIn'} },
     },
-    beforeEnter: (((_to, _from, next) => {
-      if (!authStore.getters.isLoggedIn()) {
-        next({name: 'auth.SignIn'})
-        return
-      }
-
-      next()
-    }))
   },
 ]
 

@@ -1,5 +1,3 @@
-import {GenderType} from "@/modules/bestiary/typeful/gender.type";
-
 type Entity<IdType extends string | number> = { id: IdType }
 type EntityState = 'raw' | 'populated'
 
@@ -10,7 +8,7 @@ export type Beast<ES extends EntityState = 'raw', NES extends EntityState = ES> 
   general: {
     name: string,
     breedingStation?: string,
-    gender?: GenderType,
+    sex?: string,
     evidenceCode?: string,
     birthDay?: string,
   },

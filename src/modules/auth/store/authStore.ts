@@ -1,12 +1,8 @@
-import {reactive} from "vue";
+import {computed, reactive} from "vue";
 
 const state = reactive({
   userName: localStorage.getItem('auth.userName') as string | null,
 })
-
-const getters = {
-  isLoggedIn: () => !!state.userName,
-}
 
 const actions = {
   logIn: (userName: string) => {
@@ -21,6 +17,9 @@ const actions = {
 
 export default {
   state,
-  getters,
   actions,
+
+  user: reactive({
+    isLoggedIn: computed(() => !!state.userName),
+  }),
 }

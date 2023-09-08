@@ -1,5 +1,5 @@
 import {Beast, EntityState} from "@/modules/bestiary/model/Bestiary"
-import TreeArithmetics from "@/utils/TreeArithmetics"
+import TreeArithmetics from "../lineage/TreeArithmetics"
 
 export type RelationName = 'mother' | 'father'
 // eslint-disable-next-line

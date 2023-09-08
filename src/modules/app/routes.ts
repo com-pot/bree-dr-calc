@@ -6,6 +6,9 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'app.Home',
     component: Home,
+    meta: {
+      layoutMode: 'center',
+    },
   },
   {
     path: '/about',
@@ -15,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     meta: {
-      title: 'app.view.About',
+      title: {$t: 'app.view.About'},
     },
   },
 

@@ -1,28 +1,53 @@
 {
-  "sizeVariant": {
-    "type": "dachshund:sizeVariant"
+  "$meta": {
+    "injectTo": "@com-pot/bestiary.Beast"
   },
-  "coatType": {
-    "type": "bestiary:coatType.dachshund",
-    "createValueLabel": "dachshund.coatType."
-  },
-  "coatPaint": {
-    "type": "bestiary:coatPaint.dachshund",
-    "createValueLabel": "dachshund.coatPaint."
-  },
-  "geneticGrades": {
-    "type": "bestiary:geneticGrade.dachshund",
-    "multiple": true
-  },
-  "behaviorGrades": {
-    "type": "bestiary:behaviorGrade.dachshund",
-    "multiple": true
-  },
-  "healthGrades": {
-    "type": "bestiary:healthGrade.dachshund",
-    "multiple": true
-  },
-  "bonity": {
-    "type": "text"
+  "type": "object",
+  "properties": {
+    "dachshund": {
+      "type": "object",
+      "properties": {
+        "sizeVariant": {
+          "type": "string",
+          "options": "dachshund:sizeVariant"
+        },
+        "coatType": {
+          "type": "string",
+          "options": "dachshund:coatType",
+          "ui": {
+            "createLabel": {
+              "prefix": "dachshund.coatType."
+            }
+          }
+        },
+        "coatPaint": {
+          "type": "string",
+          "options": "dachshund:coatPaint",
+          "ui": {
+            "createLabel": {
+              "prefix": "dachshund.coatPaint."
+            }
+          }
+        },
+        "geneticGrades": {
+          "type": "string",
+          "options": "dachshund:geneticGrade",
+          "multiple": true
+        },
+        "behaviorGrades": {
+          "type": "string",
+          "options": "dachshund:behaviorGrade",
+          "multiple": true
+        },
+        "healthGrades": {
+          "type": "string",
+          "options": "dachshund:healthGrade",
+          "multiple": true
+        },
+        "bonity": {
+          "type": "string"
+        }
+      }
+    }
   }
 }

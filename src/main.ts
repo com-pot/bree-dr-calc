@@ -1,24 +1,48 @@
 import {createApp} from 'vue'
-import App from './modules/app/App.vue'
-import router from './modules/app/router'
+import App from '@typeful/vue-app/App.vue'
 
-import './modules/app/sass/bdcApp.scss'
 import './modules/app/sass/bdcBootstrap.scss'
+import './modules/app/sass/bdcApp.scss'
 
 import 'tippy.js/dist/tippy.css'
+import 'iconify-icon'
 
-import ItemsSourceRegistry from "@/modules/typeful/services/ItemsSourceRegistry"
-import TypefulModuleRegistry from "@/modules/typeful/services/TypefulModuleRegistry"
-import TippyDirective from "@/modules/app/directives/TippyDirective"
+import VueTippy from "vue-tippy"
+import I18nPlugin from "@typeful/vue-app/I18nPlugin"
+import vueFormPlugin from '@typeful/vue-form/vueForm.plugin'
+import TypefulPlugin from '@typeful/vue-app/TypefulPlugin'
 
-TypefulModuleRegistry.set('i18n', require("@/modules/i18n/typeful/I18nModule").default)
-TypefulModuleRegistry.set("relation", require("@/modules/typeful/RelationModule").default)
-TypefulModuleRegistry.set("bestiary", require("@/modules/bestiary/typeful/BestiaryModule").default)
-TypefulModuleRegistry.set("dachshund", require("@/modules/bestiary-dachshund/typeful/DachshundModule").default)
+import i18nModule from "@typeful/vue-app/i18n/I18nModule"
+import bestiaryModule from "@/modules/bestiary/typeful/BestiaryModule"
+import dachshundModule from "@/modules/bestiary-dachshund/typeful/DachshundModule"
 
-TypefulModuleRegistry.forEach((module) => module.registerItemSources?.(ItemsSourceRegistry.singleInstance))
+import { createAppRouter } from "./modules/app/router"
+import vueAppPlugin from '@typeful/vue-app/vueApp.plugin'
 
 createApp(App)
-  .directive('tippy', TippyDirective)
-  .use(router)
+  .use(vueAppPlugin, {
+    router: createAppRouter(),
+  })
+  .use(VueTippy, {
+    directive: 'tippy',
+  })
+  .use(I18nPlugin, {
+    locales: ['cs_CZ'],
+    staticModules: [
+      {source: 'local', module: '@typeful/modules/storage', file: 'collection'},
+
+      {source: 'local', module: 'modules/app', file: 'app'},
+      {source: 'local', module: 'modules/auth', file: 'auth'},
+      {source: 'local', module: 'modules/bestiary', file: 'bestiary'},
+      {source: 'local', module: 'modules/bestiary-dachshund', file: 'dachshund'},
+    ],
+  })
+  .use(TypefulPlugin, {
+    modules: {
+      i18n: i18nModule,
+      '@com-pot/bestiary': bestiaryModule,
+      '@com-pot/bestiary-dachshund': dachshundModule,
+    },
+  })
+  .use(vueFormPlugin)
   .mount('body')

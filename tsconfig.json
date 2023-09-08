@@ -13,16 +13,28 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "mocha",
-      "chai"
+      "vite/client",
     ],
+
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@typeful/utils/*": ["libs/@typeful/modules/utils/src/*"],
+      "@typeful/types/*": ["libs/@typeful/modules/types/src/*"],
+      "@typeful/schema/*": ["./libs/@typeful/modules/schema/src/*"],
+      "@typeful/model/*": ["./libs/@typeful/modules/model/src/*"],
+      "@typeful/model-vue/*": ["./libs/@typeful/modules/model-vue/src/*"],
+      "@typeful/storage/*": ["./libs/@typeful/modules/storage/src/*"],
+      "@typeful/storage-vue/*": ["./libs/@typeful/modules/storage-vue/src/*"],
+
+      "@typeful/vue-app/*": ["./libs/@typeful/modules/vue-app/src/*"],
+      "@typeful/vue-utils/*": ["./libs/@typeful/modules/vue-utils/src/*"],
+      "@typeful/vue-form": ["./libs/@typeful/modules/vue-form/src/index.ts"],
+      "@typeful/vue-form/*": ["./libs/@typeful/modules/vue-form/src/*"],
+
+      "@vue-tippy": ["libs/vue-tippy/src/index.ts"],
+      "@app/*": ["src/modules/app/*"],
+      "@/*": ["src/*"]
     },
     "lib": [
       "esnext",
@@ -32,11 +44,9 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*.ts", "src/**/*.tsx", "src/**/*.vue",
+    "libs/**/*.ts", "libs/**/*.tsx", "libs/**/*.vue",
+    "test/**/*.ts",
   ],
   "exclude": [
     "node_modules",

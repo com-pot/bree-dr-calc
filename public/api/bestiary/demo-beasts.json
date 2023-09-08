@@ -3,7 +3,7 @@
     "id": "2d18ef73-ad11-4027-af62-aaf41b0736a4",
     "general": {
       "name": "Nero",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -12,7 +12,7 @@
     "id": "53aa32ce-26e5-4847-8937-cd35d766ec75",
     "general": {
       "name": "Inge",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -21,7 +21,7 @@
     "id": "3f16e702-f965-4de2-b27c-a115f6a40e55",
     "general": {
       "name": "Bojar",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -30,7 +30,7 @@
     "id": "ef39c3ac-84e8-4c5d-952b-9665db2ad19a",
     "general": {
       "name": "Alis",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -39,7 +39,7 @@
     "id": "e82a4d88-4913-4cd1-af1d-1c43c1380b7a",
     "general": {
       "name": "Brok",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "ca379533-f756-4e4e-a92b-61e6c44f0282",
@@ -51,7 +51,7 @@
     "id": "a0a63e23-24fc-4887-bc13-39c1cfc8099e",
     "general": {
       "name": "Vron",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -60,7 +60,7 @@
     "id": "6d0f6f9b-2ab2-46c1-80e6-eccb0dd53f15",
     "general": {
       "name": "Conrad",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -69,7 +69,7 @@
     "id": "1e357861-48c6-4ad7-8687-b830300de0f4",
     "general": {
       "name": "Kony",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -78,7 +78,7 @@
     "id": "973a90e7-bf51-4871-b819-78d5a5ec435e",
     "general": {
       "name": "Linus",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -87,7 +87,7 @@
     "id": "d44d86af-41b1-41d4-808b-a141f58efdf4",
     "general": {
       "name": "Moeppy",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -96,7 +96,7 @@
     "id": "2d4bfe21-6f01-4468-bffb-68c1a4ea0faa",
     "general": {
       "name": "Joster",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -105,7 +105,7 @@
     "id": "911d4b7c-7f39-478b-8bb5-75ee12303bcc",
     "general": {
       "name": "Ilse",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -114,7 +114,7 @@
     "id": "78442567-0a7e-4912-a52f-adcf0907aa20",
     "general": {
       "name": "Dar",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -123,7 +123,7 @@
     "id": "24de21e6-375b-4b6f-8bb0-0f99029bce5f",
     "general": {
       "name": "Vera",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -132,7 +132,7 @@
     "id": "29392b4f-1ee8-478d-b1b1-f2fbefa0d799",
     "general": {
       "name": "Žert",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -141,7 +141,7 @@
     "id": "15248d56-6cb7-48c0-ac6d-5dd8dc4d1dcf",
     "general": {
       "name": "Hexa",
-      "gender": "f",
+      "sex": "f",
       "breedingStation": "rhlz"
     },
     "lineage": {},
@@ -151,7 +151,7 @@
     "id": "27f3cd15-a3b9-4272-b108-ee764a8542c0",
     "general": {
       "name": "Mates",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "2d18ef73-ad11-4027-af62-aaf41b0736a4",
@@ -163,7 +163,7 @@
     "id": "2aeb36b9-836e-4a32-9d7b-033e38ddc911",
     "general": {
       "name": "Aga",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "3f16e702-f965-4de2-b27c-a115f6a40e55",
@@ -175,7 +175,7 @@
     "id": "54b988c2-a4e9-467a-b164-6135bf06db31",
     "general": {
       "name": "Filou",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "e82a4d88-4913-4cd1-af1d-1c43c1380b7a",
@@ -186,7 +186,7 @@
   {
     "id": "f82b2434-dd85-47b2-8020-24dad8094d6d",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Zora"
     },
     "lineage": {
@@ -199,7 +199,7 @@
     "id": "21a219e3-2046-4c39-b680-6fa961af987e",
     "general": {
       "name": "Otti",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "973a90e7-bf51-4871-b819-78d5a5ec435e",
@@ -211,7 +211,7 @@
     "id": "164101a3-f2aa-494e-a205-ab80f9c5f91a",
     "general": {
       "name": "Tara",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "2d4bfe21-6f01-4468-bffb-68c1a4ea0faa",
@@ -222,7 +222,7 @@
   {
     "id": "a3e74c88-8238-4610-a315-9f5503d883a0",
     "general": {
-      "gender": "m",
+      "sex": "m",
       "name": "Puňťa"
     },
     "lineage": {
@@ -236,7 +236,7 @@
     "id": "55fa2b59-ce49-4935-9f8f-961a3fdaebf4",
     "general": {
       "name": "Jena",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "29392b4f-1ee8-478d-b1b1-f2fbefa0d799",
@@ -248,7 +248,7 @@
     "id": "57d5ee08-dad1-443f-b52b-52cf6dc7eea4",
     "general": {
       "name": "Fin",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "27f3cd15-a3b9-4272-b108-ee764a8542c0",
@@ -260,7 +260,7 @@
     "id": "562a68e9-dbef-4c7c-a94d-292b71740f9a",
     "general": {
       "name": "Elza",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "54b988c2-a4e9-467a-b164-6135bf06db31",
@@ -272,7 +272,7 @@
     "id": "042f87b0-fafb-4804-bad2-39095faafa85",
     "general": {
       "name": "Erik",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "21a219e3-2046-4c39-b680-6fa961af987e",
@@ -284,7 +284,7 @@
     "id": "d7c3fbc0-d6b5-4150-904f-3cfb8636ede6",
     "general": {
       "name": "Dona",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "a3e74c88-8238-4610-a315-9f5503d883a0",
@@ -296,7 +296,7 @@
     "id": "b2a729e6-e0cf-4eb5-bebc-7f36074ac636",
     "general": {
       "name": "Endy",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "57d5ee08-dad1-443f-b52b-52cf6dc7eea4",
@@ -308,7 +308,7 @@
     "id": "f53fc2d7-f422-49cc-973f-2fd1351574e8",
     "general": {
       "name": "Bona",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "042f87b0-fafb-4804-bad2-39095faafa85",
@@ -320,7 +320,7 @@
     "id": "9705d312-f759-45ee-ab8f-048e5d216786",
     "general": {
       "name": "Art",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "b2a729e6-e0cf-4eb5-bebc-7f36074ac636",
@@ -332,7 +332,7 @@
     "id": "ca379533-f756-4e4e-a92b-61e6c44f0282",
     "general": {
       "name": "Charles",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -341,7 +341,7 @@
     "id": "6bd6f4bc-99d7-420f-9c70-7762b0ea4986",
     "general": {
       "name": "Kira",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -350,7 +350,7 @@
     "id": "a1355dc8-9466-4a84-a753-03162198f00c",
     "general": {
       "name": "Jules",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -359,7 +359,7 @@
     "id": "e391c516-ab91-493a-ab55-9413b3caf48c",
     "general": {
       "name": "Neda",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -368,7 +368,7 @@
     "id": "bcc05d50-7e40-4698-a221-3683706f0773",
     "general": {
       "name": "Alter",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -377,7 +377,7 @@
     "id": "09d2c196-45fa-445e-939e-f4eeb9960098",
     "general": {
       "name": "Milka",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {},
     "dachshund": {}
@@ -386,7 +386,7 @@
     "id": "de581fb5-19e2-4e66-9e79-055bd1ee8192",
     "general": {
       "name": "Unkas",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -395,7 +395,7 @@
     "id": "4eb058c2-df8a-4dea-8595-cd5e0eb99575",
     "general": {
       "name": "Asta",
-      "gender": "f",
+      "sex": "f",
       "breedingStation": "plzl"
     },
     "lineage": {},
@@ -405,7 +405,7 @@
     "id": "9d52f7f7-713a-48be-8ef5-75ec51865faa",
     "general": {
       "name": "Remo",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {},
     "dachshund": {}
@@ -413,7 +413,7 @@
   {
     "id": "e626f6f7-160d-45b9-9805-1ec54bb61256",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Besy"
     },
     "lineage": {},
@@ -422,7 +422,7 @@
   {
     "id": "298e5121-0c11-47c7-b58c-66caec0c5815",
     "general": {
-      "gender": "m",
+      "sex": "m",
       "name": "Nico"
     },
     "lineage": {},
@@ -431,7 +431,7 @@
   {
     "id": "a1739fb3-34bb-4bcc-a76e-d968a78c2717",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Ori"
     },
     "lineage": {},
@@ -440,7 +440,7 @@
   {
     "id": "5b90906f-6bc4-4044-ae5c-ab17e0c848ae",
     "general": {
-      "gender": "m",
+      "sex": "m",
       "name": "Trux"
     },
     "lineage": {},
@@ -449,7 +449,7 @@
   {
     "id": "3c441176-c423-495b-b3f1-c952cb745083",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Zora"
     },
     "lineage": {},
@@ -458,7 +458,7 @@
   {
     "id": "0baaa745-a94f-464e-9008-29a28cb1a884",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Vali"
     },
     "lineage": {
@@ -471,7 +471,7 @@
     "id": "00a1d994-5106-4a60-9885-cc1220a58859",
     "general": {
       "name": "Forest",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "bcc05d50-7e40-4698-a221-3683706f0773",
@@ -482,7 +482,7 @@
   {
     "id": "89f3ab9f-0229-4865-a188-f46f415a30f7",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Asta",
       "breedingStation": "gtnt"
     },
@@ -497,7 +497,7 @@
     "general": {
       "name": "Hexa",
       "breedingStation": "plzl",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "9d52f7f7-713a-48be-8ef5-75ec51865faa",
@@ -509,7 +509,7 @@
     "id": "072a83ff-6f6f-469c-8095-0c9ff15c690a",
     "general": {
       "name": "Yves",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "298e5121-0c11-47c7-b58c-66caec0c5815",
@@ -520,7 +520,7 @@
   {
     "id": "933b0ebf-8b96-4548-bcb5-843d807c3880",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Lili"
     },
     "lineage": {
@@ -533,7 +533,7 @@
     "id": "3bbb2d90-2ee8-41d3-a8ba-4181e26690b3",
     "general": {
       "name": "Chlup",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "e82a4d88-4913-4cd1-af1d-1c43c1380b7a",
@@ -545,7 +545,7 @@
     "id": "9637d7d6-c0ca-4775-8e44-860d4ad748ec",
     "general": {
       "name": "Kessy",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "00a1d994-5106-4a60-9885-cc1220a58859",
@@ -557,7 +557,7 @@
     "id": "cff2cf0c-e9ba-4144-86d7-7985ded7b6dc",
     "general": {
       "name": "Oskar",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "a3e74c88-8238-4610-a315-9f5503d883a0",
@@ -569,7 +569,7 @@
     "id": "2ee44b03-7624-42a5-9776-09751dd7c111",
     "general": {
       "name": "Eky",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "072a83ff-6f6f-469c-8095-0c9ff15c690a",
@@ -581,7 +581,7 @@
     "id": "4cf25bc1-d971-439a-9971-276620a3f976",
     "general": {
       "name": "Oran",
-      "gender": "m"
+      "sex": "m"
     },
     "lineage": {
       "father": "3bbb2d90-2ee8-41d3-a8ba-4181e26690b3",
@@ -593,7 +593,7 @@
     "id": "091b5589-9214-4a95-99d9-48a21b8d3980",
     "general": {
       "name": "Atty",
-      "gender": "f"
+      "sex": "f"
     },
     "lineage": {
       "father": "cff2cf0c-e9ba-4144-86d7-7985ded7b6dc",
@@ -604,7 +604,7 @@
   {
     "id": "0f33f257-1740-40f9-9335-5846a6a2e08e",
     "general": {
-      "gender": "f",
+      "sex": "f",
       "name": "Ebony"
     },
     "lineage": {

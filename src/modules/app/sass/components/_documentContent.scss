@@ -1,0 +1,19 @@
+.section-heading {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
+
+  > :is(h1, h2, h3, h4, h5, h6) {
+    margin: 0;
+    + :is(.btn, .btn-group) {
+      margin-inline-start: auto;
+    }
+  }
+}
+
+.flow-block {
+  > :not(:first-child) {
+    margin-block-start: var(--flow-gap, 0.5em);
+  }
+}

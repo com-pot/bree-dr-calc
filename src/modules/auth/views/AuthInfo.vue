@@ -1,27 +1,55 @@
+<script lang="ts" setup>
+import {useRouter} from "vue-router"
+import {useI18n} from "@typeful/vue-app/i18n"
+import {DecInput} from "@typeful/vue-form"
+import useConfirmation from "@typeful/vue-utils/useConfirmation"
+
+import authStore from "../store/authStore"
+import beastsStore from "@/modules/bestiary/store/beastsStore"
+
+const $router = useRouter()
+const i18n = useI18n()
+
+const confirmation = useConfirmation({
+  template: 'Smazat všechna data',
+})
+
+const resetDataIfValid = () => {
+  if (!confirmation.valid) {
+    return
+  }
+
+  authStore.actions.logOut()
+  beastsStore.resetUserData()
+  $router.push({name: "app.Home"})
+}
+
+</script>
+
 <template>
   <div class="auth-page">
-    <h1>{{ $t('auth.view.AuthInfo') }}</h1>
+    <h1>{{ i18n.t('auth.view.AuthInfo') }}</h1>
 
     <p>Právě zde máte uloženy tyto údaje:</p>
     <dl class="definitions">
       <dt>Uživatel</dt>
-      <dd style="grid-column: span 3">{{ userName }}</dd>
+      <dd style="grid-column: span 3">{{ authStore.state.userName }}</dd>
       <dt>Celkem šelem</dt>
-      <dd>{{ resetSummary.beastCount }}</dd>
+      <dd>{{ beastsStore.state.beastList.length }}</dd>
       <dt>Celkem chovatelských stanic</dt>
-      <dd>{{ resetSummary.breedingStations }}</dd>
+      <dd>{{ beastsStore.state.breedingStations.length }}</dd>
     </dl>
 
     <div class="card">
       <div class="card-body">
         <p>
-          Pokud si přejete všechny údaje smazat, vyplňte <b>{{ confirmationText }}</b> do následujícího formuláře.
+          Pokud si přejete všechny údaje smazat, vyplňte <b>{{ confirmation.template }}</b> do následujícího formuláře.
         </p>
 
         <div class="input-group">
-          <DecInput v-model="confirmation" type="text"></DecInput>
+          <DecInput v-model="confirmation.value" type="string"/>
           <div class="input-group-append">
-            <div :class="['btn btn-danger', !deleteEnabled && 'disabled']" @click="resetData">Smazat</div>
+            <button :class="['btn btn-danger', !confirmation.valid && 'disabled']" @click="resetDataIfValid">Smazat</button>
           </div>
         </div>
       </div>
@@ -29,56 +57,9 @@
 
     <h2 class="mt-4">Upozornění o datech</h2>
     <p>
-      Právě pracujete v <b class="text-warning">Lokálním</b> režimu. Všechny údaje jsou uloženy pouze na vašem disku a
+      Právě pracujete s <b class="text-warning">Lokálním</b> účtem. Všechny údaje jsou uloženy pouze na vašem disku a
       neukládají se nikde na internetu.<br/>
       Jelikož jsou data ukládána lokálně, máte k nim přístup přístup pouze v tomto zařízení a pouze v tomto prohlížeči.
     </p>
   </div>
 </template>
-
-<script>
-
-import {translateMixin} from "@/i18n.ts";
-import DecInput from "@/modules/typeful/components/DecInput";
-import {computed, ref} from "vue";
-import authStore from "@/modules/auth/store/authStore.ts";
-import {useRouter} from "vue-router";
-import beastsStore from "@/modules/bestiary/store/beastsStore.ts";
-
-export default {
-  components: {DecInput},
-  mixins: [
-    translateMixin,
-  ],
-  setup() {
-    const $router = useRouter()
-
-    const confirmation = ref('')
-    const confirmationText = ref('Smazat všechna data')
-    const deleteEnabled = computed(() => confirmation.value.toLowerCase() === confirmationText.value.toLowerCase())
-
-    const resetSummary = computed(() => ({
-      beastCount: beastsStore.state.beastList.length,
-      breedingStations: beastsStore.state.breedingStations.length,
-    }))
-
-    return {
-      userName: authStore.state.userName,
-
-      confirmation,
-      confirmationText,
-      deleteEnabled,
-      resetSummary,
-
-      resetData: () => {
-        if (!deleteEnabled.value) {
-          return
-        }
-        authStore.actions.logOut()
-        beastsStore.resetUserData()
-        $router.push({name: "app.Home"})
-      },
-    }
-  },
-}
-</script>

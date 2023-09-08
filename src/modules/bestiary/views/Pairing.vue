@@ -1,35 +1,123 @@
-<template>
+<script lang="ts" setup>
+import {computed, reactive, ref, watch} from "vue"
+import {RefInput} from "@typeful/vue-form"
+import {useI18n} from "@typeful/vue-app/i18n"
+import {useTabs} from "@typeful/vue-app/components/tabs"
+
+import * as beastStore from "../store/beastsStore"
+import BeastFamilyTree, { RelationName } from "../model/BeastFamilyTree"
+import * as WrightCalculation from "../utils/WrightCalculation";
+import {Beast} from "../model/Bestiary";
+
+import AncestryTree from "../components/AncestryTree.vue";
+import MultiOccurrence from "../components/MultiOccurrence.vue";
+import useModel, { provideActiveModel, provideModelInstanceRef } from "@typeful/model-vue/useModel"
+import PairingPicker from "../components/PairingPicker.vue"
+
+
+const i18n = useI18n()
+const maxCalculationLevel: number = import.meta.env.MAX_CALCULATION_LEVEL
+
+const beastModel = useModel('@com-pot/bestiary.Beast')
+
+const model = provideActiveModel(useModel({
+  meta: { name: "bestiary.pairing" },
+  schema: {
+    type: "object",
+    properties: {
+      maxGenerations: {
+        type: "number",
+        min: 1, max: maxCalculationLevel, step: 1,
+        default: maxCalculationLevel,
+      },
+
+      mother: beastModel.locate().field(['lineage', 'mother'], 'null')?.schema!,
+      father: beastModel.locate().field(['lineage', 'father'], 'null')?.schema!,
+
+      walkOrder: {
+        type: "string", appearance: "buttons", default: 'father,mother',
+        options: [
+          {value: 'father,mother', label: 'Otec, Matka'},
+          {value: 'mother,father', label: 'Matka, Otec'},
+          {value: 'father', label: 'Otec'},
+          {value: 'mother', label: 'Matka'},
+        ],
+      },
+    },
+  }
+}))
+
+const pairing = reactive(model.value.setDefaults())
+if (!pairing.walkOrder) {
+  console.warn("Walk order not initialized");
+}
+
+provideModelInstanceRef(ref(pairing))
+
+const ancestorTrees = reactive({
+  mother: null as BeastFamilyTree | null,
+  father: null as BeastFamilyTree | null,
+})
+
+watch(() => pairing.mother, (m) => {
+  ancestorTrees.mother = null
+  if (m) {
+    beastStore.actions.loadAncestors(m, 'raw', 4)
+      .then((tree) => ancestorTrees.mother = tree)
+      .catch((err) => console.error("Failed to load ancestor tree for mother", err))
+  }
+})
+
+watch(() => pairing.father, (f) => {
+  ancestorTrees.father = null
+  if (f) {
+    beastStore.actions.loadAncestors(f, 'raw', 4)
+      .then((tree) => (ancestorTrees.father = tree))
+      .catch((err) => console.error("Failed to load ancestor tree for father", err))
+  }
+})
+const walkRelations = computed<RelationName[]>(() => pairing.walkOrder.split(','))
+
+const beastMultiPresence = computed(() => {
+  const trees = ancestorTrees as unknown as { [relation: string]: BeastFamilyTree }
+  const presence = WrightCalculation.calculateSharedPresence(trees)
+  if (!presence) {
+    return []
+  }
+
+  const multiOccurringBeasts = WrightCalculation.aggregateMultiOccurrence(presence, getBeast)
+
+  return WrightCalculation.filterCoveredPredecessors(multiOccurringBeasts, trees)
+})
+
+const getBeast = (id: string): Beast => {
+  const beast = ancestorTrees.mother?.getBeast(id) || ancestorTrees.father?.getBeast(id)
+  if (!beast) {
+    throw new Error("Beast not found " + beast)
+  }
+  return beast
+}
+
+const visualisationTabs = useTabs([
+  {name: 'explanation'},
+  {name: 'lineage'},
+])
+
+</script>
+
+  <template>
   <div class="beast-pairing">
-    <h1>{{ $t('bestiary.view.Pairing') }}</h1>
+    <h1>{{ i18n.t('bestiary.view.Pairing') }}</h1>
 
     <p>
       Párování se počítá pro zvolené šelmy pro jejich předky až do {{ maxCalculationLevel }}. generace. Po zvolení
       šelem se vypočte Wrightův Koeficient a ve spodní části stránky bude možné procházet podrobnosti párování.
     </p>
 
-    <div class="row row-pairing">
-      <div class="col-md beast-selection">
-        <DecFormInput v-model="pairing.mother" v-bind="pairingFields.mother"/>
-      </div>
-
-      <div class="text-center">
-        <div :class="[
-          'wright-coefficient',
-           pairing.mother && 'left-ready',
-           pairing.father && 'right-ready',
-         ]">
-          <span v-if="pairing.mother && pairing.father" class="value">
-            <template v-if="wrightCoefficientPct === -1">...</template>
-            <template v-else>{{ wrightCoefficientPct.toPrecision(8) }} %</template>
-          </span>
-          <span v-else>{{ (pairing.mother ? 1 : 0) + (pairing.father ? 1 : 0) }} / 2</span>
-        </div>
-      </div>
-
-      <div class="col-md beast-selection">
-        <DecFormInput v-model="pairing.father" v-bind="pairingFields.father"/>
-      </div>
-    </div>
+    <PairingPicker
+      :pairing="pairing"
+      :beast-multi-presence="beastMultiPresence"
+    />
 
     <div class="card mt-4">
       <div class="card-header">
@@ -41,25 +129,24 @@
         </p>
 
         <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item" v-for="tab in visualisationTabs" :key="tab.name">
-            <a href="#" :class="['nav-link', activeTab === tab.name && 'active']"
-               @click.prevent="showTab(tab.name)">{{ $t('bestiary.pairing.tab.' + tab.name) }}</a>
+          <li class="nav-item" v-for="tab in visualisationTabs.tabs" :key="tab.name">
+            <a href="#" :class="['nav-link', visualisationTabs.value === tab.name && 'active']"
+               @click.prevent="visualisationTabs.value = tab.name">{{ i18n.t('bestiary.pairing.tab.' + tab.name) }}</a>
           </li>
         </ul>
       </div>
 
       <div class="card-body">
-        <template v-if="activeTab === 'explanation'">
+        <template v-if="visualisationTabs.value === 'explanation'">
           <MultiOccurrence :max-calculation-level="maxCalculationLevel" :occurrences="beastMultiPresence"/>
         </template>
-        <template v-else-if="activeTab === 'lineage'">
+        <template v-else-if="visualisationTabs.value === 'lineage'">
           <div class="row">
             <div class="col-md-6">
-              <DecFormInput v-model="pairing.maxGenerations" v-bind="pairingFields.maxGenerations"/>
+              <RefInput path="maxGenerations"/>
             </div>
             <div class="col-md-6">
-              <DecFormInput v-model="pairing.walkOrder" v-bind="pairingFields.walkOrder"
-                            @change:model-value="pairing.walkOrder = $event"/>
+              <RefInput path="walkOrder"/>
             </div>
           </div>
 
@@ -77,148 +164,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-
-import {computed, reactive, ref, watch} from "vue";
-import beastSchema from "../typeful/beast.schema.json"
-import {getFields} from "@/modules/typeful/services/FormsService";
-import DecFormInput from "@/modules/typeful/components/DecFormInput.vue";
-
-import * as beastStore from "../store/beastsStore"
-import BeastFamilyTree from "../model/BeastFamilyTree";
-import * as WrightCalculation from "@/modules/bestiary/utils/WrightCalculation";
-import {Beast} from "@/modules/bestiary/model/Bestiary";
-
-import AncestryTree from "@/modules/bestiary/components/AncestryTree.vue";
-import {translateMixin} from "@/i18n";
-import MultiOccurrence from "@/modules/bestiary/components/MultiOccurrence.vue";
-
-export default {
-  mixins: [
-    translateMixin,
-  ],
-  components: {
-    MultiOccurrence,
-    AncestryTree,
-    DecFormInput,
-  },
-  setup() {
-    const maxCalculationLevel = 4
-
-    const pairingFields = getFields({
-      maxGenerations: {
-        type: "number",
-        min: 1,
-        max: maxCalculationLevel,
-        step: 1,
-        label: 'bestiary.pairing.field.maxGenerations'
-      },
-      mother: beastSchema.lineage.schema.mother,
-      father: beastSchema.lineage.schema.father,
-      walkOrder: {
-        type: "btnSelect",
-        options: [
-          {value: 'father,mother', label: 'Otec, Matka'},
-          {value: 'mother,father', label: 'Matka, Otec'},
-          {value: 'father', label: 'Otec'},
-          {value: 'mother', label: 'Matka'},
-        ],
-        label: 'bestiary.pairing.field.walkOrder'
-      }
-    }, {
-      createFieldLabel: 'bestiary.beast.lineage.',
-    })
-
-    const pairing = reactive({
-      maxGenerations: 4,
-      walkOrder: 'father,mother',
-      mother: null as string | null,
-      father: null as string | null,
-    })
-
-    const ancestorTrees = reactive({
-      mother: null as BeastFamilyTree | null,
-      father: null as BeastFamilyTree | null,
-    })
-
-    watch(() => pairing.mother, (m) => {
-      ancestorTrees.mother = null
-      if (m) {
-        beastStore.actions.loadAncestors(m, 'raw', 4)
-          .then((tree) => ancestorTrees.mother = tree)
-          .catch((err) => console.error("Failed to load ancestor tree for father", err))
-      }
-    })
-
-    watch(() => pairing.father, (f) => {
-      ancestorTrees.father = null
-      if (f) {
-        beastStore.actions.loadAncestors(f, 'raw', 4)
-          .then((tree) => (ancestorTrees.father = tree))
-          .catch((err) => console.error("Failed to load ancestor tree for father", err))
-      }
-    })
-    const walkRelations = computed(() => pairing.walkOrder.split(','))
-
-    const beastMultiPresence = computed(() => {
-      const trees = ancestorTrees as unknown as { [relation: string]: BeastFamilyTree }
-      const presence = WrightCalculation.calculateSharedPresence(trees)
-      if (!presence) {
-        return null
-      }
-
-      const multiOccurringBeasts = WrightCalculation.aggregateMultiOccurrence(presence, getBeast)
-
-      return WrightCalculation.filterCoveredPredecessors<Beast>(multiOccurringBeasts, trees)
-    })
-    const wrightCoefficient = computed(() => {
-      if (!beastMultiPresence.value) {
-        return -1
-      }
-      return WrightCalculation.evaluateWrightCoefficient(beastMultiPresence.value);
-    })
-    const wrightCoefficientPct = computed(() => {
-      const wc = wrightCoefficient.value
-      return wc === -1 ? -1 : wc * 100
-    })
-
-    const getBeast = (id: string): Beast => {
-      const beast = ancestorTrees.mother?.getBeast(id) || ancestorTrees.father?.getBeast(id)
-      if (!beast) {
-        throw new Error("Beast not found " + beast)
-      }
-      return beast
-    }
-
-    const visualisationTabs = [
-      {name: 'explanation'},
-      {name: 'lineage'},
-    ]
-    const activeTab = ref('explanation')
-
-    return {
-      // Inputs
-      maxCalculationLevel,
-      pairingFields,
-      pairing,
-
-      // Calculation results
-      wrightCoefficientPct,
-      beastMultiPresence,
-
-      // Pairing visualization
-      visualisationTabs,
-      activeTab,
-      showTab: (tabName: string) => activeTab.value = tabName,
-
-      // Tree visualisation
-      ancestorTrees,
-      walkRelations,
-    }
-  },
-}
-</script>
 
 <style lang="scss">
 .row-pairing {

@@ -3,39 +3,31 @@
     Template not defined
   </slot>
 
-  <template v-for="(childNode, i) in childNodes" :key="i">
-    <TreeNode :expand-levels="expandLevels - 1" :node="childNode" :traversal-rules="traversalRules">
-      <template v-slot:default="scope">
+  <template v-for="(childNode) in childNodes" :key="childNode.id">
+    <TreeNodeFlat :expand-levels="expandLevels - 1" :node="childNode" :traversal-rules="traversalRules">
+      <template #default="scope">
         <slot :node="scope.node">
           Template for child not defined
         </slot>
       </template>
-    </TreeNode>
+    </TreeNodeFlat>
   </template>
 </template>
 
-<script lang="ts">
-import {computed, defineComponent, PropType} from "vue";
-import {TraversalRules} from "@/modules/bestiary/components/AncestryTree/AncestryTree";
+<script lang="ts" setup>
+import {computed, PropType} from "vue";
+import {TraversalRules, TreeNode} from "./AncestryTree";
 
-export default defineComponent({
-  name: 'TreeNode',
-  props: {
-    node: {type: Object, required: true},
-    traversalRules: {type: Object as PropType<TraversalRules>, required: true},
-    expandLevels: {type: Number, default: 0},
-  },
-  setup(props) {
-    const childNodes = computed(() => {
-      if (props.expandLevels <= 0) {
-        return []
-      }
-      return props.traversalRules.getChildren(props.node)
-    })
+const props = defineProps({
+  node: {type: Object as PropType<TreeNode>, required: true},
+  traversalRules: {type: Object as PropType<TraversalRules>, required: true},
+  expandLevels: {type: Number, default: 0},
+})
 
-    return {
-      childNodes,
-    }
-  },
+const childNodes = computed<TreeNode[]>(() => {
+  if (props.expandLevels <= 0) {
+    return []
+  }
+  return props.traversalRules.getChildren(props.node)
 })
 </script>

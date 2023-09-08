@@ -1,44 +1,29 @@
+<script lang="ts" setup>
+import {DecForm, RefInput} from "@typeful/vue-form"
+
+import useModel, { provideActiveModel } from "@typeful/model-vue/useModel"
+
+provideActiveModel(useModel('@com-pot/bestiary.BreedingStation'))
+
+defineProps({
+  station: {type: Object, required: true},
+  isPersisted: {type: Boolean},
+})
+</script>
+
 <template>
   <DecForm :model-value="station">
-    <div class="form-row">
+    <div class="row form-row">
       <div class="col-md-6">
-        <DecFormInput v-bind="stationFields.name"/>
+        <RefInput path="name"/>
       </div>
+
       <div class="col-md-2 col-sm-5">
-        <DecFormInput v-bind="stationFields.country"/>
+        <RefInput path="country"/>
       </div>
       <div class="col-md-4 col-sm-7">
-        <DecFormInput v-bind="stationFields.id" :disabled="isPersisted"/>
+        <RefInput path="id" :disabled="isPersisted"/>
       </div>
     </div>
   </DecForm>
 </template>
-
-<script lang="ts">
-import {defineComponent, ref} from "vue"
-import DecForm from "@/modules/typeful/components/DecForm.vue"
-import DecFormInput from "@/modules/typeful/components/DecFormInput.vue"
-import {getFields} from "@/modules/typeful/services/FormsService"
-
-import stationSchema from "../typeful/breedingStationSchema.json"
-
-export default defineComponent({
-  components: {
-    DecFormInput,
-    DecForm,
-  },
-  props: {
-    station: {type: Object, required: true},
-    isPersisted: {type: Boolean},
-  },
-  setup() {
-    const stationFields = ref(getFields(stationSchema, {
-      createFieldLabel: 'bestiary.station.field.',
-    }))
-
-    return {
-      stationFields,
-    }
-  },
-})
-</script>
