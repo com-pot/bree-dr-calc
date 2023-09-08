@@ -13,7 +13,7 @@ import vueFormPlugin from '@typeful/vue-form/vueForm.plugin'
 import TypefulPlugin from '@typeful/vue-app/TypefulPlugin'
 
 import i18nModule from "@typeful/vue-app/i18n/I18nModule"
-import bestiaryModule from "@/modules/bestiary/typeful/bestiaryModule"
+import bestiaryModule from "@/modules/bestiary/typeful/BestiaryModule"
 import dachshundModule from "@/modules/bestiary-dachshund/typeful/DachshundModule"
 
 import { createAppRouter } from "./modules/app/router"

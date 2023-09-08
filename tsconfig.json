@@ -32,12 +32,6 @@
       "@typeful/vue-form": ["./libs/@typeful/vue-form/src/index.ts"],
       "@typeful/vue-form/*": ["./libs/@typeful/vue-form/src/*"],
 
-      "@vtf-typeful": ["libs/@vtf/typeful/src/index.ts"],
-      "@vtf-typeful/*": ["libs/@vtf/typeful/src/*"],
-      "@vtf-form": ["libs/@vtf/form/src"],
-      "@vtf-collection": ["libs/@vtf/collection/src/index.ts"],
-      "@vtf-collection/*": ["libs/@vtf/collection/src/*"],
-      "@vtf-ui/*": ["libs/@vtf/ui/src/*"],
       "@vue-tippy": ["libs/vue-tippy/src/index.ts"],
       "@app/*": ["src/modules/app/*"],
       "@/*": ["src/*"]

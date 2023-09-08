@@ -104,7 +104,7 @@ export default defineComponent({
         ...(dependencies.ready && dependencies.value || null),
 
         inputClass: 'form-control',
-        outerClass: 'form-group',
+        outerClass: '',
       }
 
       return Object.assign(inAttrs, entry?.formkit)

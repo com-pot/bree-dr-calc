@@ -53,7 +53,7 @@ export default defineComponent({
       })
 
       const children = [
-        h('div', {class: 'row'}, inputCols),
+        h('div', {class: 'row -v-gap'}, inputCols),
       ]
 
       if (legend.value) {

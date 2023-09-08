@@ -21,7 +21,7 @@
         <div class="input-group">
           <DecInput v-model="confirmation.value" type="string"/>
           <div class="input-group-append">
-            <div :class="['btn btn-danger', !confirmation.valid && 'disabled']" @click="resetDataIfValid">Smazat</div>
+            <button :class="['btn btn-danger', !confirmation.valid && 'disabled']" @click="resetDataIfValid">Smazat</button>
           </div>
         </div>
       </div>
